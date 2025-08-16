@@ -1,0 +1,9 @@
+{
+  "ProductCategories": [
+    {"category": "Other"},
+    {"category": "Soap"},
+    {"category": "food"},
+    {"category": "snacks"}
+
+  ]
+}
