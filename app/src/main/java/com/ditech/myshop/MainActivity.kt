@@ -1,4 +1,4 @@
-package com.st11.myshop
+package com.ditech.myshop
 
 //import android.os.Bundle
 //import androidx.activity.ComponentActivity
@@ -48,34 +48,16 @@ package com.st11.myshop
 
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
-import android.view.Window
-import android.view.WindowInsets
-import android.view.WindowInsetsController
-import androidx.compose.ui.res.painterResource
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.st11.myshop.navigation.AppNavHost
-
-import java.util.Locale
+import com.ditech.myshop.navigation.AppNavHost
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.S)

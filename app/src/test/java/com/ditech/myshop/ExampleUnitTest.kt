@@ -1,4 +1,4 @@
-package com.st11.myshop
+package com.ditech.myshop
 
 import org.junit.Test
 

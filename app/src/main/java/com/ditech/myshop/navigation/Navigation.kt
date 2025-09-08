@@ -1,4 +1,4 @@
-package com.st11.myshop.navigation
+package com.ditech.myshop.navigation
 
 
 
@@ -7,13 +7,10 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import androidx.compose.animation.*
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.st11.myshop.screens.AddProductScreen
-import com.st11.myshop.screens.HomeScreen
-import org.koin.androidx.compose.getViewModel
+import com.ditech.myshop.screens.AddProductScreen
+import com.ditech.myshop.screens.AddSalesScreen
+import com.ditech.myshop.screens.HomeScreen
 
 sealed class Screen(val route: String) {
     object Home : Screen("home")
@@ -25,6 +22,7 @@ sealed class Screen(val route: String) {
 
     object AddProduct : Screen("addProduct")
 
+    object AddSales : Screen("addSales")
 
     object  CreditAuthor : Screen("CreditAuthor")
 }
@@ -46,7 +44,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier) {
 //        composable(Screen.Settings.route) { SettingScreen(navController) }
         composable(Screen.AddProduct.route) { AddProductScreen(navController) }
 //        composable(Screen.CreditAuthor.route) {  CreditAuthorScreen(navController)   }
-
+        composable(Screen.AddSales.route) { AddSalesScreen(navController) }
 //        composable(Screen.EditCalendar.route) { backStackEntry ->
 //            val itemId = backStackEntry.arguments?.getString("itemId") ?: "Unknown"
 //            EditCalendarScreen(navController, itemId)

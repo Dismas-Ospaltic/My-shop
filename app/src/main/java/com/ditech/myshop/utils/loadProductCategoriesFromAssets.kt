@@ -1,9 +1,9 @@
-package com.st11.myshop.utils
+package com.ditech.myshop.utils
 
 
 import android.content.Context
 import com.google.gson.Gson
-import com.st11.myshop.model.ProductCategories
+import com.ditech.myshop.model.ProductCategories
 import java.io.InputStreamReader
 
 fun loadProductCategoriesFromAssets(context: Context): ProductCategories {

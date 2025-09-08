@@ -1,4 +1,4 @@
-package com.st11.myshop.screens
+package com.ditech.myshop.screens
 
 
 
@@ -25,12 +25,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ditech.myshop.R
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.st11.myshop.R
-import com.st11.myshop.model.ProductCategories
-import com.st11.myshop.utils.DynamicStatusBar
-import com.st11.myshop.utils.loadProductCategoriesFromAssets
+import com.ditech.myshop.model.ProductCategories
+import com.ditech.myshop.utils.DynamicStatusBar
+import com.ditech.myshop.utils.loadProductCategoriesFromAssets
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ArrowLeft
@@ -225,7 +225,7 @@ fun AddProductScreenPreview() {
 
 
 @Composable
-fun DropdownSelector(
+fun DropdownSelesctor(
     items: List<String>,
     selected: String?,
     onSelected: (String) -> Unit

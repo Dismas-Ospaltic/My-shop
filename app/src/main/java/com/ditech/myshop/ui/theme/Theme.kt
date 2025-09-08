@@ -1,6 +1,5 @@
-package com.st11.myshop.ui.theme
+package com.ditech.myshop.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

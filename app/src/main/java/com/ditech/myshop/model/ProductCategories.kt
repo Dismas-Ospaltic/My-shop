@@ -1,4 +1,4 @@
-package com.st11.myshop.model
+package com.ditech.myshop.model
 
 import com.google.gson.annotations.SerializedName
 

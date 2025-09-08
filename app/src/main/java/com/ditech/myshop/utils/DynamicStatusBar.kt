@@ -1,4 +1,4 @@
-package com.st11.myshop.utils
+package com.ditech.myshop.utils
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.Composable

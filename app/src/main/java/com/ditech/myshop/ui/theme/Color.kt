@@ -1,4 +1,4 @@
-package com.st11.myshop.ui.theme
+package com.ditech.myshop.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
