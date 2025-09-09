@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import com.ditech.myshop.screens.AddProductScreen
 import com.ditech.myshop.screens.AddSalesScreen
 import com.ditech.myshop.screens.HomeScreen
+import com.ditech.myshop.screens.ManageProductScreen
 
 sealed class Screen(val route: String) {
     object Home : Screen("home")
@@ -23,6 +24,10 @@ sealed class Screen(val route: String) {
     object AddProduct : Screen("addProduct")
 
     object AddSales : Screen("addSales")
+
+    object ManageProduct : Screen("manageProduct")
+
+
 
     object  CreditAuthor : Screen("CreditAuthor")
 }
@@ -45,6 +50,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier) {
         composable(Screen.AddProduct.route) { AddProductScreen(navController) }
 //        composable(Screen.CreditAuthor.route) {  CreditAuthorScreen(navController)   }
         composable(Screen.AddSales.route) { AddSalesScreen(navController) }
+        composable(Screen.ManageProduct.route) { ManageProductScreen(navController) }
 //        composable(Screen.EditCalendar.route) { backStackEntry ->
 //            val itemId = backStackEntry.arguments?.getString("itemId") ?: "Unknown"
 //            EditCalendarScreen(navController, itemId)

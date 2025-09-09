@@ -118,7 +118,7 @@ fun HomeScreen(navController: NavController) {
                 title = "Manage Products",
                 subtitle = "add new product, update stock"
             ) { /* onClick */
-                navController.navigate(Screen.AddProduct.route)
+                navController.navigate(Screen.ManageProduct.route)
             }
 
             DashboardFeatureCard(
