@@ -1,5 +1,6 @@
 package com.ditech.myshop.screens
 
+import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,12 +36,18 @@ import com.ditech.myshop.navigation.Screen
 import com.ditech.myshop.utils.DynamicStatusBar
 import com.ditech.myshop.utils.loadProductCategoriesFromAssets
 import compose.icons.FontAwesomeIcons
+import compose.icons.fontawesomeicons.Regular
 import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.regular.ThumbsUp
+import compose.icons.fontawesomeicons.regular.TrashAlt
 import compose.icons.fontawesomeicons.solid.ArrowLeft
+import compose.icons.fontawesomeicons.solid.CircleNotch
 import compose.icons.fontawesomeicons.solid.DollarSign
+import compose.icons.fontawesomeicons.solid.Pen
 import compose.icons.fontawesomeicons.solid.Plus
 import compose.icons.fontawesomeicons.solid.PlusCircle
 import compose.icons.fontawesomeicons.solid.Search
+import compose.icons.fontawesomeicons.solid.ShareAlt
 import kotlin.text.get
 
 
@@ -53,7 +60,12 @@ fun ManageProductScreen(navController: NavController) {
     val textColor = colorResource(id = R.color.white) // Text color
     val searchQuery = remember { mutableStateOf("") }
 
+
     val context = LocalContext.current
+
+    val sheetState = rememberModalBottomSheetState()
+    var showSheet by remember { mutableStateOf(false) }
+    var selectedNotes by remember { mutableStateOf("") }
 
     val buttons = listOf(
         ButtonItem(
@@ -235,7 +247,10 @@ fun ManageProductScreen(navController: NavController) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 12.dp, vertical = 8.dp)
-                            .clickable { /* Handle click */ },
+                            .clickable { /* Handle click */
+                                showSheet = true
+                                selectedNotes = "Note $index"
+                            },
                         shape = RoundedCornerShape(16.dp),
                         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.White)
@@ -313,7 +328,142 @@ fun ManageProductScreen(navController: NavController) {
 
         }
     }
+
+
+
+    if (showSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showSheet = false },
+            sheetState = sheetState
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text("Additional Notes", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(selectedNotes)
+                Spacer(modifier = Modifier.height(16.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+
+                            }
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = FontAwesomeIcons.Solid.CircleNotch,
+                            contentDescription = "update",
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(text = "update Progress", fontSize = 16.sp)
+                    }
+
+
+
+                    // Edit Button
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+
+                            }
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = FontAwesomeIcons.Solid.Pen,
+                            contentDescription = "Edit",
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(text = "Edit", fontSize = 16.sp)
+                    }
+
+
+
+                    // Delete Button
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+
+                            }
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = FontAwesomeIcons.Regular.TrashAlt,
+                            contentDescription = "Delete",
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(text = "Delete", fontSize = 16.sp)
+                    }
+
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+
+
+                            }
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = FontAwesomeIcons.Solid.ShareAlt,
+                            contentDescription = "share",
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(text = "Share Watchlist", fontSize = 16.sp)
+                    }
+
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+
+
+                            }
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = FontAwesomeIcons.Regular.ThumbsUp,
+                            contentDescription = "Mark as complete",
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(text = "Mark as complete", fontSize = 16.sp)
+                    }
+                }
+//                Button(
+//                    onClick = { showSheet = false },
+//                    modifier = Modifier.align(Alignment.End)
+//                ) {
+//                    Text("Close")
+//                }
+            }
+        }
+    }
 }
+
 
 
 
@@ -351,6 +501,10 @@ fun CustomOutlinedButton(
             )
         }
     }
+
+
+
+
 }
 
 
