@@ -45,7 +45,14 @@ fun AddProductScreen(navController: NavController) {
 
     val context = LocalContext.current
 
-    var jobTitle by remember { mutableStateOf("") }
+    var productCode by remember { mutableStateOf("") }
+    var productName by remember { mutableStateOf("") }
+//    var productCategory by remember { mutableStateOf("") }
+    var productQty by remember { mutableStateOf("") }
+    var productBuyPrice by remember { mutableStateOf("") }
+    var productSellPrice by remember { mutableStateOf("") }
+    var productManufactureDate by remember { mutableStateOf("") }
+    var productExpiry by remember { mutableStateOf("") }
     var jobDescription by remember { mutableStateOf("") }
     var personnelNumber by remember { mutableStateOf("") }
 
@@ -53,6 +60,14 @@ fun AddProductScreen(navController: NavController) {
 
     var selectedCategoryType by remember { mutableStateOf<ProductCategories?>(null) }
 
+
+    var productCategory by remember { mutableStateOf("") }
+    var expanded by remember { mutableStateOf(false) }
+
+
+    val categoryType = listOf(
+        "other", "soap", "kitchen ware", "electronics"
+    )
 
     Scaffold(
         bottomBar = {
@@ -126,7 +141,7 @@ fun AddProductScreen(navController: NavController) {
 
             // Title
             Text(
-                text = "Add Job Posting",
+                text = "Add Product",
                 modifier = Modifier
                     .padding(end = 16.dp, start = 16.dp),
                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
@@ -135,7 +150,7 @@ fun AddProductScreen(navController: NavController) {
 //                    Spacer(modifier = Modifier.height(8.dp))
             // Subtitle
             Text(
-                text = "Enter the Details of Job number of personnel you need and more",
+                text = "Enter the Details of the products in your shop",
                 modifier = Modifier
                     .padding(end = 16.dp, start = 16.dp),
                 style = MaterialTheme.typography.bodyMedium,
@@ -145,9 +160,9 @@ fun AddProductScreen(navController: NavController) {
 
             Column( verticalArrangement = Arrangement.spacedBy(12.dp) ){
                 OutlinedTextField(
-                    value = jobTitle ,
-                    onValueChange = { jobTitle  = it },
-                    label = { Text("Job Title *") },
+                    value = productCode ,
+                    onValueChange = { productCode  = it },
+                    label = { Text("Product Code*") },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White.copy(alpha = 0.9f),
@@ -160,18 +175,11 @@ fun AddProductScreen(navController: NavController) {
                     singleLine = true,
                 )
 
-                Text(
-                    text = "Enter the Details of Job use markup for styling",
-                    modifier = Modifier
-                        .padding(end = 16.dp, start = 16.dp),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray
-                )
 
                 OutlinedTextField(
-                    value = jobDescription,
-                    onValueChange = { jobDescription = it },
-                    label = { Text("short Notes") },
+                    value = productName,
+                    onValueChange = { productName = it },
+                    label = { Text("product Name") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(min = 100.dp, max = 200.dp) // Adjust height for ~4 lines
@@ -185,14 +193,13 @@ fun AddProductScreen(navController: NavController) {
                         focusedLabelColor = backgroundColor,
                         cursorColor = backgroundColor
                     ),
-                    singleLine = false,
-                    maxLines = 4
+                    singleLine = true,
                 )
 
                 OutlinedTextField(
-                    value = personnelNumber,
-                    onValueChange = { personnelNumber = it },
-                    label = { Text("Personnel number*") },
+                    value = productQty,
+                    onValueChange = { productQty = it },
+                    label = { Text("Product Quantity*") },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White.copy(alpha = 0.9f),
@@ -206,6 +213,68 @@ fun AddProductScreen(navController: NavController) {
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
 
+
+                ExposedDropdownMenuBox(
+                    expanded = expanded,
+                    onExpandedChange = { expanded = !expanded }
+                ) {
+                    OutlinedTextField(
+                        value = productCategory,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("Category") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(MenuAnchorType.PrimaryNotEditable),
+//                        .menuAnchor(),
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                        },
+                        singleLine = true,
+                        colors = OutlinedTextFieldDefaults.colors(
+                            unfocusedContainerColor = Color.White.copy(alpha = 0.9f),
+                            focusedContainerColor = Color.White.copy(alpha = 0.95f),
+                            focusedBorderColor = backgroundColor,
+                            unfocusedBorderColor = Color.Gray,
+                            focusedLabelColor = backgroundColor,
+                            cursorColor = backgroundColor
+                        )
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                        modifier = Modifier
+                            .background(Color.White) // ✅ White background for the dropdown menu
+                    ) {
+                        categoryType.forEach { selectionOption ->
+                            DropdownMenuItem(
+                                text = { Text(selectionOption, color = Color.Black) }, // ✅ Black text
+                                onClick = {
+                                    productCategory = selectionOption
+                                    expanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+
+
+                OutlinedTextField(
+                    value = productSellPrice,
+                    onValueChange = { productSellPrice  = it },
+                    label = { Text("Product Sell Price*") },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedContainerColor = Color.White.copy(alpha = 0.9f),
+                        focusedContainerColor = Color.White.copy(alpha = 0.95f),
+                        focusedBorderColor = backgroundColor,
+                        unfocusedBorderColor = Color.Gray,
+                        focusedLabelColor = backgroundColor,
+                        cursorColor = backgroundColor
+                    ),
+                    singleLine = true,
+                )
 
 
             }
@@ -222,102 +291,5 @@ fun AddProductScreenPreview() {
     AddProductScreen(navController = rememberNavController())
 }
 
-
-
-@Composable
-fun DropdownSelesctor(
-    items: List<String>,
-    selected: String?,
-    onSelected: (String) -> Unit
-) {
-    var expanded by remember { mutableStateOf(false) }
-
-    val customTextColor = colorResource(id = R.color.prussian_blue) // from res/colors.xml
-    val customBorderColor = colorResource(id = R.color.prussian_blue)
-    val customBackgroundColor = colorResource(id = R.color.white)
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        OutlinedButton(
-            onClick = { expanded = true },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = customBackgroundColor,
-                contentColor = customTextColor
-            ),
-            border = BorderStroke(1.dp, customBorderColor)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = selected ?: "Select",
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = customTextColor
-                )
-                Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = "Dropdown Arrow",
-                    tint = customTextColor
-                )
-            }
-        }
-
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            items.forEach { item ->
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            text = item,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = customTextColor
-                        )
-                    },
-                    onClick = {
-                        onSelected(item)
-                        expanded = false
-                    }
-                )
-            }
-        }
-    }
-}
-
-
-//@Composable
-//fun DropdownSelector(items: List<String>, selected: String?, onSelected: (String) -> Unit) {
-//    var expanded by remember { mutableStateOf(false) }
-//    Box {
-//        OutlinedButton(onClick = { expanded = true }) {
-//            Text(selected ?: "Select")
-//        }
-//        DropdownMenu(
-//            expanded = expanded,
-//            onDismissRequest = { expanded = false }
-//        ) {
-//            items.forEach { item ->
-//                DropdownMenuItem(
-//                    text = { Text(item) },
-//                    onClick = {
-//                        onSelected(item)
-//                        expanded = false
-//                    }
-//                )
-//            }
-//        }
-//    }
-//}
 
 
