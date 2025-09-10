@@ -265,55 +265,68 @@ fun ManageProductScreen(navController: NavController) {
                             ) {
                                 Column {
                                     Text(
-                                        text = "food",
+                                        text = "464738829293",
                                         fontSize = 14.sp,
                                         fontWeight = FontWeight.SemiBold,
                                         color = colorResource(id = R.color.gray01)
                                     )
                                     Spacer(modifier = Modifier.height(4.dp))
                                     Text(
-                                        text = "2025-09-09",
+                                        text = "blue band 500g",
                                         fontSize = 12.sp,
                                         color = Color.Gray
                                     )
                                 }
-
-                                Text(
-                                    text = "Ksh. 200",
-                                    fontSize = 22.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = colorResource(id = R.color.light_green)
-                                )
                             }
 
                             Spacer(modifier = Modifier.height(12.dp))
 
-                            // Description
+
                             Text(
-                                text = "lunch",
+                                text = "Buy Price: 250",
+                                fontSize = 16.sp,
+                                color = colorResource(id = R.color.dark),
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                                Spacer(modifier = Modifier.width(6.dp))
+                            Text(
+                                text = "Sell Price: 350",
                                 fontSize = 16.sp,
                                 color = colorResource(id = R.color.dark),
                                 maxLines = 2,
                                 overflow = TextOverflow.Ellipsis
                             )
 
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            // Bottom Row: Payment mode with icon
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = FontAwesomeIcons.Solid.DollarSign,
-                                    contentDescription = "money check",
-                                    tint = colorResource(id = R.color.light_green),
-                                    modifier = Modifier.size(18.dp)
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = "Payment: cash",
+                                    text = "Category: other",
                                     fontSize = 14.sp,
                                     color = colorResource(id = R.color.gray01)
                                 )
-                            }
+
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "manufacture: 2025-09-10",
+                                fontSize = 14.sp,
+                                color = colorResource(id = R.color.green)
+                            )
+
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "Expiry: 2025-09-10",
+                                fontSize = 14.sp,
+                                color = colorResource(id = R.color.crimson)
+                            )
+
+                            Spacer(modifier = Modifier.height(4.dp))
+
+                            Text(
+                                text = "Quantity: 20",
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = colorResource(id = R.color.prussian_blue)
+                            )
                         }
                     }
 

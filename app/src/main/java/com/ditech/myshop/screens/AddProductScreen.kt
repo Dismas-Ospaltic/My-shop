@@ -3,7 +3,7 @@ package com.ditech.myshop.screens
 
 
 
-import androidx.compose.foundation.BorderStroke
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -11,8 +11,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,6 +27,7 @@ import com.ditech.myshop.R
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.ditech.myshop.model.ProductCategories
+import com.ditech.myshop.screens.components.DatePickerField
 import com.ditech.myshop.utils.DynamicStatusBar
 import com.ditech.myshop.utils.loadProductCategoriesFromAssets
 import compose.icons.FontAwesomeIcons
@@ -53,6 +52,7 @@ fun AddProductScreen(navController: NavController) {
     var productSellPrice by remember { mutableStateOf("") }
     var productManufactureDate by remember { mutableStateOf("") }
     var productExpiry by remember { mutableStateOf("") }
+    var selectedDate by remember { mutableStateOf("") }
     var jobDescription by remember { mutableStateOf("") }
     var personnelNumber by remember { mutableStateOf("") }
 
@@ -79,7 +79,62 @@ fun AddProductScreen(navController: NavController) {
                     .windowInsetsPadding(WindowInsets.navigationBars) // ✅ Push above system nav bar
             ) {
                 Button(
-                    onClick = { /* TODO: Handle click */ },
+                    onClick = { /* TODO: Handle click */
+
+                        if(productCode.isEmpty()){
+                            Toast.makeText(context, "Please enter product code", Toast.LENGTH_LONG).show()
+                            return@Button
+                        }
+
+                        if(productName.isEmpty()){
+                            Toast.makeText(context, "Please enter product name", Toast.LENGTH_LONG).show()
+                            return@Button
+                        }
+
+
+                        if(productQty.isEmpty()){
+                            Toast.makeText(context, "Please enter product quantity", Toast.LENGTH_LONG).show()
+                            return@Button
+                        }
+
+
+
+                        if(productBuyPrice.isEmpty()){
+                            Toast.makeText(context, "Please enter product buy price", Toast.LENGTH_LONG).show()
+                            return@Button
+                        }
+
+                        if(productSellPrice.isEmpty()){
+                            Toast.makeText(context, "Please enter product sell price", Toast.LENGTH_LONG).show()
+                            return@Button
+                        }
+
+
+
+
+
+                        val cleanBuyPriceInput = productBuyPrice.trim()
+                        val amountBuyValue = cleanBuyPriceInput.toFloatOrNull()
+
+                        if (amountBuyValue == null) {
+                            Toast.makeText(context, "Please enter a valid number for product buy price", Toast.LENGTH_LONG).show()
+                            return@Button
+                        }
+
+
+
+                        val cleanSellPriceInput = productSellPrice.trim()
+                        val amountSellValue = cleanSellPriceInput.toFloatOrNull()
+
+                        if (amountSellValue == null) {
+                            Toast.makeText(context, "Please enter a valid number for product sell price", Toast.LENGTH_LONG).show()
+                            return@Button
+                        }
+
+
+
+
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
@@ -94,7 +149,7 @@ fun AddProductScreen(navController: NavController) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Save Job Posting",
+                        text = "Save Product",
                         color = Color.White,
                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                     )
@@ -179,12 +234,8 @@ fun AddProductScreen(navController: NavController) {
                 OutlinedTextField(
                     value = productName,
                     onValueChange = { productName = it },
-                    label = { Text("product Name") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 100.dp, max = 200.dp) // Adjust height for ~4 lines
-                        .verticalScroll(rememberScrollState()),
-
+                    label = { Text("product Name*") },
+                    modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedContainerColor = Color.White.copy(alpha = 0.9f),
                         focusedContainerColor = Color.White.copy(alpha = 0.95f),
@@ -261,8 +312,33 @@ fun AddProductScreen(navController: NavController) {
 
 
                 OutlinedTextField(
+                    value = productBuyPrice,
+                    onValueChange = { input ->
+                        // Remove commas automatically as user types
+                        productBuyPrice  = input.replace(",", "")
+                    },
+//                    onValueChange = { productBuyPrice  = it },
+                    label = { Text("Product buy Price*") },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedContainerColor = Color.White.copy(alpha = 0.9f),
+                        focusedContainerColor = Color.White.copy(alpha = 0.95f),
+                        focusedBorderColor = backgroundColor,
+                        unfocusedBorderColor = Color.Gray,
+                        focusedLabelColor = backgroundColor,
+                        cursorColor = backgroundColor
+                    ),
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+
+
+                OutlinedTextField(
                     value = productSellPrice,
-                    onValueChange = { productSellPrice  = it },
+                    onValueChange = { input ->
+                        // Remove commas automatically as user types
+                        productSellPrice  = input.replace(",", "")
+                    },
                     label = { Text("Product Sell Price*") },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -274,6 +350,23 @@ fun AddProductScreen(navController: NavController) {
                         cursorColor = backgroundColor
                     ),
                     singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                )
+
+
+
+                DatePickerField(
+                    label = "Manufacture Date",
+                    value = productManufactureDate, // <-- This is from your parent state
+                    onDateSelected = { date -> productManufactureDate = date }
+                )
+
+
+
+                DatePickerField(
+                    label = "Expiry Date",
+                    value = productExpiry, // <-- This is from your parent state
+                    onDateSelected = { date -> productExpiry = date }
                 )
 
 
