@@ -1,34 +1,36 @@
-//package com.ditech.myshop.data.local
-//
-//
-//
-//import android.content.Context
-//import androidx.room.Database
-//import androidx.room.Room
-//import androidx.room.RoomDatabase
-//
-//
-//@Database(entities = [SingleSaleEntity::class, SingleProductEntity::class], version = 1, exportSchema = false)
-//abstract class AppDatabase : RoomDatabase() {
-//
-//    abstract fun singleSaleDao(): SingleSaleDao
-//    abstract fun singleSaleProductDao(): SingleSaleProductDao
-//
-//
-//    companion object {
-//        @Volatile
-//        private var INSTANCE: AppDatabase? = null
-//
-//        fun getDatabase(context: Context): AppDatabase {
-//            return INSTANCE ?: synchronized(this) {
-//                val instance = Room.databaseBuilder(
-//                    context.applicationContext,
-//                    AppDatabase::class.java,
-//                    "sales_database"
-//                ).fallbackToDestructiveMigration().build()
-//                INSTANCE = instance
-//                instance
-//            }
-//        }
-//    }
-//}
+package com.ditech.myshop.data.local
+
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.ditech.myshop.model.GenSaleEntity
+import com.ditech.myshop.model.ProductEntity
+import com.ditech.myshop.model.SingleProductSaleEntity
+
+
+@Database(entities = [GenSaleEntity::class, SingleProductSaleEntity::class, ProductEntity::class], version = 1, exportSchema = false)
+abstract class AppDatabase : RoomDatabase() {
+
+    abstract fun genSaleDao(): GenSaleDao
+    abstract fun productDao(): ProductDao
+    abstract fun singleProductSaleDao(): SingleProductSaleDao
+
+
+    companion object {
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
+
+        fun getDatabase(context: Context): AppDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "my_shop_sales_database"
+                ).fallbackToDestructiveMigration().build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
+}
