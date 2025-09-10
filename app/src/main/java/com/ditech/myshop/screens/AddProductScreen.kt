@@ -26,10 +26,8 @@ import androidx.compose.ui.unit.dp
 import com.ditech.myshop.R
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.ditech.myshop.model.ProductCategories
 import com.ditech.myshop.screens.components.DatePickerField
 import com.ditech.myshop.utils.DynamicStatusBar
-import com.ditech.myshop.utils.loadProductCategoriesFromAssets
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ArrowLeft
@@ -52,13 +50,9 @@ fun AddProductScreen(navController: NavController) {
     var productSellPrice by remember { mutableStateOf("") }
     var productManufactureDate by remember { mutableStateOf("") }
     var productExpiry by remember { mutableStateOf("") }
-    var selectedDate by remember { mutableStateOf("") }
-    var jobDescription by remember { mutableStateOf("") }
-    var personnelNumber by remember { mutableStateOf("") }
 
-    val categoryData = remember { loadProductCategoriesFromAssets(context) }
 
-    var selectedCategoryType by remember { mutableStateOf<ProductCategories?>(null) }
+
 
 
     var productCategory by remember { mutableStateOf("") }

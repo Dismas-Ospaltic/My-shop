@@ -29,9 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.ditech.myshop.model.ProductCategories
 import com.ditech.myshop.utils.DynamicStatusBar
-import com.ditech.myshop.utils.loadProductCategoriesFromAssets
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ArrowLeft

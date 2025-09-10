@@ -13,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,10 +32,8 @@ import androidx.compose.ui.unit.sp
 import com.ditech.myshop.R
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.ditech.myshop.model.ProductCategories
 import com.ditech.myshop.navigation.Screen
 import com.ditech.myshop.utils.DynamicStatusBar
-import com.ditech.myshop.utils.loadProductCategoriesFromAssets
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Regular
 import compose.icons.fontawesomeicons.Solid
@@ -154,7 +153,7 @@ fun ManageProductScreen(navController: NavController) {
 //                    Spacer(modifier = Modifier.height(8.dp))
             // Subtitle
             Text(
-                text = "add new products, manage stock and manage products",
+                text = "add new products, manage stock and products",
                 modifier = Modifier
                     .padding(end = 16.dp, start = 16.dp),
                 style = MaterialTheme.typography.bodyMedium,
@@ -242,22 +241,21 @@ fun ManageProductScreen(navController: NavController) {
 
                 repeat(10) { index ->
 
-
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 12.dp, vertical = 8.dp)
-                            .clickable { /* Handle click */
+                            .clickable {
                                 showSheet = true
                                 selectedNotes = "Note $index"
                             },
-                        shape = RoundedCornerShape(16.dp),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                        shape = RoundedCornerShape(20.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.White)
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
 
-                            // Top Row: Amount & Category
+                            // 🔹 Top: Product Code + Name
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -266,69 +264,200 @@ fun ManageProductScreen(navController: NavController) {
                                 Column {
                                     Text(
                                         text = "464738829293",
-                                        fontSize = 14.sp,
-                                        fontWeight = FontWeight.SemiBold,
+                                        fontSize = 13.sp,
+                                        fontWeight = FontWeight.Medium,
                                         color = colorResource(id = R.color.gray01)
                                     )
                                     Spacer(modifier = Modifier.height(4.dp))
                                     Text(
-                                        text = "blue band 500g",
-                                        fontSize = 12.sp,
-                                        color = Color.Gray
+                                        text = "Blue Band 500g",
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = colorResource(id = R.color.dark)
                                     )
                                 }
                             }
 
                             Spacer(modifier = Modifier.height(12.dp))
 
+                            // 🔹 Price Section
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Column {
+                                    Text(
+                                        text = "Buy Price",
+                                        fontSize = 12.sp,
+                                        color = Color.Gray
+                                    )
+                                    Text(
+                                        text = "Ksh 250",
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = colorResource(id = R.color.green)
+                                    )
+                                }
+                                Column {
+                                    Text(
+                                        text = "Sell Price",
+                                        fontSize = 12.sp,
+                                        color = Color.Gray
+                                    )
+                                    Text(
+                                        text = "Ksh 350",
+                                        fontSize = 16.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = colorResource(id = R.color.crimson)
+                                    )
+                                }
+                            }
 
-                            Text(
-                                text = "Buy Price: 250",
-                                fontSize = 16.sp,
-                                color = colorResource(id = R.color.dark),
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                                Spacer(modifier = Modifier.width(6.dp))
-                            Text(
-                                text = "Sell Price: 350",
-                                fontSize = 16.sp,
-                                color = colorResource(id = R.color.dark),
-                                maxLines = 2,
-                                overflow = TextOverflow.Ellipsis
-                            )
+                            Spacer(modifier = Modifier.height(12.dp))
 
-                            Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    text = "Category: other",
-                                    fontSize = 14.sp,
-                                    color = colorResource(id = R.color.gray01)
-                                )
+                            // 🔹 Other details in a neat row format
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Column {
+                                    Text(
+                                        text = "Category",
+                                        fontSize = 12.sp,
+                                        color = Color.Gray
+                                    )
+                                    Text(
+                                        text = "Other",
+                                        fontSize = 14.sp,
+                                        color = colorResource(id = R.color.dark)
+                                    )
+                                }
+                                Column {
+                                    Text(
+                                        text = "Manufacture",
+                                        fontSize = 12.sp,
+                                        color = Color.Gray
+                                    )
+                                    Text(
+                                        text = "2025-09-10",
+                                        fontSize = 14.sp,
+                                        color = colorResource(id = R.color.green)
+                                    )
+                                }
+                                Column {
+                                    Text(
+                                        text = "Expiry",
+                                        fontSize = 12.sp,
+                                        color = Color.Gray
+                                    )
+                                    Text(
+                                        text = "2025-09-10",
+                                        fontSize = 14.sp,
+                                        color = colorResource(id = R.color.crimson)
+                                    )
+                                }
+                            }
 
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = "manufacture: 2025-09-10",
-                                fontSize = 14.sp,
-                                color = colorResource(id = R.color.green)
-                            )
+                            Spacer(modifier = Modifier.height(12.dp))
 
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = "Expiry: 2025-09-10",
-                                fontSize = 14.sp,
-                                color = colorResource(id = R.color.crimson)
-                            )
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
+                            // 🔹 Quantity at bottom center
                             Text(
                                 text = "Quantity: 20",
-                                fontSize = 22.sp,
+                                fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = colorResource(id = R.color.prussian_blue)
+                                color = colorResource(id = R.color.prussian_blue),
+                                modifier = Modifier.align(Alignment.End)
                             )
                         }
                     }
+
+
+//                    Card(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(horizontal = 12.dp, vertical = 8.dp)
+//                            .clickable { /* Handle click */
+//                                showSheet = true
+//                                selectedNotes = "Note $index"
+//                            },
+//                        shape = RoundedCornerShape(16.dp),
+//                        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+//                        colors = CardDefaults.cardColors(containerColor = Color.White)
+//                    ) {
+//                        Column(modifier = Modifier.padding(16.dp)) {
+//
+//                            // Top Row: Amount & Category
+//                            Row(
+//                                modifier = Modifier.fillMaxWidth(),
+//                                horizontalArrangement = Arrangement.SpaceBetween,
+//                                verticalAlignment = Alignment.CenterVertically
+//                            ) {
+//                                Column {
+//                                    Text(
+//                                        text = "464738829293",
+//                                        fontSize = 14.sp,
+//                                        fontWeight = FontWeight.SemiBold,
+//                                        color = colorResource(id = R.color.gray01)
+//                                    )
+//                                    Spacer(modifier = Modifier.height(4.dp))
+//                                    Text(
+//                                        text = "blue band 500g",
+//                                        fontSize = 12.sp,
+//                                        color = Color.Gray
+//                                    )
+//                                }
+//                            }
+//
+//                            Spacer(modifier = Modifier.height(12.dp))
+//
+//
+//                            Text(
+//                                text = "Buy Price: 250",
+//                                fontSize = 16.sp,
+//                                color = colorResource(id = R.color.dark),
+//                                maxLines = 2,
+//                                overflow = TextOverflow.Ellipsis
+//                            )
+//                                Spacer(modifier = Modifier.width(6.dp))
+//                            Text(
+//                                text = "Sell Price: 350",
+//                                fontSize = 16.sp,
+//                                color = colorResource(id = R.color.dark),
+//                                maxLines = 2,
+//                                overflow = TextOverflow.Ellipsis
+//                            )
+//
+//                            Spacer(modifier = Modifier.width(6.dp))
+//                                Text(
+//                                    text = "Category: other",
+//                                    fontSize = 14.sp,
+//                                    color = colorResource(id = R.color.gray01)
+//                                )
+//
+//                            Spacer(modifier = Modifier.height(4.dp))
+//                            Text(
+//                                text = "manufacture: 2025-09-10",
+//                                fontSize = 14.sp,
+//                                color = colorResource(id = R.color.green)
+//                            )
+//
+//                            Spacer(modifier = Modifier.height(4.dp))
+//                            Text(
+//                                text = "Expiry: 2025-09-10",
+//                                fontSize = 14.sp,
+//                                color = colorResource(id = R.color.crimson)
+//                            )
+//
+//                            Spacer(modifier = Modifier.height(4.dp))
+//
+//                            Text(
+//                                text = "Quantity: 20",
+//                                fontSize = 22.sp,
+//                                fontWeight = FontWeight.Bold,
+//                                color = colorResource(id = R.color.prussian_blue)
+//                            )
+//                        }
+//                    }
 
 
                 }
@@ -355,17 +484,20 @@ fun ManageProductScreen(navController: NavController) {
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text("Additional Notes", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                Text(selectedNotes)
-                Spacer(modifier = Modifier.height(16.dp))
+                Text("Actions", fontSize = 18.sp, fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                HorizontalDivider(thickness = 1.dp, color = Color.Gray)
+                Spacer(modifier = Modifier.height(4.dp))
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-
-
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -381,7 +513,7 @@ fun ManageProductScreen(navController: NavController) {
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text(text = "update Progress", fontSize = 16.sp)
+                        Text(text = "Add Stock", fontSize = 16.sp)
                     }
 
 
@@ -402,7 +534,7 @@ fun ManageProductScreen(navController: NavController) {
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text(text = "Edit", fontSize = 16.sp)
+                        Text(text = "Update product", fontSize = 16.sp)
                     }
 
 
@@ -423,48 +555,48 @@ fun ManageProductScreen(navController: NavController) {
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
-                        Text(text = "Delete", fontSize = 16.sp)
+                        Text(text = "Delete product", fontSize = 16.sp)
                     }
 
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-
-
-                            }
-                            .padding(12.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = FontAwesomeIcons.Solid.ShareAlt,
-                            contentDescription = "share",
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(text = "Share Watchlist", fontSize = 16.sp)
-                    }
-
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-
-
-                            }
-                            .padding(12.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = FontAwesomeIcons.Regular.ThumbsUp,
-                            contentDescription = "Mark as complete",
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(text = "Mark as complete", fontSize = 16.sp)
-                    }
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .clickable {
+//
+//
+//                            }
+//                            .padding(12.dp),
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        Icon(
+//                            imageVector = FontAwesomeIcons.Solid.ShareAlt,
+//                            contentDescription = "share",
+//                            modifier = Modifier.size(20.dp)
+//                        )
+//                        Spacer(modifier = Modifier.width(12.dp))
+//                        Text(text = "Share Watchlist", fontSize = 16.sp)
+//                    }
+//
+//
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .clickable {
+//
+//
+//                            }
+//                            .padding(12.dp),
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        Icon(
+//                            imageVector = FontAwesomeIcons.Regular.ThumbsUp,
+//                            contentDescription = "Mark as complete",
+//                            modifier = Modifier.size(20.dp)
+//                        )
+//                        Spacer(modifier = Modifier.width(12.dp))
+//                        Text(text = "Mark as complete", fontSize = 16.sp)
+//                    }
                 }
 //                Button(
 //                    onClick = { showSheet = false },
