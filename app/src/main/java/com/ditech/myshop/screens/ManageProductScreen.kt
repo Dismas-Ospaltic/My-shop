@@ -35,6 +35,7 @@ import com.ditech.myshop.R
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.ditech.myshop.navigation.Screen
+import com.ditech.myshop.screens.components.EditProductPopUp
 import com.ditech.myshop.utils.DynamicStatusBar
 import com.ditech.myshop.viewmodel.ProductViewModel
 import compose.icons.FontAwesomeIcons
@@ -66,6 +67,18 @@ fun ManageProductScreen(navController: NavController) {
     val productViewModel: ProductViewModel = koinViewModel()
      val activeProducts by productViewModel.activeProducts.collectAsState()
 
+
+    var selectedProductId by remember { mutableStateOf<String?>(null) }
+    var selectedProductCode by remember { mutableStateOf<String?>(null) }
+    var selectedProductName by remember { mutableStateOf<String?>(null) }
+    var selectedProductQuantity by remember { mutableStateOf<Int?>(null) }
+    var selectedBuyPrice by remember { mutableStateOf<Float?>(null) }
+    var selectedSellPrice by remember { mutableStateOf<Float?>(null) }
+    var selectedManufactureDate by remember { mutableStateOf<String?>(null) }
+    var selectedExpiryDate by remember { mutableStateOf<String?>(null) }
+    var selectedProductCategory by remember { mutableStateOf<String?>(null) }
+
+    var showDialog by remember { mutableStateOf(false) }
 
 
 
@@ -275,7 +288,7 @@ fun ManageProductScreen(navController: NavController) {
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             Text(
-                                text = "No Activities Added, Click the plus (+) Icon to add a Reminder",
+                                text = "No Products Added",
                                 color = Color.Gray,
                                 style = MaterialTheme.typography.bodyMedium
                             )
@@ -299,7 +312,7 @@ fun ManageProductScreen(navController: NavController) {
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             Text(
-                                text = "No Activities Added, Click the plus (+) Icon to add a Reminder",
+                                text = "No Products Found",
                                 color = Color.Gray,
                                 style = MaterialTheme.typography.bodyMedium
                             )
@@ -313,21 +326,22 @@ fun ManageProductScreen(navController: NavController) {
                     for (index in filteredProducts.indices) {
                         val productItem = filteredProducts[index]
 
-
-
-//                    }
-//
-//
-//                }
-//                repeat(10) { index ->
-
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 12.dp, vertical = 8.dp)
                             .clickable {
                                 showSheet = true
-                                selectedNotes = "Note $index"
+                                selectedProductId = productItem.productId
+                                selectedProductCode = productItem.productCode
+                                selectedProductName = productItem.productName
+                                selectedProductQuantity = productItem.productQuantity
+                                selectedBuyPrice = productItem.buyPrice
+                                selectedSellPrice = productItem.sellPrice
+                                selectedManufactureDate = productItem.manufactureDate
+                                selectedExpiryDate = productItem.expiryDate
+                                selectedProductCategory = productItem.productCategory
+
                             },
                         shape = RoundedCornerShape(20.dp),
                         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
@@ -514,7 +528,7 @@ fun ManageProductScreen(navController: NavController) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-
+                            showDialog = true
                             }
                             .padding(12.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -526,6 +540,25 @@ fun ManageProductScreen(navController: NavController) {
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(text = "Update product", fontSize = 16.sp)
+                    }
+
+
+
+
+                    if (showDialog && selectedProductId != null) {
+                        EditProductPopUp(
+//
+                            onDismiss = { showDialog = false },
+                            productId = selectedProductId!!,
+                            productCode = selectedProductCode!!,
+                            productName = selectedProductName!!,
+                            productQuantity = selectedProductQuantity!!,
+                            buyPrice = selectedBuyPrice!!,
+                            sellPrice = selectedSellPrice!!,
+                            manufactureDate = selectedManufactureDate!!,
+                            expiryDate = selectedExpiryDate!!,
+                            productCategory = selectedProductCategory!!
+                        )
                     }
 
 
