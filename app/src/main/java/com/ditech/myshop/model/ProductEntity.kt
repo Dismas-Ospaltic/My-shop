@@ -16,6 +16,6 @@ data class ProductEntity(
     val sellPrice: Float,
     val manufactureDate: String? = null,
     val expiryDate: String? = null,
-    val productState: String = "active",
+    val productState: String = "Active",
     val timestamp: Long = System.currentTimeMillis()
 )
