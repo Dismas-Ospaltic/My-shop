@@ -26,12 +26,17 @@ import androidx.compose.ui.unit.dp
 import com.ditech.myshop.R
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.ditech.myshop.model.ProductEntity
 import com.ditech.myshop.screens.components.DatePickerField
 import com.ditech.myshop.utils.DynamicStatusBar
+import com.ditech.myshop.utils.dateFormated
+import com.ditech.myshop.viewmodel.ProductViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ArrowLeft
 import compose.icons.fontawesomeicons.solid.Plus
+import org.koin.androidx.compose.koinViewModel
+import kotlin.random.Random
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,6 +55,13 @@ fun AddProductScreen(navController: NavController) {
     var productSellPrice by remember { mutableStateOf("") }
     var productManufactureDate by remember { mutableStateOf("") }
     var productExpiry by remember { mutableStateOf("") }
+    val currentDate = remember { System.currentTimeMillis() }
+    val todayDate = dateFormated(currentDate)
+
+
+
+
+    val productViewModel: ProductViewModel = koinViewModel()
 
 
 
@@ -104,9 +116,6 @@ fun AddProductScreen(navController: NavController) {
                         }
 
 
-
-
-
                         val cleanBuyPriceInput = productBuyPrice.trim()
                         val amountBuyValue = cleanBuyPriceInput.toFloatOrNull()
 
@@ -126,6 +135,20 @@ fun AddProductScreen(navController: NavController) {
                         }
 
 
+                    productViewModel.insertProduct(ProductEntity(
+                        productId = generateSixDigitRandomNumber().toString(),
+                        productCode = productCode,
+                        productName = productName,
+                        productCategory = productCategory,
+                        productQuantity = productQty.toInt(),
+                        buyPrice= productBuyPrice.toFloat(),
+                        sellPrice = productSellPrice.toFloat(),
+                        manufactureDate = productManufactureDate,
+                        expiryDate = productExpiry,
+                        date = todayDate
+                    ))
+
+                      navController.popBackStack()
 
 
                     },
@@ -376,6 +399,11 @@ fun AddProductScreen(navController: NavController) {
 @Composable
 fun AddProductScreenPreview() {
     AddProductScreen(navController = rememberNavController())
+}
+
+
+fun generateSixDigitRandomNumber(): Int {
+    return Random.nextInt(1000000, 1000000000)  // Generates a random number between 100000 (inclusive) and 1000000 (exclusive)
 }
 
 

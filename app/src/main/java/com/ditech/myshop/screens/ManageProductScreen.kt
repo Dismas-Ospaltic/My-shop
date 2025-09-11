@@ -2,6 +2,7 @@ package com.ditech.myshop.screens
 
 import android.content.Intent
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,6 +24,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
@@ -34,6 +36,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.ditech.myshop.navigation.Screen
 import com.ditech.myshop.utils.DynamicStatusBar
+import com.ditech.myshop.viewmodel.ProductViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Regular
 import compose.icons.fontawesomeicons.Solid
@@ -47,6 +50,7 @@ import compose.icons.fontawesomeicons.solid.Plus
 import compose.icons.fontawesomeicons.solid.PlusCircle
 import compose.icons.fontawesomeicons.solid.Search
 import compose.icons.fontawesomeicons.solid.ShareAlt
+import org.koin.androidx.compose.koinViewModel
 import kotlin.text.get
 
 
@@ -59,6 +63,19 @@ fun ManageProductScreen(navController: NavController) {
     val textColor = colorResource(id = R.color.white) // Text color
     val searchQuery = remember { mutableStateOf("") }
 
+    val productViewModel: ProductViewModel = koinViewModel()
+     val activeProducts by productViewModel.activeProducts.collectAsState()
+
+
+
+
+    // ✅ **Filter the list based on search query**
+    val filteredProducts = activeProducts.filter {
+        it.productName.contains(searchQuery.value, ignoreCase = true) ||
+                it.productCode.contains(searchQuery.value, ignoreCase = true)
+                || it.productCategory.contains(searchQuery.value, ignoreCase = true)
+
+    }
 
     val context = LocalContext.current
 
@@ -161,19 +178,23 @@ fun ManageProductScreen(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            Column( verticalArrangement = Arrangement.spacedBy(12.dp) ){
+            Column( verticalArrangement = Arrangement.spacedBy(12.dp) ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(0.dp)
-                        .background(colorResource(id = R.color.dark), shape = RoundedCornerShape(4.dp)) // Use your background color
+                        .background(
+                            colorResource(id = R.color.dark),
+                            shape = RoundedCornerShape(4.dp)
+                        ) // Use your background color
                 ) {
 
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(8.dp) // Spacing between rows
                     ) {
-                        Text(text = "Manage Products",
+                        Text(
+                            text = "Manage Products",
                             color = colorResource(id = R.color.white),
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier
@@ -204,7 +225,6 @@ fun ManageProductScreen(navController: NavController) {
                         }
                     }
                 }
-
 
 
                 // Search Field
@@ -238,8 +258,68 @@ fun ManageProductScreen(navController: NavController) {
                 )
 
 
+                if (activeProducts.isEmpty()) {
 
-                repeat(10) { index ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.bag), // Replace with your image in res/drawable
+                                contentDescription = "No Data",
+                                modifier = Modifier.size(120.dp)
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(
+                                text = "No Activities Added, Click the plus (+) Icon to add a Reminder",
+                                color = Color.Gray,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+
+                } else if (filteredProducts.isEmpty()) {
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.bag), // Replace with your image in res/drawable
+                                contentDescription = "No search Data",
+                                modifier = Modifier.size(120.dp)
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(
+                                text = "No Activities Added, Click the plus (+) Icon to add a Reminder",
+                                color = Color.Gray,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+
+                } else {
+//                    for (index in filteredProducts) {
+
+
+                    for (index in filteredProducts.indices) {
+                        val productItem = filteredProducts[index]
+
+
+
+//                    }
+//
+//
+//                }
+//                repeat(10) { index ->
 
                     Card(
                         modifier = Modifier
@@ -263,14 +343,14 @@ fun ManageProductScreen(navController: NavController) {
                             ) {
                                 Column {
                                     Text(
-                                        text = "464738829293",
+                                        text = "product code: ${productItem.productCode}",
                                         fontSize = 13.sp,
                                         fontWeight = FontWeight.Medium,
                                         color = colorResource(id = R.color.gray01)
                                     )
                                     Spacer(modifier = Modifier.height(4.dp))
                                     Text(
-                                        text = "Blue Band 500g",
+                                        text = productItem.productName,
                                         fontSize = 18.sp,
                                         fontWeight = FontWeight.SemiBold,
                                         color = colorResource(id = R.color.dark)
@@ -292,7 +372,7 @@ fun ManageProductScreen(navController: NavController) {
                                         color = Color.Gray
                                     )
                                     Text(
-                                        text = "Ksh 250",
+                                        text = productItem.buyPrice.toString(),
                                         fontSize = 16.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = colorResource(id = R.color.green)
@@ -305,7 +385,7 @@ fun ManageProductScreen(navController: NavController) {
                                         color = Color.Gray
                                     )
                                     Text(
-                                        text = "Ksh 350",
+                                        text = productItem.sellPrice.toString(),
                                         fontSize = 16.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = colorResource(id = R.color.crimson)
@@ -327,7 +407,7 @@ fun ManageProductScreen(navController: NavController) {
                                         color = Color.Gray
                                     )
                                     Text(
-                                        text = "Other",
+                                        text = productItem.productCategory,
                                         fontSize = 14.sp,
                                         color = colorResource(id = R.color.dark)
                                     )
@@ -339,7 +419,7 @@ fun ManageProductScreen(navController: NavController) {
                                         color = Color.Gray
                                     )
                                     Text(
-                                        text = "2025-09-10",
+                                        text = productItem.manufactureDate ?: "not available",
                                         fontSize = 14.sp,
                                         color = colorResource(id = R.color.green)
                                     )
@@ -351,7 +431,7 @@ fun ManageProductScreen(navController: NavController) {
                                         color = Color.Gray
                                     )
                                     Text(
-                                        text = "2025-09-10",
+                                        text = productItem.expiryDate ?: "not available",
                                         fontSize = 14.sp,
                                         color = colorResource(id = R.color.crimson)
                                     )
@@ -362,7 +442,7 @@ fun ManageProductScreen(navController: NavController) {
 
                             // 🔹 Quantity at bottom center
                             Text(
-                                text = "Quantity: 20",
+                                text = "Quantity: ${productItem.productQuantity}",
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = colorResource(id = R.color.prussian_blue),
@@ -370,97 +450,8 @@ fun ManageProductScreen(navController: NavController) {
                             )
                         }
                     }
-
-
-//                    Card(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(horizontal = 12.dp, vertical = 8.dp)
-//                            .clickable { /* Handle click */
-//                                showSheet = true
-//                                selectedNotes = "Note $index"
-//                            },
-//                        shape = RoundedCornerShape(16.dp),
-//                        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-//                        colors = CardDefaults.cardColors(containerColor = Color.White)
-//                    ) {
-//                        Column(modifier = Modifier.padding(16.dp)) {
-//
-//                            // Top Row: Amount & Category
-//                            Row(
-//                                modifier = Modifier.fillMaxWidth(),
-//                                horizontalArrangement = Arrangement.SpaceBetween,
-//                                verticalAlignment = Alignment.CenterVertically
-//                            ) {
-//                                Column {
-//                                    Text(
-//                                        text = "464738829293",
-//                                        fontSize = 14.sp,
-//                                        fontWeight = FontWeight.SemiBold,
-//                                        color = colorResource(id = R.color.gray01)
-//                                    )
-//                                    Spacer(modifier = Modifier.height(4.dp))
-//                                    Text(
-//                                        text = "blue band 500g",
-//                                        fontSize = 12.sp,
-//                                        color = Color.Gray
-//                                    )
-//                                }
-//                            }
-//
-//                            Spacer(modifier = Modifier.height(12.dp))
-//
-//
-//                            Text(
-//                                text = "Buy Price: 250",
-//                                fontSize = 16.sp,
-//                                color = colorResource(id = R.color.dark),
-//                                maxLines = 2,
-//                                overflow = TextOverflow.Ellipsis
-//                            )
-//                                Spacer(modifier = Modifier.width(6.dp))
-//                            Text(
-//                                text = "Sell Price: 350",
-//                                fontSize = 16.sp,
-//                                color = colorResource(id = R.color.dark),
-//                                maxLines = 2,
-//                                overflow = TextOverflow.Ellipsis
-//                            )
-//
-//                            Spacer(modifier = Modifier.width(6.dp))
-//                                Text(
-//                                    text = "Category: other",
-//                                    fontSize = 14.sp,
-//                                    color = colorResource(id = R.color.gray01)
-//                                )
-//
-//                            Spacer(modifier = Modifier.height(4.dp))
-//                            Text(
-//                                text = "manufacture: 2025-09-10",
-//                                fontSize = 14.sp,
-//                                color = colorResource(id = R.color.green)
-//                            )
-//
-//                            Spacer(modifier = Modifier.height(4.dp))
-//                            Text(
-//                                text = "Expiry: 2025-09-10",
-//                                fontSize = 14.sp,
-//                                color = colorResource(id = R.color.crimson)
-//                            )
-//
-//                            Spacer(modifier = Modifier.height(4.dp))
-//
-//                            Text(
-//                                text = "Quantity: 20",
-//                                fontSize = 22.sp,
-//                                fontWeight = FontWeight.Bold,
-//                                color = colorResource(id = R.color.prussian_blue)
-//                            )
-//                        }
-//                    }
-
-
                 }
+            }
 
 
 

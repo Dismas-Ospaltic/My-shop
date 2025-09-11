@@ -13,12 +13,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ProductDao {
 
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    suspend fun insertSingleSale(singleSaleEntity: SingleSaleEntity)
-//
-//    @Update
-//    suspend fun updateSingleSale(singleSaleEntity: SingleSaleEntity)
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProduct(productEntity: ProductEntity)
 
@@ -46,9 +40,6 @@ interface ProductDao {
 
     @Query("SELECT * FROM product WHERE productState = 'Active' AND productQuantity < 10 ORDER BY timestamp DESC")
     fun getLowStockProducts(): Flow<List<ProductEntity>>
-
-
-
 
 
 }
