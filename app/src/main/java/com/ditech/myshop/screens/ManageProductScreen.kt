@@ -1,6 +1,7 @@
 package com.ditech.myshop.screens
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,6 +37,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.ditech.myshop.navigation.Screen
 import com.ditech.myshop.screens.components.EditProductPopUp
+import com.ditech.myshop.screens.components.UpdateStockPop
 import com.ditech.myshop.utils.DynamicStatusBar
 import com.ditech.myshop.viewmodel.ProductViewModel
 import compose.icons.FontAwesomeIcons
@@ -79,7 +81,8 @@ fun ManageProductScreen(navController: NavController) {
     var selectedProductCategory by remember { mutableStateOf<String?>(null) }
 
     var showDialog by remember { mutableStateOf(false) }
-
+    var showInventoryDialog by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
 
     // ✅ **Filter the list based on search query**
@@ -492,11 +495,11 @@ fun ManageProductScreen(navController: NavController) {
                 Text("Actions", fontSize = 18.sp, fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(4.dp),
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+//                Spacer(modifier = Modifier.height(4.dp))
                 HorizontalDivider(thickness = 1.dp, color = Color.Gray)
-                Spacer(modifier = Modifier.height(4.dp))
+//                Spacer(modifier = Modifier.height(4.dp))
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -507,7 +510,7 @@ fun ManageProductScreen(navController: NavController) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-
+                                showInventoryDialog = true
                             }
                             .padding(12.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -519,6 +522,19 @@ fun ManageProductScreen(navController: NavController) {
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(text = "Add Stock", fontSize = 16.sp)
+                    }
+
+
+                    if (showInventoryDialog && selectedProductId != null) {
+                        UpdateStockPop(
+                            onDismiss = { showInventoryDialog = false;
+                                showSheet = false
+                                        },
+                            productId = selectedProductId!!,
+                            productCode = selectedProductCode!!,
+                            productQuantity = selectedProductQuantity!!,
+                            buyPrice = selectedBuyPrice!!
+                        )
                     }
 
 
@@ -547,8 +563,8 @@ fun ManageProductScreen(navController: NavController) {
 
                     if (showDialog && selectedProductId != null) {
                         EditProductPopUp(
-//
-                            onDismiss = { showDialog = false },
+                            onDismiss = { showDialog = false;
+                                showSheet = false },
                             productId = selectedProductId!!,
                             productCode = selectedProductCode!!,
                             productName = selectedProductName!!,
@@ -568,7 +584,7 @@ fun ManageProductScreen(navController: NavController) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-
+                          showDeleteDialog = true
                             }
                             .padding(12.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -631,6 +647,42 @@ fun ManageProductScreen(navController: NavController) {
             }
         }
     }
+
+
+    // AlertDialog logic
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false;
+                               showSheet = false },
+            title = { Text("Delete Product") },
+            text = { Text("Do you want to delete this product? you can view it as inactive products") },
+            confirmButton = {
+                TextButton(onClick = {
+                    productViewModel.deleteProductById(productId = selectedProductId!!)
+                    Toast.makeText(
+                        context,
+                        "Product Delete",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    showDeleteDialog = false
+                }) {
+                    Text(
+                        text = "Delete",
+                        color = colorResource(id = R.color.red)
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text(
+                        text = "Cancel",
+                        color = colorResource(id = R.color.text_gray)
+                    )
+                }
+            }
+        )
+    }
+
 }
 
 

@@ -81,19 +81,6 @@ fun EditProductPopUp(
 
     val backgroundColor = colorResource(id = R.color.prussian_blue)
 
-//    var expanded by remember { mutableStateOf(false) }
-//    var expanded01 by remember { mutableStateOf(false) }
-//
-//    var title by remember { mutableStateOf(eventTitle) }
-//    var venue by remember { mutableStateOf(eventVenue) }
-//    var eventDescription by remember { mutableStateOf(noteDescription) }
-//    var priority by remember { mutableStateOf(eventPriority) }
-//    var category by remember { mutableStateOf(eventCategory) }
-//    var selectedDate by remember { mutableStateOf(eventDate) }
-//    var startTime by remember { mutableStateOf(eventStartTime) }
-//    var endTime by remember { mutableStateOf(eventEndTime) }
-
-//////////////////////
     var productCode by remember { mutableStateOf(productCode) }
     var productName by remember { mutableStateOf(productName) }
 //    var productCategory by remember { mutableStateOf("") }
@@ -117,12 +104,6 @@ fun EditProductPopUp(
     val categoryType = listOf(
         "other", "soap", "kitchen ware", "electronics"
     )
-
-    //////////////////
-
-
-
-
 
     val context = LocalContext.current
 
@@ -379,9 +360,19 @@ fun EditProductPopUp(
                         }
 
                         scope.launch {
-
-
+                  productViewModel.updateProductDetailsById(
+                      productId = productId,
+                      productCode = productCode,
+                      productName = productName,
+                      productQuantity = productQty.toInt(),
+                      buyPrice = productBuyPrice.toFloat(),
+                      sellPrice = productSellPrice.toFloat(),
+                      manufactureDate = productManufactureDate,
+                      expiryDate = productExpiry,
+                      productCategory = productCategory
+                  )
                         }
+                            onDismiss()
 
                     }) {
                         Text("Save")

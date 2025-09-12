@@ -7,15 +7,16 @@ import androidx.room.RoomDatabase
 import com.ditech.myshop.model.GenSaleEntity
 import com.ditech.myshop.model.ProductEntity
 import com.ditech.myshop.model.SingleProductSaleEntity
+import com.ditech.myshop.model.InventoryUpdateEntity
 
 
-@Database(entities = [GenSaleEntity::class, SingleProductSaleEntity::class, ProductEntity::class], version = 1, exportSchema = false)
+@Database(entities = [GenSaleEntity::class, SingleProductSaleEntity::class, ProductEntity::class, InventoryUpdateEntity::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun genSaleDao(): GenSaleDao
     abstract fun productDao(): ProductDao
     abstract fun singleProductSaleDao(): SingleProductSaleDao
-
+    abstract fun inventoryUpdateDao(): InventoryUpdateDao
 
     companion object {
         @Volatile
