@@ -7,6 +7,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Update
+import com.ditech.myshop.model.DailySalesReport
+import com.ditech.myshop.model.GenSaleEntity
 import kotlinx.coroutines.flow.Flow
 
 //This interface defines the database operations.
@@ -18,5 +20,34 @@ interface GenSaleDao {
 //
 //    @Update
 //    suspend fun updateSingleSale(singleSaleEntity: SingleSaleEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertGenSale(genSaleEntity: GenSaleEntity)
+
+    @Update
+    suspend fun updateGenSale(genSaleEntity: GenSaleEntity)
+
+    @Query("SELECT * FROM gen_sale ORDER BY timestamp DESC")
+    fun getAllGenSale(): Flow<List<GenSaleEntity>>
+
+    @Query("SELECT * FROM gen_sale WHERE date = :saleDate")
+    fun getGenSalesByDate(saleDate: String): Flow<List<GenSaleEntity>>
+
+
+
+
+    @Query("""
+    SELECT 
+        date,
+        SUM(CASE WHEN saleType = 'Cash' THEN totalSale ELSE 0 END) AS cash,
+        SUM(CASE WHEN saleType = 'Bank' THEN totalSale ELSE 0 END) AS bank,
+        SUM(CASE WHEN saleType = 'M-pesa' THEN totalSale ELSE 0 END) AS mpesa,
+        SUM(CASE WHEN saleType NOT IN ('Cash','Bank','M-pesa') THEN totalSale ELSE 0 END) AS other,
+        SUM(totalSale) AS total
+    FROM gen_sale
+    GROUP BY date
+    ORDER BY date ASC
+""")
+    fun getDailySalesReports(): Flow<List<DailySalesReport>>
 
 }
