@@ -127,7 +127,7 @@ fun UpdateStockPop(
                     OutlinedTextField(
                         value = updateQuantity ,
                         onValueChange = { updateQuantity  = it },
-                        label = { Text("Product Code*") },
+                        label = { Text("Product Quantity*") },
                         modifier = Modifier.fillMaxWidth(),
                         colors = OutlinedTextFieldDefaults.colors(
                             unfocusedContainerColor = Color.White.copy(alpha = 0.9f),
@@ -221,7 +221,7 @@ fun UpdateStockPop(
                                   previousBuyPrice = buyPrice
                               ))
 
-                                productViewModel.updateProductQuantityById(productId = productId, newQuantity = (updateQuantity + productQuantity).toInt())
+                                productViewModel.updateProductQuantityById(productId = productId, newQuantity = (updateQuantity.toInt() + productQuantity))
 
 
                             }

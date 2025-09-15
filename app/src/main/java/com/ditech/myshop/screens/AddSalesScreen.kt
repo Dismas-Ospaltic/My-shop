@@ -29,7 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.ditech.myshop.model.ProductEntity
 import com.ditech.myshop.utils.DynamicStatusBar
+import com.ditech.myshop.viewmodel.ProductViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ArrowLeft
@@ -37,6 +39,7 @@ import compose.icons.fontawesomeicons.solid.Minus
 import compose.icons.fontawesomeicons.solid.Plus
 import compose.icons.fontawesomeicons.solid.Search
 import compose.icons.fontawesomeicons.solid.Times
+import org.koin.androidx.compose.koinViewModel
 import kotlin.collections.remove
 
 
@@ -456,6 +459,12 @@ fun AddSalesScreen(navController: NavController) {
     val backgroundColor = colorResource(id = R.color.prussian_blue)
     val searchQuery = remember { mutableStateOf("") }
 
+
+
+    val productViewModel: ProductViewModel = koinViewModel()
+    val activeProducts by productViewModel.activeProducts.collectAsState()
+
+
     // Use a mutable list of selected products with quantity
 //    val selectedProducts = remember { mutableStateListOf<SelectedProduct>() }
 
@@ -463,28 +472,39 @@ fun AddSalesScreen(navController: NavController) {
 
 
 
-    // Product list
-    val productList = listOf(
-        Product("P001", "Smartphone", "Electronics", 599.99),
-        Product("P002", "Laptop", "Electronics", 999.99),
-        Product("P003", "Office Chair", "Furniture", 149.99),
-        Product("P004", "Water Bottle", "Accessories", 19.99),
-        Product("P005", "Wireless Mouse", "Electronics", 29.99)
-    )
+//    // Product list
+//    val productList = listOf(
+//        Product("P001", "Smartphone", "Electronics", 599.99),
+//        Product("P002", "Laptop", "Electronics", 999.99),
+//        Product("P003", "Office Chair", "Furniture", 149.99),
+//        Product("P004", "Water Bottle", "Accessories", 19.99),
+//        Product("P005", "Wireless Mouse", "Electronics", 29.99)
+//    )
 
 
 
 
 
-    // Filter products based on search
-    val filteredProducts = productList.filter {
+//    // Filter products based on search
+//    val filteredProducts = productList.filter {
+//        it.productName.contains(searchQuery.value, ignoreCase = true) ||
+//                it.productCode.contains(searchQuery.value, ignoreCase = true)
+//    }
+
+    // ✅ **Filter the list based on search query**
+    val filteredProducts = activeProducts.filter {
         it.productName.contains(searchQuery.value, ignoreCase = true) ||
                 it.productCode.contains(searchQuery.value, ignoreCase = true)
+                || it.productCategory.contains(searchQuery.value, ignoreCase = true)
+
     }
 
     // Calculate total price dynamically
 //    val totalPrice = selectedProducts.sumOf { it.product.price * it.quantity }
-    val totalPrice = selectedProducts.sumOf { it.product.price * it.quantity.value }
+//    val totalPrice = selectedProducts.sumOf { it.product.price * it.quantity.value }
+//    val totalPrice = selectedProducts.sumOf { it.product.sellPrice * it.quantity.value }
+    val totalPrice = selectedProducts.sumOf { (it.product.sellPrice * it.quantity.value).toDouble() }
+
 
 
     Scaffold(
@@ -693,7 +713,8 @@ fun AddSalesScreen(navController: NavController) {
 //                                            fontWeight = FontWeight.Bold
 //                                        )
                                         Text(
-                                            text = "Subtotal: Ksh %.2f".format(selected.product.price * selected.quantity.value),
+//                                            text = "Subtotal: Ksh %.2f".format(selected.product.price * selected.quantity.value),
+                                            text = "Subtotal: %.2f".format(selected.product.sellPrice * selected.quantity.value),
                                             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                                         )
 
@@ -720,7 +741,7 @@ fun AddSalesScreen(navController: NavController) {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text("Total", fontWeight = FontWeight.Bold)
-                                Text("Ksh %.2f".format(totalPrice), fontWeight = FontWeight.Bold)
+                                Text("%.2f".format(totalPrice), fontWeight = FontWeight.Bold)
                             }
                         }
                     }
@@ -743,20 +764,38 @@ fun AddSalesScreen(navController: NavController) {
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .clickable {
-//                                            if (selectedProducts.none { it.product.productCode == product.productCode }) {
-//                                                selectedProducts.add(SelectedProduct(product, 1))
-//                                            }
                                             if (!selectedProducts.any { it.product.productCode == product.productCode }) {
                                                 selectedProducts.add(SelectedProduct(product, mutableStateOf(1)))
                                             }
                                             searchQuery.value = ""
                                         }
-                                        .padding(12.dp)
+                                        .padding(12.dp),
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text(product.productName)
-                                    Spacer(modifier = Modifier.weight(1f))
-                                    Text("Ksh ${product.price}")
+                                    Column {
+                                        Text(
+                                            text = "code: " + product.productCode,
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = Color.Gray
+                                        )
+                                        Text(
+                                            text = product.productName,
+                                            style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                                        )
+                                        Text(
+                                            text = "%.2f".format(product.sellPrice),
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = Color.Gray
+                                        )
+
+                                        Text(
+                                            text = "category: " + product.productCategory,
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = Color.Gray
+                                        )
+                                    }
                                 }
+
                             }
                         }
                     }
@@ -767,16 +806,16 @@ fun AddSalesScreen(navController: NavController) {
 }
 
 // Data class for product
-data class Product(
-    val productCode: String,
-    val productName: String,
-    val category: String,
-    val price: Double
-)
+//data class Product(
+//    val productCode: String,
+//    val productName: String,
+//    val category: String,
+//    val price: Double
+//)
 
 // Data class for selected product with quantity
 data class SelectedProduct(
-    val product: Product,
+    val product: ProductEntity,
 //    var quantity: Int
     val quantity: MutableState<Int> = mutableStateOf(1)
 )

@@ -8,8 +8,10 @@ import com.ditech.myshop.model.ProductEntity
 import com.ditech.myshop.repository.InventoryUpdateRepository
 import com.ditech.myshop.repository.ProductRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -20,14 +22,30 @@ class InventoryUpdateViewModel(private val inventoryUpdateRepository: InventoryU
         inventoryUpdateRepository.getAllInventoryUpdates()
             .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
+    //hold list of single product
+    private val _allInventoryUpdatesByProductId = MutableStateFlow<List<InventoryUpdateEntity>>(emptyList())
+    val allInventoryUpdatesByProductId: StateFlow<List<InventoryUpdateEntity>> = _allInventoryUpdatesByProductId
+
     fun insertInventoryUpdate(inventoryUpdateEntity: InventoryUpdateEntity) {
         viewModelScope.launch {
             inventoryUpdateRepository.insertInventoryUpdate(inventoryUpdateEntity)
         }
     }
 
-    fun getInventoryUpdatesByProductId(productId: String): Flow<List<InventoryUpdateEntity>> {
-        return inventoryUpdateRepository.getInventoryUpdatesByProductId(productId)
+//    fun getInventoryUpdatesByProductId(productId: String): Flow<List<InventoryUpdateEntity>> {
+//        return inventoryUpdateRepository.getInventoryUpdatesByProductId(productId)
+//            .map { inventoryUpdates ->
+//                _allInventoryUpdatesByProductId.value = inventoryUpdates
+//                inventoryUpdates
+//            }
+//    }
+
+    fun getInventoryUpdatesByProductId(productId: String) {
+        viewModelScope.launch {
+            inventoryUpdateRepository.getInventoryUpdatesByProductId(productId).collectLatest { productsUpdate ->
+                _allInventoryUpdatesByProductId.value = productsUpdate
+            }
+        }
     }
 
     fun getInventoryUpdatesByDate(date: String): Flow<List<InventoryUpdateEntity>> {

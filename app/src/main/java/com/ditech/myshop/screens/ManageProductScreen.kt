@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +38,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.ditech.myshop.navigation.Screen
 import com.ditech.myshop.screens.components.EditProductPopUp
+import com.ditech.myshop.screens.components.StockHistPopUp
 import com.ditech.myshop.screens.components.UpdateStockPop
 import com.ditech.myshop.utils.DynamicStatusBar
 import com.ditech.myshop.viewmodel.ProductViewModel
@@ -47,6 +49,7 @@ import compose.icons.fontawesomeicons.regular.ThumbsUp
 import compose.icons.fontawesomeicons.regular.TrashAlt
 import compose.icons.fontawesomeicons.solid.ArrowLeft
 import compose.icons.fontawesomeicons.solid.CircleNotch
+import compose.icons.fontawesomeicons.solid.ClipboardList
 import compose.icons.fontawesomeicons.solid.DollarSign
 import compose.icons.fontawesomeicons.solid.Pen
 import compose.icons.fontawesomeicons.solid.Plus
@@ -80,9 +83,13 @@ fun ManageProductScreen(navController: NavController) {
     var selectedExpiryDate by remember { mutableStateOf<String?>(null) }
     var selectedProductCategory by remember { mutableStateOf<String?>(null) }
 
+
+
+
     var showDialog by remember { mutableStateOf(false) }
     var showInventoryDialog by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showInventoryHistDialog by remember {mutableStateOf(false)}
 
 
     // ✅ **Filter the list based on search query**
@@ -119,8 +126,8 @@ fun ManageProductScreen(navController: NavController) {
             label = "Low Stock",
             icon = {
                 Icon(
-                    imageVector = FontAwesomeIcons.Solid.DollarSign,
-                    contentDescription = "dollar icon",
+                    imageVector =  FontAwesomeIcons.Solid.ClipboardList,
+                    contentDescription = "clip",
                     tint = Color.White,
                     modifier = Modifier.size(24.dp)
                 )
@@ -599,24 +606,34 @@ fun ManageProductScreen(navController: NavController) {
                     }
 
 
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .clickable {
-//
-//
-//                            }
-//                            .padding(12.dp),
-//                        verticalAlignment = Alignment.CenterVertically
-//                    ) {
-//                        Icon(
-//                            imageVector = FontAwesomeIcons.Solid.ShareAlt,
-//                            contentDescription = "share",
-//                            modifier = Modifier.size(20.dp)
-//                        )
-//                        Spacer(modifier = Modifier.width(12.dp))
-//                        Text(text = "Share Watchlist", fontSize = 16.sp)
-//                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+
+                                showInventoryHistDialog = true
+                            }
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = FontAwesomeIcons.Solid.ClipboardList,
+                            contentDescription = "clip",
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(text = "Inventory History", fontSize = 16.sp)
+                    }
+
+
+                    if (showInventoryHistDialog && selectedProductId != null) {
+                       StockHistPopUp(
+                            onDismiss = { showInventoryHistDialog = false;
+                                showSheet = false
+                            },
+                            productId = selectedProductId!!,
+                        )
+                    }
 //
 //
 //                    Row(
@@ -736,6 +753,8 @@ data class ButtonItem(
     val icon: @Composable () -> Unit,
     val onClick: () -> Unit
 )
+
+
 
 
 @Preview(showBackground = true)
