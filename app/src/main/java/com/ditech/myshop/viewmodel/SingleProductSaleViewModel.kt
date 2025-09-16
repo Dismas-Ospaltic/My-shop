@@ -52,8 +52,8 @@ class SingleProductSaleViewModel(private val singleProductSaleRepository: Single
 
 
 
-    private val _salesSummary = MutableStateFlow<List<SingleProductSaleEntity>>(emptyList())
-    val salesSummary: StateFlow<List<SingleProductSaleEntity>> = _salesSummary.asStateFlow()
+    private val _salesSummary = MutableStateFlow<List<Sales>>(emptyList())
+    val salesSummary: StateFlow<List<Sales>> = _salesSummary.asStateFlow()
 
     private val _productsForReceipt = MutableStateFlow<List<SingleProductSaleEntity>>(emptyList())
     val productsForReceipt: StateFlow<List<SingleProductSaleEntity>> = _productsForReceipt.asStateFlow()

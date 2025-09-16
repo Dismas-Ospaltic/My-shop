@@ -1,6 +1,7 @@
 package com.ditech.myshop.screens
 
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.ditech.myshop.model.ProductEntity
+import com.ditech.myshop.screens.components.AddNewSalePopup
+import com.ditech.myshop.screens.components.EditProductPopUp
 import com.ditech.myshop.utils.DynamicStatusBar
 import com.ditech.myshop.viewmodel.ProductViewModel
 import compose.icons.FontAwesomeIcons
@@ -463,7 +466,8 @@ fun AddSalesScreen(navController: NavController) {
 
     val productViewModel: ProductViewModel = koinViewModel()
     val activeProducts by productViewModel.activeProducts.collectAsState()
-
+    var showSalesDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     // Use a mutable list of selected products with quantity
 //    val selectedProducts = remember { mutableStateListOf<SelectedProduct>() }
@@ -516,7 +520,15 @@ fun AddSalesScreen(navController: NavController) {
                     .windowInsetsPadding(WindowInsets.navigationBars)
             ) {
                 Button(
-                    onClick = { /* Handle checkout */ },
+                    onClick = {
+                        // Selected products list
+                        if (selectedProducts.isNotEmpty()) {
+                          showSalesDialog = true
+                        }else{
+                            Toast.makeText(context, "No products selected", Toast.LENGTH_SHORT).show()
+                        }
+
+                    /* Handle checkout */ },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
@@ -679,7 +691,7 @@ fun AddSalesScreen(navController: NavController) {
                                             IconButton(onClick = {
                                                 selected.quantity.value++
                                             }) {
-                                                Icon(Icons.Default.Add, contentDescription = "Increase")
+                                                Icon(FontAwesomeIcons.Solid.Plus, contentDescription = "Increase")
                                             }
                                         }
 
@@ -803,6 +815,16 @@ fun AddSalesScreen(navController: NavController) {
             }
         }
     }
+
+
+    if (showSalesDialog) {
+       AddNewSalePopup(
+            onDismiss = { showSalesDialog = false},
+            total = totalPrice,
+            selectedProducts = selectedProducts
+        )
+    }
+
 }
 
 // Data class for product

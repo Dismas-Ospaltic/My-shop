@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Update
+import com.ditech.myshop.model.Sales
 import com.ditech.myshop.model.SingleProductSaleEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -36,7 +37,7 @@ interface SingleProductSaleDao {
         GROUP BY receipt, date
         ORDER BY receipt DESC
     """)
-    fun getSingleSalesSummaryByDate(saleDate: String): Flow<List<SingleProductSaleEntity>>
+    fun getSingleSalesSummaryByDate(saleDate: String): Flow<List<Sales>>
 
 
 
