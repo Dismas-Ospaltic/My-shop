@@ -2,6 +2,7 @@ package com.ditech.myshop.screens.components
 
 
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,12 +44,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.ditech.myshop.R
+import com.ditech.myshop.model.GenSaleEntity
+import com.ditech.myshop.model.SingleProductSaleEntity
 import com.ditech.myshop.screens.SelectedProduct
 import com.ditech.myshop.utils.dateFormated
+import com.ditech.myshop.viewmodel.GenSaleViewModel
+import com.ditech.myshop.viewmodel.ProductViewModel
+import com.ditech.myshop.viewmodel.SingleProductSaleViewModel
 import org.koin.androidx.compose.koinViewModel
-
-
-
+import kotlin.text.format
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,13 +69,28 @@ fun AddNewSalePopup(
     var amountPaid by remember { mutableStateOf("") }
     var amountRemain by remember { mutableStateOf("") }
     var totalSale by remember { mutableStateOf(0f) }
+    var hasLowStock by remember { mutableStateOf(false) }
 
 //    val singleSaleViewModel: SingleSaleViewModel = koinViewModel()
 //    val singleProductSaleViewModel: SingleProductSaleViewModel = koinViewModel()
+    val productViewModel: ProductViewModel = koinViewModel()
+    val genSaleViewModel: GenSaleViewModel = koinViewModel()
+    val singleProductSaleViewModel: SingleProductSaleViewModel = koinViewModel()
+
+   val context = LocalContext.current
+
+    selectedProducts.forEachIndexed { index, item ->
+        if (item.product.productQuantity < item.quantity.value){
+         hasLowStock = true
+        } else{
+            hasLowStock = false
+        }
+    }
+
 
 
     val currentDate = remember { System.currentTimeMillis() }
-    val formattedDate = dateFormated(currentDate)
+    val todayDate = dateFormated(currentDate)
 
     // Error states
     var paymentMethodError by remember { mutableStateOf(false) }
@@ -244,38 +264,50 @@ fun AddNewSalePopup(
                             valid = false
                         }
                         if (valid) {
+                          if(hasLowStock){
+                              Toast.makeText(context, "some product you selected has Low Stock! sales cannot be completed", Toast.LENGTH_SHORT).show()
+                          }else{
+
                             // Proceed with saving
-//                            singleSaleViewModel.insertSingleSale(SingleSaleEntity(
-//                                date = formattedDate,
-//                                receipt = idSales.toString(),
-//                                saleType =  paymentMethod,
-//                                description = salesDescription,
-//                                totalSale = total.toFloat(),
-//                                totalPaid = amountPaid.toFloat(),
-//                                change = amountRemain.toFloat(),
-//
-//                                ))
-//
-//
-//                            items.forEachIndexed { index, item ->
-//
-//                                // Text("${index + 1}. ${item.name} - ${item.price} :qty ${item.quantity}")
-//
-//                                singleProductSaleViewModel.insertSingleProduct(
-//                                    SingleProductEntity(
-//                                        date = formattedDate,
-//                                        receipt = idSales.toString(),
-//                                        productName = item.name,
-//                                        price = item.price.toFloat(),
-//                                        quantity = item.quantity.toInt(),
-//                                        total = item.subTotal.toFloat(),
-//                                    )
-//                                )
-//
-//
-//
-//                            }
-                            onDismiss()
+                            genSaleViewModel.insertGenSale(
+                                GenSaleEntity(
+                                 date = todayDate,
+                                    receipt = idSales.toString(),
+                                    saleType = paymentMethod,
+                                    description = salesDescription,
+                                    totalSale = total.toFloat(),
+                                    totalPaid = amountPaid.toFloat(),
+                                    change = amountRemain.toFloat()
+                                )
+                            )
+
+
+                            selectedProducts.forEachIndexed { index, item ->
+
+
+                                singleProductSaleViewModel.insertSingleProducts(
+                                    SingleProductSaleEntity(
+                                        date = todayDate,
+                                        receipt = idSales.toString(),
+                                        productName = item.product.productName,
+                                        productId = item.product.productId,
+                                        productCode = item.product.productCode,
+                                        price = item.product.sellPrice,
+                                        quantity = item.quantity.value,
+                                        total = (item.product.sellPrice * item.quantity.value),
+                                    )
+                                )
+
+
+                                //reduce the stock when sale is added
+                                val newProductStock = item.product.productQuantity - item.quantity.value
+
+                                productViewModel.updateProductQuantityById(productId = item.product.productId, newProductStock)
+                                }
+                              onDismiss()
+                            }
+
+
                         }
                     }) {
                         Text("Save")

@@ -3,6 +3,7 @@ package com.ditech.myshop.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -24,6 +25,7 @@ import com.ditech.myshop.R
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -554,7 +556,12 @@ fun AddSalesScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(
+                    start = paddingValues.calculateStartPadding(LocalLayoutDirection.current) + 12.dp,
+                    top = paddingValues.calculateTopPadding(),
+                    end = paddingValues.calculateEndPadding(LocalLayoutDirection.current) + 12.dp,
+                    bottom = paddingValues.calculateBottomPadding()
+                )
                 .verticalScroll(rememberScrollState())
         ) {
             // Back Button
@@ -754,6 +761,30 @@ fun AddSalesScreen(navController: NavController) {
                             ) {
                                 Text("Total", fontWeight = FontWeight.Bold)
                                 Text("%.2f".format(totalPrice), fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    }else{
+
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.bag), // Replace with your image in res/drawable
+                                    contentDescription = "No search Data",
+                                    modifier = Modifier.size(120.dp)
+                                )
+                                Spacer(modifier = Modifier.height(12.dp))
+                                Text(
+                                    text = "Search Products by name, code or Category to add them for checkout!",
+                                    color = Color.Gray,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                         }
                     }
