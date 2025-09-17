@@ -69,8 +69,8 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
     val singleProductSaleViewModel: SingleProductSaleViewModel = koinViewModel()
     val dailyReports = genSaleViewModel.dailySalesReports.collectAsState()
     val saleReceipt = singleProductSaleViewModel.salesSummary.collectAsState().value
-    val singleSale by singleProductSaleViewModel.singleProduct.collectAsState()
-    val products by singleProductSaleViewModel.productsForReceipt.collectAsState()
+    val singleSale = genSaleViewModel.genSale.collectAsState()
+    val products = singleProductSaleViewModel.productsForReceipt.collectAsState()
 
     val context = LocalContext.current
 
@@ -89,10 +89,10 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
 
     LaunchedEffect(Unit) {
 
-//        if(itemId != null) {
-//            singleProductSaleViewModel.loadSalesByDate(itemId)
-//            singleSaleViewModel.getSalesByDate(itemId)
-//        }
+        if(itemId != null) {
+            singleProductSaleViewModel.loadSalesByDate(itemId)
+            genSaleViewModel.getGenSalesByDate(itemId)
+        }
     }
 
 
@@ -202,44 +202,59 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                         }
                     }else{
                         // Iterate over sales when not empty
-                        for (index in singleSale.indices) {
-                            val sale = singleSale[index]
-                            // Book row
+                        for (index in singleSale.value.indices) {
+                            val sale = singleSale.value[index]
+
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(Color(0xFFF9F9F9)) // soft background
                                     .clickable {
-                                        // Handle click here if needed
+                                        selectedNotes = sale.description
+                                        singleProductSaleViewModel.loadProductsByReceipt(sale.receipt)
+                                        showSheet = true
                                     }
+                                    .padding(16.dp)
                             ) {
-                                Spacer(Modifier.height(4.dp))
+                                // Date
                                 Text(
                                     text = sale.receipt,
                                     style = MaterialTheme.typography.titleMedium.copy(
-                                        fontWeight = FontWeight.SemiBold
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = MaterialTheme.colorScheme.primary
                                     )
                                 )
-                                Spacer(Modifier.height(4.dp))
 
-                                Text(
-                                    text = "Sale Type: ${sale.saleType}",
-                                )
-                                Spacer(Modifier.height(4.dp))
+                                Spacer(Modifier.height(8.dp))
 
-                                Text(
-                                    text = "on: ${sale.date}",
-                                )
-                                Spacer(Modifier.height(4.dp))
-
+                                // Quantities
                                 Row(
                                     Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Text(
-                                        "Total Sales: ${sale.totalSale.toString()}",
-                                        style = MaterialTheme.typography.bodyMedium
+                                        text = sale.receipt,
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                            fontWeight = FontWeight.Medium
+                                        )
                                     )
                                 }
+                                Spacer(Modifier.height(6.dp))
+                                Text(
+                                    text = "Sale Type: ${sale.saleType}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Spacer(Modifier.height(4.dp))
+                                Text(
+                                    text = "on: ${sale.date}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Spacer(Modifier.height(4.dp))
+                                Text(
+                                    "Total Sales: ${sale.totalSale.toString()}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                                 Spacer(Modifier.height(4.dp))
                                 Text(
                                     "Total Paid: ${sale.totalPaid.toString()}",
@@ -250,34 +265,9 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                                     "Change: ${sale.change.toString()}",
                                     style = MaterialTheme.typography.bodyMedium
                                 )
-                                Spacer(Modifier.height(4.dp))
 
-
-
-
-                                Row(
-                                    Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.Start
-                                ) {
-                                    IconButton(
-                                        onClick = {
-                                            selectedNotes = sale.description
-                                            singleProductSaleViewModel.loadProductsByReceipt(sale.receipt)
-                                            showSheet = true
-                                        },
-                                        modifier = Modifier
-                                            .size(56.dp) // total button size
-                                            .clip(RoundedCornerShape(16.dp)) // round corners
-                                    ) {
-                                        Icon(
-                                            imageVector = FontAwesomeIcons.Solid.InfoCircle,
-                                            contentDescription = "Info",
-                                            tint = colorResource(id = R.color.bittersweet),
-                                            modifier = Modifier.size(28.dp)
-                                        )
-                                    }
-                                }
                             }
+
 
                             // Divider except after last item
                             if (index < saleReceipt.lastIndex) {
@@ -359,9 +349,9 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
 //                        Text(text = "Edit", fontSize = 16.sp)
 //                    }
 
-                    if (products.isNotEmpty()) {
+                    if (products.value.isNotEmpty()) {
                         Text("Items for selected receipt:")
-                        products.forEach {
+                        products.value.forEach {
                             Text("${it.productName} - Qty: ${it.quantity} - Total: ${it.total}")
                         }
                     }

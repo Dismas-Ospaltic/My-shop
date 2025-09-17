@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.ditech.myshop.navigation.Screen
 import com.ditech.myshop.utils.DynamicStatusBar
 import com.ditech.myshop.viewmodel.GenSaleViewModel
 import com.ditech.myshop.viewmodel.ProductViewModel
@@ -197,7 +198,10 @@ fun SalesReportsScreen(navController: NavController) {
                                     .fillMaxWidth()
                                     .clip(RoundedCornerShape(12.dp))
                                     .background(Color(0xFFF9F9F9)) // soft background
-                                    .clickable { }
+                                    .clickable {
+//                                        navController.navigate(Screen.SingleSalesReport.route(report.date))
+                                        navController.navigate("singleSalesReport/${report.date}")
+                                    }
                                     .padding(16.dp)
                             ) {
                                 // Date
@@ -222,11 +226,6 @@ fun SalesReportsScreen(navController: NavController) {
                                             fontWeight = FontWeight.Medium
                                         )
                                     )
-//                                    Text(
-//                                        "Previous Quantity: ${inventoryUpdate.previousProductQuantity}",
-//                                        style = MaterialTheme.typography.bodyMedium,
-//                                        color = Color.Gray
-//                                    )
                                 }
                                 Spacer(Modifier.height(6.dp))
                                 Text(
@@ -249,23 +248,6 @@ fun SalesReportsScreen(navController: NavController) {
                                     style = MaterialTheme.typography.bodyMedium
                                 )
 
-//                                // Prices
-//                                Row(
-//                                    Modifier.fillMaxWidth(),
-//                                    horizontalArrangement = Arrangement.SpaceBetween
-//                                ) {
-//                                    Text(
-//                                        "Buy price: ${inventoryUpdate.buyPrice}",
-//                                        style = MaterialTheme.typography.bodyMedium.copy(
-//                                            fontWeight = FontWeight.Medium
-//                                        )
-//                                    )
-//                                    Text(
-//                                        "Previous buy price: ${inventoryUpdate.previousBuyPrice}",
-//                                        style = MaterialTheme.typography.bodyMedium,
-//                                        color = Color.Gray
-//                                    )
-//                                }
                             }
 
                             // Divider between items (except last one)
