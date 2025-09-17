@@ -12,6 +12,7 @@ import com.ditech.myshop.screens.AddProductScreen
 import com.ditech.myshop.screens.AddSalesScreen
 import com.ditech.myshop.screens.HomeScreen
 import com.ditech.myshop.screens.ManageProductScreen
+import com.ditech.myshop.screens.SalesReportsScreen
 
 sealed class Screen(val route: String) {
     object Home : Screen("home")
@@ -26,6 +27,8 @@ sealed class Screen(val route: String) {
     object AddSales : Screen("addSales")
 
     object ManageProduct : Screen("manageProduct")
+
+    object SaleReport : Screen("saleReport")
 
 
 
@@ -51,6 +54,8 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier) {
 //        composable(Screen.CreditAuthor.route) {  CreditAuthorScreen(navController)   }
         composable(Screen.AddSales.route) { AddSalesScreen(navController) }
         composable(Screen.ManageProduct.route) { ManageProductScreen(navController) }
+        composable(Screen.SaleReport.route) { SalesReportsScreen(navController) }
+
 //        composable(Screen.EditCalendar.route) { backStackEntry ->
 //            val itemId = backStackEntry.arguments?.getString("itemId") ?: "Unknown"
 //            EditCalendarScreen(navController, itemId)

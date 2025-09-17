@@ -126,7 +126,9 @@ fun HomeScreen(navController: NavController) {
                 iconBackgroundColor = colorResource(id = R.color.crimson),
                 title = "Reports",
                 subtitle = "View Sales Reports"
-            ) { /* onClick */ }
+            ) {
+            navController.navigate(Screen.SaleReport.route)
+            /* onClick */ }
 
             DashboardFeatureCard(
                 icon = FontAwesomeIcons.Solid.ChartPie,
