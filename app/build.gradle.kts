@@ -7,13 +7,13 @@ plugins {
 }
 
 android {
-    namespace = "com.ditech.myshop"
+    namespace = "com.diwtech.myshop"
     compileSdk = 36
     //to support 16kb page size as required by google play store
 //    ndkVersion = "28.2.13676358"
 
     defaultConfig {
-        applicationId = "com.ditech.myshop"
+        applicationId = "com.diwtech.myshop"
         minSdk = 26
         targetSdk = 36
         versionCode = 1
