@@ -10,7 +10,7 @@ import com.ditech.myshop.model.SingleProductSaleEntity
 import com.ditech.myshop.model.InventoryUpdateEntity
 
 
-@Database(entities = [GenSaleEntity::class, SingleProductSaleEntity::class, ProductEntity::class, InventoryUpdateEntity::class], version = 2, exportSchema = false)
+@Database(entities = [GenSaleEntity::class, SingleProductSaleEntity::class, ProductEntity::class, InventoryUpdateEntity::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun genSaleDao(): GenSaleDao

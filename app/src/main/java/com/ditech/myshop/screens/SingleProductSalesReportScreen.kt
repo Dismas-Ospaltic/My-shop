@@ -202,84 +202,155 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                         }
                     }else{
                         // Iterate over sales when not empty
+//                        for (index in singleSale.value.indices) {
+//                            val sale = singleSale.value[index]
+//
+//                            Column(
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .clip(RoundedCornerShape(12.dp))
+//                                    .background(Color(0xFFF9F9F9)) // soft background
+//                                    .clickable {
+//                                        selectedNotes = if(sale.description.isNullOrEmpty()) "No additional notes" else sale.description
+//                                        singleProductSaleViewModel.loadProductsByReceipt(sale.receipt)
+//                                        showSheet = true
+//                                    }
+//                                    .padding(16.dp)
+//                            ) {
+//                                // Date
+//                                Text(
+//                                    text = sale.receipt,
+//                                    style = MaterialTheme.typography.titleMedium.copy(
+//                                        fontWeight = FontWeight.SemiBold,
+//                                        color = MaterialTheme.colorScheme.primary
+//                                    )
+//                                )
+//
+//                                Spacer(Modifier.height(8.dp))
+//
+//                                // Quantities
+//                                Row(
+//                                    Modifier.fillMaxWidth(),
+//                                    horizontalArrangement = Arrangement.SpaceBetween
+//                                ) {
+//                                    Text(
+//                                        text = sale.receipt,
+//                                        style = MaterialTheme.typography.bodyMedium.copy(
+//                                            fontWeight = FontWeight.Medium
+//                                        )
+//                                    )
+//                                }
+//                                Spacer(Modifier.height(6.dp))
+//                                Text(
+//                                    text = "Sale Type: ${sale.saleType}",
+//                                    style = MaterialTheme.typography.bodyMedium
+//                                )
+//                                Spacer(Modifier.height(4.dp))
+//                                Text(
+//                                    text = "on: ${sale.date}",
+//                                    style = MaterialTheme.typography.bodyMedium
+//                                )
+//                                Spacer(Modifier.height(4.dp))
+//                                Text(
+//                                    "Total Sales: ${sale.totalSale.toString()}",
+//                                    style = MaterialTheme.typography.bodyMedium
+//                                )
+//                                Spacer(Modifier.height(4.dp))
+//                                Text(
+//                                    "Total Paid: ${sale.totalPaid.toString()}",
+//                                    style = MaterialTheme.typography.bodyMedium
+//                                )
+//                                Spacer(Modifier.height(4.dp))
+//                                Text(
+//                                    "Change: ${sale.change.toString()}",
+//                                    style = MaterialTheme.typography.bodyMedium
+//                                )
+//
+//                            }
+//
+//
+//                            // Divider except after last item
+//                            if (index < saleReceipt.lastIndex) {
+//                                HorizontalDivider(
+//                                    modifier = Modifier
+//                                        .fillMaxWidth()
+//                                        .padding(vertical = 8.dp),
+//                                    thickness = 1.dp,
+//                                    color = Color(0xFFE0E0E0)
+//                                )
+//                            }
+//                        }
+
                         for (index in singleSale.value.indices) {
                             val sale = singleSale.value[index]
 
-                            Column(
+                            Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clip(RoundedCornerShape(12.dp))
-                                    .background(Color(0xFFF9F9F9)) // soft background
+                                    .padding(vertical = 8.dp) // spacing between cards
                                     .clickable {
-                                        selectedNotes = sale.description
+                                        selectedNotes = if (sale.description.isNullOrEmpty())
+                                            "No additional notes"
+                                        else sale.description
                                         singleProductSaleViewModel.loadProductsByReceipt(sale.receipt)
                                         showSheet = true
-                                    }
-                                    .padding(16.dp)
+                                    },
+                                shape = RoundedCornerShape(16.dp),
+                                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                                colors = CardDefaults.cardColors(containerColor = Color.White) // white background
                             ) {
-                                // Date
-                                Text(
-                                    text = sale.receipt,
-                                    style = MaterialTheme.typography.titleMedium.copy(
-                                        fontWeight = FontWeight.SemiBold,
-                                        color = MaterialTheme.colorScheme.primary
-                                    )
-                                )
-
-                                Spacer(Modifier.height(8.dp))
-
-                                // Quantities
-                                Row(
-                                    Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween
+                                Column(
+                                    modifier = Modifier.padding(16.dp),
+                                    verticalArrangement = Arrangement.spacedBy(6.dp)
                                 ) {
+                                    // Receipt ID / Title
                                     Text(
-                                        text = sale.receipt,
-                                        style = MaterialTheme.typography.bodyMedium.copy(
-                                            fontWeight = FontWeight.Medium
+                                        text = "Receipt: ${sale.receipt}",
+                                        style = MaterialTheme.typography.titleMedium.copy(
+                                            fontWeight = FontWeight.SemiBold,
+                                            color = MaterialTheme.colorScheme.primary
                                         )
                                     )
-                                }
-                                Spacer(Modifier.height(6.dp))
-                                Text(
-                                    text = "Sale Type: ${sale.saleType}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Spacer(Modifier.height(4.dp))
-                                Text(
-                                    text = "on: ${sale.date}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Spacer(Modifier.height(4.dp))
-                                Text(
-                                    "Total Sales: ${sale.totalSale.toString()}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Spacer(Modifier.height(4.dp))
-                                Text(
-                                    "Total Paid: ${sale.totalPaid.toString()}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Spacer(Modifier.height(4.dp))
-                                Text(
-                                    "Change: ${sale.change.toString()}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
 
+                                    // Sale type & Date
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        Text(
+                                            text = "Sale Type: ${sale.saleType}",
+                                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
+                                        )
+                                        Text(
+                                            text = sale.date,
+                                            style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
+                                        )
+                                    }
+
+                                    HorizontalDivider(thickness = 1.dp, color = Color(0xFFE0E0E0))
+
+                                    // Amounts
+                                    Text(
+                                        text = "Total Sales: ${sale.totalSale}",
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                    Text(
+                                        text = "Total Paid: ${sale.totalPaid}",
+                                        style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.secondary)
+                                    )
+                                    Text(
+                                        text = "Change: ${sale.change}",
+                                        style = MaterialTheme.typography.bodyMedium.copy(color = Color(0xFF4CAF50)) // green for positive
+                                    )
+                                }
                             }
 
-
-                            // Divider except after last item
+                            // Optional divider between cards (remove if spacing is enough)
                             if (index < saleReceipt.lastIndex) {
-                                HorizontalDivider(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 8.dp),
-                                    thickness = 1.dp,
-                                    color = Color(0xFFE0E0E0)
-                                )
+                                Spacer(modifier = Modifier.height(4.dp))
                             }
                         }
+
                     }
 
                 }
@@ -290,82 +361,127 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
     }
 
 
-    if (showSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { showSheet = false },
-            sheetState = sheetState
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Text("Additional Notes", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                Text(selectedNotes)
-                Spacer(modifier = Modifier.height(16.dp))
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-
-
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .clickable {
+//    if (showSheet) {
+//        ModalBottomSheet(
+//            onDismissRequest = { showSheet = false },
+//            sheetState = sheetState
+//        ) {
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(16.dp),
+//                verticalArrangement = Arrangement.spacedBy(12.dp)
+//            ) {
+//                Text("Additional Notes", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+//                Text(selectedNotes)
+//                Spacer(modifier = Modifier.height(16.dp))
+//                Column(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(16.dp),
+//                    verticalArrangement = Arrangement.spacedBy(12.dp)
+//                ) {
 //
-//                            }
-//                            .padding(12.dp),
-//                        verticalAlignment = Alignment.CenterVertically
-//                    ) {
-//                        Icon(
-//                            imageVector = FontAwesomeIcons.Solid.CircleNotch,
-//                            contentDescription = "update",
-//                            modifier = Modifier.size(20.dp)
-//                        )
-//                        Spacer(modifier = Modifier.width(12.dp))
-//                        Text(text = "update Progress", fontSize = 16.sp)
+//                    if (products.value.isNotEmpty()) {
+//                        Text("Items for selected receipt:")
+//                        products.value.forEach {
+//                            Text("${it.productName} - Qty: ${it.quantity} - Total: ${it.total}")
+//                        }
 //                    }
 //
-//                    // Edit Button
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .clickable {
-////                                showEditDialog = true
-//                            }
-//                            .padding(12.dp),
-//                        verticalAlignment = Alignment.CenterVertically
-//                    ) {
-//                        Icon(
-//                            imageVector = FontAwesomeIcons.Solid.Pen,
-//                            contentDescription = "Edit",
-//                            modifier = Modifier.size(20.dp)
-//                        )
-//                        Spacer(modifier = Modifier.width(12.dp))
-//                        Text(text = "Edit", fontSize = 16.sp)
-//                    }
-
-                    if (products.value.isNotEmpty()) {
-                        Text("Items for selected receipt:")
-                        products.value.forEach {
-                            Text("${it.productName} - Qty: ${it.quantity} - Total: ${it.total}")
-                        }
-                    }
-
-                }
+//                }
 //                Button(
 //                    onClick = { showSheet = false },
 //                    modifier = Modifier.align(Alignment.End)
 //                ) {
 //                    Text("Close")
 //                }
+//            }
+//        }
+//    }
+
+    if (showSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showSheet = false },
+            sheetState = sheetState,
+            containerColor = Color.White, // White background
+            shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp), // Rounded top
+            tonalElevation = 6.dp // Subtle shadow for depth
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                // Title
+                Text(
+                    text = "Additional Notes",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.Black
+                )
+
+                // Selected Note
+                Text(
+                    text = selectedNotes,
+                    fontSize = 16.sp,
+                    color = Color.Gray
+                )
+
+                Divider(color = Color.LightGray, thickness = 1.dp)
+
+                // Items section
+                if (products.value.isNotEmpty()) {
+                    Text(
+                        text = "Items for selected receipt:",
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black
+                    )
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        products.value.forEach {
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp),
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFFF9F9F9)),
+                                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                            ) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(12.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(it.productName, fontWeight = FontWeight.SemiBold)
+                                    Text("Qty: ${it.quantity}")
+                                    Text("Total: ${it.total}")
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Close button
+                Button(
+                    onClick = { showSheet = false },
+                    modifier = Modifier.align(Alignment.End),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = backgroundColor, // Blue background
+                        contentColor = Color.White          // White text
+                    )
+                ) {
+                    Text("Close")
+                }
+
             }
         }
     }
+
 
 
 

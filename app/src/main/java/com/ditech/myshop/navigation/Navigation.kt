@@ -8,11 +8,13 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import androidx.compose.animation.*
 import androidx.compose.ui.Modifier
+import com.ditech.myshop.screens.AboutAppScreen
 import com.ditech.myshop.screens.AddProductScreen
 import com.ditech.myshop.screens.AddSalesScreen
 import com.ditech.myshop.screens.HomeScreen
 import com.ditech.myshop.screens.ManageProductScreen
 import com.ditech.myshop.screens.SalesReportsScreen
+import com.ditech.myshop.screens.SettingScreen
 import com.ditech.myshop.screens.SingleProductSalesReportScreen
 
 sealed class Screen(val route: String) {
@@ -36,7 +38,7 @@ sealed class Screen(val route: String) {
     }
 
 
-    object  CreditAuthor : Screen("CreditAuthor")
+    object  AboutApp : Screen("aboutApp")
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -53,9 +55,9 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier) {
         popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut() }
     ) {
         composable(Screen.Home.route) { HomeScreen(navController) }
-//        composable(Screen.Settings.route) { SettingScreen(navController) }
+        composable(Screen.Settings.route) { SettingScreen(navController) }
         composable(Screen.AddProduct.route) { AddProductScreen(navController) }
-//        composable(Screen.CreditAuthor.route) {  CreditAuthorScreen(navController)   }
+        composable(Screen.AboutApp.route) { AboutAppScreen(navController) }
         composable(Screen.AddSales.route) { AddSalesScreen(navController) }
         composable(Screen.ManageProduct.route) { ManageProductScreen(navController) }
         composable(Screen.SaleReport.route) { SalesReportsScreen(navController) }

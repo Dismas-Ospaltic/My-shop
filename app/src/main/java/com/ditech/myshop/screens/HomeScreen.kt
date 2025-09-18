@@ -142,7 +142,9 @@ fun HomeScreen(navController: NavController) {
                 iconBackgroundColor = colorResource(id = R.color.cerulean),
                 title = "Settings",
                 subtitle = "Manage settings"
-            ) { /* onClick */ }
+            ) {
+            navController.navigate(Screen.Settings.route)
+            /* onClick */ }
         }
     }
 }
