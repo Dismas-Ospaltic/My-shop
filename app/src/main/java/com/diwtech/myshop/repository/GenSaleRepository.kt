@@ -6,6 +6,7 @@ import com.diwtech.myshop.data.local.GenSaleDao
 import com.diwtech.myshop.model.DailySalesReport
 import com.diwtech.myshop.model.GenSaleEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class GenSaleRepository(private val genSaleDao: GenSaleDao) {
 
@@ -27,6 +28,28 @@ class GenSaleRepository(private val genSaleDao: GenSaleDao) {
 
     fun getDailySalesReports(): Flow<List<DailySalesReport>> {
         return genSaleDao.getDailySalesReports()
+    }
+
+
+    fun getTotalSalesToday(todayDate: String): Flow<Float> {
+        return genSaleDao.getTotalSalesToday(todayDate)
+            .map { total -> total ?: 0.0f }  // Convert NULL to 0.0
+    }
+
+    fun getMonthlyTotalSales(month: String): Flow<Float> {
+        return  genSaleDao.getMonthlyTotalSales(month)
+            .map { total -> total ?: 0.0f }  // Convert NULL to 0.0
+    }
+
+
+    fun getNumberOfMonthlySales(month: String): Flow<Int> {
+        return genSaleDao.getNumberOfMonthlySales(month)
+            .map { total -> total ?: 0 }  // Convert NULL to 0
+    }
+
+    fun getNumberOfSalesToday(todayDate: String): Flow<Int> {
+        return genSaleDao.getNumberOfSalesToday(todayDate)
+            .map { total -> total ?: 0 }  // Convert NULL to 0
     }
 
 

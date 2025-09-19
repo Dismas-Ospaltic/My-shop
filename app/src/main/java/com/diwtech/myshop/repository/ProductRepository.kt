@@ -7,6 +7,7 @@ package com.diwtech.myshop.repository
 import com.diwtech.myshop.data.local.ProductDao
 import com.diwtech.myshop.model.ProductEntity
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class ProductRepository(private val productDao: ProductDao) {
 
@@ -62,6 +63,19 @@ class ProductRepository(private val productDao: ProductDao) {
     fun getLowStockProducts(): Flow<List<ProductEntity>> {
         return productDao.getLowStockProducts()
     }
+
+    fun getAllActiveProductNumber(): Flow<Int> {
+        return productDao.getAllActiveProductNumber()
+            .map { total -> total ?: 0 }  // Convert NULL to 0
+    }
+
+
+    fun getAllActiveProductLowStock(): Flow<Int> {
+        return productDao.getAllActiveProductLowStock()
+            .map { total -> total ?: 0 }  // Convert NULL to 0
+    }
+
+
 
 
 }

@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.dp
 import com.diwtech.myshop.R
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.diwtech.myshop.viewmodel.GenSaleViewModel
+import com.diwtech.myshop.viewmodel.ProductViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ArrowLeft
@@ -32,6 +34,8 @@ import compose.icons.fontawesomeicons.solid.ChartBar
 import compose.icons.fontawesomeicons.solid.ChartPie
 import compose.icons.fontawesomeicons.solid.ExclamationTriangle
 import compose.icons.fontawesomeicons.solid.ShoppingCart
+import org.koin.androidx.compose.koinViewModel
+import java.time.YearMonth
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,6 +45,22 @@ fun DashBoardOverviewScreen(navController: NavController) {
     val customColor = colorResource(id = R.color.prussian_blue)
 
     val context = LocalContext.current
+        val currentYearMonth = remember{ YearMonth.now().toString()} // "2025-05"
+
+    val productViewModel: ProductViewModel = koinViewModel()
+    val genSaleViewModel: GenSaleViewModel = koinViewModel()
+    val totalMonthlySales by genSaleViewModel.totalMonthSales.collectAsState()
+    val totalTodaySales by genSaleViewModel.totalTodaySales.collectAsState()
+    val totalNoOfSaleToday by genSaleViewModel.totalNoOfSaleToday.collectAsState()
+    val totalNoOfSaleThisMonth by genSaleViewModel.totalNoOfSaleThisMonth.collectAsState()
+    val totalProduct by productViewModel.totalNoActiveProduct.collectAsState()
+    val totalLowStockProduct by productViewModel.totalNoActiveLowStockProduct.collectAsState()
+
+//
+//    LaunchedEffect(Unit) {
+//        genSaleViewModel.getMonthlyTotalSales(currentYearMonth)
+//        genSaleViewModel.getNumberOfMonthlySales(currentYearMonth)
+//    }
 
 
     Scaffold(
@@ -114,37 +134,37 @@ fun DashBoardOverviewScreen(navController: NavController) {
                 ) {
                     OverviewCard(
                         title = "Total Sales Today",
-                        value = "$2,450",
+                        value = totalTodaySales.toString(),
                         icon = FontAwesomeIcons.Solid.ChartPie,
                         backgroundColor = Color(0xFF9C27B0) // Purple
                     )
                     OverviewCard(
                         title = "Total Sales This Month",
-                        value = "$38,600",
+                        value = totalMonthlySales.toString(),
                         icon = FontAwesomeIcons.Solid.ChartBar,
                         backgroundColor = Color(0xFF4CAF50) // Green
                     )
                     OverviewCard(
                         title = "No. of Sales This Month",
-                        value = "320",
+                        value = totalNoOfSaleThisMonth.toString(),
                         icon = FontAwesomeIcons.Solid.Calendar,
                         backgroundColor = Color(0xFF2196F3) // Blue
                     )
                     OverviewCard(
                         title = "No. of Sales Today",
-                        value = "25",
+                        value = totalNoOfSaleToday.toString(),
                         icon = FontAwesomeIcons.Solid.ShoppingCart,
                         backgroundColor = Color(0xFF00BCD4) // Cyan
                     )
                     OverviewCard(
                         title = "Total Products",
-                        value = "120",
+                        value = totalProduct.toString(),
                         icon = FontAwesomeIcons.Solid.BoxOpen,
                         backgroundColor = Color(0xFFFF9800) // Orange
                     )
                     OverviewCard(
                         title = "Low Stock Products",
-                        value = "8",
+                        value = totalLowStockProduct.toString(),
                         icon = FontAwesomeIcons.Solid.ExclamationTriangle,
                         backgroundColor = Color(0xFFE91E63) // Pink/Red
                     )

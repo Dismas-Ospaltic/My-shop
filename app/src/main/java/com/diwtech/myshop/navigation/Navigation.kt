@@ -13,6 +13,8 @@ import com.diwtech.myshop.screens.AddProductScreen
 import com.diwtech.myshop.screens.AddSalesScreen
 import com.diwtech.myshop.screens.DashBoardOverviewScreen
 import com.diwtech.myshop.screens.HomeScreen
+import com.diwtech.myshop.screens.InactiveProductScreen
+import com.diwtech.myshop.screens.LowStockScreen
 import com.diwtech.myshop.screens.ManageProductScreen
 import com.diwtech.myshop.screens.SalesReportsScreen
 import com.diwtech.myshop.screens.SettingScreen
@@ -35,6 +37,10 @@ sealed class Screen(val route: String) {
     object ManageProduct : Screen("manageProduct")
 
     object SaleReport : Screen("saleReport")
+
+    object LowStock : Screen("lowStock")
+
+    object InactiveProducts : Screen("inactiveProducts")
 
     object SingleSalesReport : Screen("singleSalesReport/{itemId}") {
         fun createRoute(itemId: String) = "singleSalesReport/$itemId"
@@ -65,6 +71,8 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier) {
         composable(Screen.ManageProduct.route) { ManageProductScreen(navController) }
         composable(Screen.SaleReport.route) { SalesReportsScreen(navController) }
         composable(Screen.Dashboard.route) { DashBoardOverviewScreen(navController) }
+        composable(Screen.LowStock.route) { LowStockScreen(navController) }
+        composable(Screen.InactiveProducts.route) { InactiveProductScreen(navController) }
         composable(Screen.SingleSalesReport.route) { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString("itemId") ?: "Unknown"
             SingleProductSalesReportScreen(navController, itemId)

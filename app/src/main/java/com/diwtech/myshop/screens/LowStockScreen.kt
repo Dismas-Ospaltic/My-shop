@@ -1,5 +1,6 @@
 package com.diwtech.myshop.screens
 
+
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -52,15 +53,14 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ManageProductScreen(navController: NavController) {
+fun LowStockScreen(navController: NavController) {
     val backgroundColor = colorResource(id = R.color.prussian_blue)
     DynamicStatusBar(colorResource(id = R.color.white))
-    val buttonColor = colorResource(id = R.color.prussian_blue) // Button color
-    val textColor = colorResource(id = R.color.white) // Text color
     val searchQuery = remember { mutableStateOf("") }
 
     val productViewModel: ProductViewModel = koinViewModel()
-     val activeProducts by productViewModel.activeProducts.collectAsState()
+    val activeProducts by productViewModel.activeProducts.collectAsState()
+    val lowStockProducts by productViewModel.lowStockProducts.collectAsState()
 
 
     var selectedProductId by remember { mutableStateOf<String?>(null) }
@@ -83,7 +83,7 @@ fun ManageProductScreen(navController: NavController) {
 
 
     // ✅ **Filter the list based on search query**
-    val filteredProducts = activeProducts.filter {
+    val filteredProducts = lowStockProducts.filter {
         it.productName.contains(searchQuery.value, ignoreCase = true) ||
                 it.productCode.contains(searchQuery.value, ignoreCase = true)
                 || it.productCategory.contains(searchQuery.value, ignoreCase = true)
@@ -95,55 +95,6 @@ fun ManageProductScreen(navController: NavController) {
     val sheetState = rememberModalBottomSheetState()
     var showSheet by remember { mutableStateOf(false) }
     var selectedNotes by remember { mutableStateOf("") }
-
-    val buttons = listOf(
-        ButtonItem(
-            label = "Add Product",
-            icon = {
-                Icon(
-                    imageVector = FontAwesomeIcons.Solid.PlusCircle,
-                    contentDescription = "add icon",
-                    tint = Color.White,
-                    modifier = Modifier.size(24.dp)
-                )
-            },
-            onClick = {
-             navController.navigate(Screen.AddProduct.route)
-
-            }
-        ),
-        ButtonItem(
-            label = "Low Stock",
-            icon = {
-                Icon(
-                    imageVector =  FontAwesomeIcons.Solid.ClipboardList,
-                    contentDescription = "clip",
-                    tint = Color.White,
-                    modifier = Modifier.size(24.dp)
-                )
-            },
-            onClick = {
-          navController.navigate(Screen.LowStock.route)
-            }
-        ),
-        ButtonItem(
-            label = "Inactive products",
-            icon = {
-                Icon(
-                    imageVector =  FontAwesomeIcons.Solid.CartArrowDown,
-                    contentDescription = "clip",
-                    tint = Color.White,
-                    modifier = Modifier.size(24.dp)
-                )
-            },
-            onClick = {
-            navController.navigate(Screen.InactiveProducts.route)
-
-            }
-        )
-    )
-
-    val columns = if (LocalConfiguration.current.screenWidthDp < 600) 2 else 3 // Responsive grid
 
 
     Scaffold(
@@ -188,7 +139,7 @@ fun ManageProductScreen(navController: NavController) {
 
             // Title
             Text(
-                text = "Manage Products",
+                text = "Manage Low Stock Products",
                 modifier = Modifier
                     .padding(end = 16.dp, start = 16.dp),
                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
@@ -197,7 +148,7 @@ fun ManageProductScreen(navController: NavController) {
 //                    Spacer(modifier = Modifier.height(8.dp))
             // Subtitle
             Text(
-                text = "add new products, manage stock and products",
+                text = "view products that are low in stock",
                 modifier = Modifier
                     .padding(end = 16.dp, start = 16.dp),
                 style = MaterialTheme.typography.bodyMedium,
@@ -206,53 +157,6 @@ fun ManageProductScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Column( verticalArrangement = Arrangement.spacedBy(12.dp) ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(0.dp)
-                        .background(
-                            colorResource(id = R.color.dark),
-                            shape = RoundedCornerShape(4.dp)
-                        ) // Use your background color
-                ) {
-
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(8.dp) // Spacing between rows
-                    ) {
-                        Text(
-                            text = "Manage Products",
-                            color = colorResource(id = R.color.white),
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .padding(8.dp)
-                        )
-
-                        buttons.chunked(columns).forEach { rowButtons ->
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp) // Spacing between buttons
-                            ) {
-                                rowButtons.forEach { button ->
-                                    Box(
-                                        modifier = Modifier
-                                            .weight(1f) // Distribute buttons evenly
-                                            .padding(8.dp)
-                                    ) {
-//                                    CustomButton(button, buttonColor, textColor)// Pass your button data
-                                        CustomOutlinedButton(button, buttonColor, textColor)
-                                    }
-                                }
-
-                                // Fill remaining space if the last row has fewer buttons
-                                repeat(columns - rowButtons.size) {
-                                    Spacer(modifier = Modifier.weight(1f))
-                                }
-                            }
-                        }
-                    }
-                }
-
 
                 // Search Field
                 TextField(
@@ -285,7 +189,7 @@ fun ManageProductScreen(navController: NavController) {
                 )
 
 
-                if (activeProducts.isEmpty()) {
+                if (lowStockProducts.isEmpty()) {
 
                     Box(
                         modifier = Modifier
@@ -340,150 +244,146 @@ fun ManageProductScreen(navController: NavController) {
                     for (index in filteredProducts.indices) {
                         val productItem = filteredProducts[index]
 
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 12.dp, vertical = 8.dp)
-                            .clickable {
-                                showSheet = true
-                                selectedProductId = productItem.productId
-                                selectedProductCode = productItem.productCode
-                                selectedProductName = productItem.productName
-                                selectedProductQuantity = productItem.productQuantity
-                                selectedBuyPrice = productItem.buyPrice
-                                selectedSellPrice = productItem.sellPrice
-                                selectedManufactureDate = productItem.manufactureDate
-                                selectedExpiryDate = productItem.expiryDate
-                                selectedProductCategory = productItem.productCategory
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp, vertical = 8.dp)
+                                .clickable {
+                                    showSheet = true
+                                    selectedProductId = productItem.productId
+                                    selectedProductCode = productItem.productCode
+                                    selectedProductName = productItem.productName
+                                    selectedProductQuantity = productItem.productQuantity
+                                    selectedBuyPrice = productItem.buyPrice
+                                    selectedSellPrice = productItem.sellPrice
+                                    selectedManufactureDate = productItem.manufactureDate
+                                    selectedExpiryDate = productItem.expiryDate
+                                    selectedProductCategory = productItem.productCategory
 
-                            },
-                        shape = RoundedCornerShape(20.dp),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White)
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
+                                },
+                            shape = RoundedCornerShape(20.dp),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White)
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
 
-                            // 🔹 Top: Product Code + Name
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Column {
-                                    Text(
-                                        text = "product code: ${productItem.productCode}",
-                                        fontSize = 13.sp,
-                                        fontWeight = FontWeight.Medium,
-                                        color = colorResource(id = R.color.gray01)
-                                    )
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    Text(
-                                        text = productItem.productName,
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.SemiBold,
-                                        color = colorResource(id = R.color.dark)
-                                    )
+                                // 🔹 Top: Product Code + Name
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Column {
+                                        Text(
+                                            text = "product code: ${productItem.productCode}",
+                                            fontSize = 13.sp,
+                                            fontWeight = FontWeight.Medium,
+                                            color = colorResource(id = R.color.gray01)
+                                        )
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text(
+                                            text = productItem.productName,
+                                            fontSize = 18.sp,
+                                            fontWeight = FontWeight.SemiBold,
+                                            color = colorResource(id = R.color.dark)
+                                        )
+                                    }
                                 }
+
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                // 🔹 Price Section
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Column {
+                                        Text(
+                                            text = "Buy Price",
+                                            fontSize = 12.sp,
+                                            color = Color.Gray
+                                        )
+                                        Text(
+                                            text = productItem.buyPrice.toString(),
+                                            fontSize = 16.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = colorResource(id = R.color.green)
+                                        )
+                                    }
+                                    Column {
+                                        Text(
+                                            text = "Sell Price",
+                                            fontSize = 12.sp,
+                                            color = Color.Gray
+                                        )
+                                        Text(
+                                            text = productItem.sellPrice.toString(),
+                                            fontSize = 16.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = colorResource(id = R.color.crimson)
+                                        )
+                                    }
+                                }
+
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                // 🔹 Other details in a neat row format
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Column {
+                                        Text(
+                                            text = "Category",
+                                            fontSize = 12.sp,
+                                            color = Color.Gray
+                                        )
+                                        Text(
+                                            text = productItem.productCategory,
+                                            fontSize = 14.sp,
+                                            color = colorResource(id = R.color.dark)
+                                        )
+                                    }
+                                    Column {
+                                        Text(
+                                            text = "Manufacture",
+                                            fontSize = 12.sp,
+                                            color = Color.Gray
+                                        )
+                                        Text(
+                                            text = productItem.manufactureDate ?: "not available",
+                                            fontSize = 14.sp,
+                                            color = colorResource(id = R.color.green)
+                                        )
+                                    }
+                                    Column {
+                                        Text(
+                                            text = "Expiry",
+                                            fontSize = 12.sp,
+                                            color = Color.Gray
+                                        )
+                                        Text(
+                                            text = productItem.expiryDate ?: "not available",
+                                            fontSize = 14.sp,
+                                            color = colorResource(id = R.color.crimson)
+                                        )
+                                    }
+                                }
+
+                                Spacer(modifier = Modifier.height(12.dp))
+
+                                // 🔹 Quantity at bottom center
+                                Text(
+                                    text = "Quantity: ${productItem.productQuantity}",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = colorResource(id = R.color.prussian_blue),
+                                    modifier = Modifier.align(Alignment.End)
+                                )
                             }
-
-                            Spacer(modifier = Modifier.height(12.dp))
-
-                            // 🔹 Price Section
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Column {
-                                    Text(
-                                        text = "Buy Price",
-                                        fontSize = 12.sp,
-                                        color = Color.Gray
-                                    )
-                                    Text(
-                                        text = productItem.buyPrice.toString(),
-                                        fontSize = 16.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = colorResource(id = R.color.green)
-                                    )
-                                }
-                                Column {
-                                    Text(
-                                        text = "Sell Price",
-                                        fontSize = 12.sp,
-                                        color = Color.Gray
-                                    )
-                                    Text(
-                                        text = productItem.sellPrice.toString(),
-                                        fontSize = 16.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = colorResource(id = R.color.crimson)
-                                    )
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.height(12.dp))
-
-                            // 🔹 Other details in a neat row format
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Column {
-                                    Text(
-                                        text = "Category",
-                                        fontSize = 12.sp,
-                                        color = Color.Gray
-                                    )
-                                    Text(
-                                        text = productItem.productCategory,
-                                        fontSize = 14.sp,
-                                        color = colorResource(id = R.color.dark)
-                                    )
-                                }
-                                Column {
-                                    Text(
-                                        text = "Manufacture",
-                                        fontSize = 12.sp,
-                                        color = Color.Gray
-                                    )
-                                    Text(
-                                        text = productItem.manufactureDate ?: "not available",
-                                        fontSize = 14.sp,
-                                        color = colorResource(id = R.color.green)
-                                    )
-                                }
-                                Column {
-                                    Text(
-                                        text = "Expiry",
-                                        fontSize = 12.sp,
-                                        color = Color.Gray
-                                    )
-                                    Text(
-                                        text = productItem.expiryDate ?: "not available",
-                                        fontSize = 14.sp,
-                                        color = colorResource(id = R.color.crimson)
-                                    )
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.height(12.dp))
-
-                            // 🔹 Quantity at bottom center
-                            Text(
-                                text = "Quantity: ${productItem.productQuantity}",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = colorResource(id = R.color.prussian_blue),
-                                modifier = Modifier.align(Alignment.End)
-                            )
                         }
                     }
                 }
-            }
-
-
-
-
 
             }
 
@@ -540,7 +440,7 @@ fun ManageProductScreen(navController: NavController) {
                         UpdateStockPop(
                             onDismiss = { showInventoryDialog = false;
                                 showSheet = false
-                                        },
+                            },
                             productId = selectedProductId!!,
                             productCode = selectedProductCode!!,
                             productQuantity = selectedProductQuantity!!,
@@ -548,14 +448,12 @@ fun ManageProductScreen(navController: NavController) {
                         )
                     }
 
-
-
                     // Edit Button
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                            showDialog = true
+                                showDialog = true
                             }
                             .padding(12.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -568,8 +466,6 @@ fun ManageProductScreen(navController: NavController) {
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(text = "Update product", fontSize = 16.sp)
                     }
-
-
 
 
                     if (showDialog && selectedProductId != null) {
@@ -589,13 +485,12 @@ fun ManageProductScreen(navController: NavController) {
                     }
 
 
-
                     // Delete Button
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                          showDeleteDialog = true
+                                showDeleteDialog = true
                             }
                             .padding(12.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -631,33 +526,13 @@ fun ManageProductScreen(navController: NavController) {
 
 
                     if (showInventoryHistDialog && selectedProductId != null) {
-                       StockHistPopUp(
+                        StockHistPopUp(
                             onDismiss = { showInventoryHistDialog = false;
                                 showSheet = false
                             },
                             productId = selectedProductId!!,
                         )
                     }
-//
-//
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .clickable {
-//
-//
-//                            }
-//                            .padding(12.dp),
-//                        verticalAlignment = Alignment.CenterVertically
-//                    ) {
-//                        Icon(
-//                            imageVector = FontAwesomeIcons.Regular.ThumbsUp,
-//                            contentDescription = "Mark as complete",
-//                            modifier = Modifier.size(20.dp)
-//                        )
-//                        Spacer(modifier = Modifier.width(12.dp))
-//                        Text(text = "Mark as complete", fontSize = 16.sp)
-//                    }
                 }
 //                Button(
 //                    onClick = { showSheet = false },
@@ -674,7 +549,7 @@ fun ManageProductScreen(navController: NavController) {
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false;
-                               showSheet = false },
+                showSheet = false },
             title = { Text("Delete Product") },
             text = { Text("Do you want to delete this product? you can view it as inactive products") },
             confirmButton = {
@@ -709,62 +584,18 @@ fun ManageProductScreen(navController: NavController) {
 
 
 
-@Composable
-fun CustomOutlinedButton(
-    button: ButtonItem,
-    buttonColor: Color,
-    textColor: Color
-) {
-    OutlinedButton(
-        onClick = button.onClick,
-        modifier = Modifier
-            .padding(8.dp)
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(1.5.dp, buttonColor),
-        colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = Color.Transparent,
-            contentColor = textColor
-        )
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(vertical = 12.dp)
-        ) {
-            button.icon() // 👈 directly invoke the composable icon
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(
-                text = button.label,
-                color = textColor,
-                fontWeight = FontWeight.SemiBold,
-                style = MaterialTheme.typography.labelLarge
-            )
-        }
-    }
 
 
 
 
-}
-
-
-
-
-data class ButtonItem(
-    val label: String,
-    val icon: @Composable () -> Unit,
-    val onClick: () -> Unit
-)
 
 
 
 
 @Preview(showBackground = true)
 @Composable
-fun ManageProductScreenPreview() {
-    ManageProductScreen(navController = rememberNavController())
+fun LowStockScreenPreview() {
+    LowStockScreen(navController = rememberNavController())
 }
 
 

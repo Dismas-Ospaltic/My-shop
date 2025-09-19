@@ -5,12 +5,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.diwtech.myshop.model.ProductEntity
 import com.diwtech.myshop.repository.ProductRepository
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ProductViewModel(private val productRepository: ProductRepository) : ViewModel() {
+
+
+    init {
+        getAllActiveProductNumber()
+        getAllActiveProductLowStock()
+    }
 
     // Active products
     val activeProducts: StateFlow<List<ProductEntity>> =
@@ -76,6 +84,32 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
             productRepository.updateProductQuantityById(productId, newQuantity)
         }
     }
+
+    private val _totalNoActiveProduct = MutableStateFlow(0)
+    val totalNoActiveProduct : StateFlow<Int> = _totalNoActiveProduct
+
+    fun getAllActiveProductNumber() {
+        viewModelScope.launch {
+            productRepository.getAllActiveProductNumber().collectLatest { total ->
+                _totalNoActiveProduct.value = total
+            }
+        }
+    }
+
+
+
+    private val _totalNoActiveLowStockProduct = MutableStateFlow(0)
+    val totalNoActiveLowStockProduct : StateFlow<Int> = _totalNoActiveLowStockProduct
+
+    fun getAllActiveProductLowStock() {
+        viewModelScope.launch {
+            productRepository.getAllActiveProductLowStock().collectLatest { total ->
+                _totalNoActiveLowStockProduct.value = total
+            }
+        }
+    }
+
+//
 
 
 }

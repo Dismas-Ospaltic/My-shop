@@ -41,4 +41,10 @@ interface ProductDao {
     fun getLowStockProducts(): Flow<List<ProductEntity>>
 
 
+    @Query("SELECT COUNT(*) FROM product WHERE productState = 'Active'")
+    fun getAllActiveProductNumber(): Flow<Int?>
+
+    @Query("SELECT COUNT(*) FROM product WHERE productState = 'Active' AND productQuantity < 10")
+    fun getAllActiveProductLowStock(): Flow<Int?>
+
 }

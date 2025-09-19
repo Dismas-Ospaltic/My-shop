@@ -49,4 +49,23 @@ interface GenSaleDao {
 """)
     fun getDailySalesReports(): Flow<List<DailySalesReport>>
 
+
+
+    @Query("SELECT SUM(totalSale) FROM gen_sale WHERE date = :todayDate")
+    fun getTotalSalesToday(todayDate: String): Flow<Float?>
+
+    @Query("SELECT SUM(totalSale) FROM gen_sale WHERE date LIKE :month || '%'")
+    fun getMonthlyTotalSales(month: String): Flow<Float?>
+
+
+    @Query("SELECT COUNT(*) FROM gen_sale WHERE date LIKE :month || '%'")
+    fun getNumberOfMonthlySales(month: String): Flow<Int?>
+
+
+    @Query("SELECT COUNT(*) FROM gen_sale WHERE date = :todayDate")
+    fun getNumberOfSalesToday(todayDate: String): Flow<Int?>
+
+
+
+
 }
