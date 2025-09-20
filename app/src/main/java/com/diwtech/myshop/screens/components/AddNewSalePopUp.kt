@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -225,7 +227,7 @@ fun AddNewSalePopup(
                 OutlinedTextField(
                     value = salesDescription,
                     onValueChange = { salesDescription = it },
-                    label = { Text("Short Notes") },
+                    label = { Text("add Notes for this sale(optional)") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(min = 100.dp, max = 200.dp)
@@ -242,14 +244,24 @@ fun AddNewSalePopup(
                     maxLines = 4
                 )
 
+
+
+
+
+
                 // Action buttons
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    TextButton(onClick = onDismiss) { Text("Cancel") }
+                    TextButton(onClick = onDismiss) { Text("Cancel", color = colorResource(id = R.color.prussian_blue)) }
                     Spacer(modifier = Modifier.width(8.dp))
-                    Button(onClick = {
+                    Button(
+                        modifier = Modifier
+                            .height(56.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = backgroundColor),
+                        onClick = {
                         var valid = true
                         if (paymentMethod.isBlank()) {
                             paymentMethodError = true

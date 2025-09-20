@@ -4,8 +4,10 @@ package com.diwtech.myshop.screens
 
 
 
+import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -23,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.diwtech.myshop.R
 import androidx.navigation.NavController
 import compose.icons.FontAwesomeIcons
@@ -37,6 +40,22 @@ fun AboutAppScreen(navController: NavController) {
     val customColor = colorResource(id = R.color.colorful)
 
     val context = LocalContext.current
+
+
+//    val creditIcons = listOf(
+//        "App icon was designed by kerismaker from Flaticon",
+//
+//        "App Screen image icons:",
+//        "-No data Placeholder icon image designed by Roundicons Premium from Flaticon",
+//        "-No Search data placeholder icon image designed by Roundicons Premium from Flaticon",
+//    )
+
+    val creditIcons = listOf(
+        "App icon designed by kerismaker from Flaticon",
+        "App screen image icons:",
+        "- No data placeholder icon designed by Roundicons Premium from Flaticon",
+        "- No search data placeholder icon designed by Roundicons Premium from Flaticon"
+    )
 
 
     Scaffold(
@@ -128,8 +147,8 @@ fun AboutAppScreen(navController: NavController) {
                         textAlign = TextAlign.Center
                     )
 
-                    HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
-
+//                    HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
+                    HorizontalDivider(thickness = 1.dp, color = Color.Gray)
                     // Developer Info
                     Text(
                         text = "Developed by DiWtech Solutions",
@@ -140,12 +159,16 @@ fun AboutAppScreen(navController: NavController) {
                         style = MaterialTheme.typography.bodyMedium
                     )
 
-                    HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
-
+//                    HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
+                    HorizontalDivider(thickness = 1.dp, color = Color.Gray)
                     // Legal Links
                     OutlinedButton(
                         onClick = {
-
+                            val intent = Intent(
+                                Intent.ACTION_VIEW,
+                                "https://diwtech.github.io/MyShop-App/privacy_policy.html".toUri()
+                            )
+                            context.startActivity(intent)
                         },
                         modifier = Modifier.fillMaxWidth(),
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
@@ -167,8 +190,8 @@ fun AboutAppScreen(navController: NavController) {
 //                        Text("Terms & Conditions")
 //                    }
 
-                    HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
-
+//                    HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
+                    HorizontalDivider(thickness = 1.dp, color = Color.Gray)
                     // Credits & Acknowledgements
                     Text(
                         text = "Credits & Acknowledgements",
@@ -180,14 +203,39 @@ fun AboutAppScreen(navController: NavController) {
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("• Icons provided by Material Icons")
-                        Text("• Built with Jetpack Compose")
-                        Text("• Thanks to the open-source community for libraries and tools")
+//                        Text("• Icons provided by Material Icons")
+//                        Text("• Built with Jetpack Compose")
+//                        Text("• Thanks to the open-source community for libraries and tools")
+
+                        creditIcons.forEach { credit ->
+                            Text(
+                                text = credit,
+                                style = if (credit.endsWith(":"))
+                                    MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                                else
+                                    MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.padding(vertical = 4.dp)
+                            )
+                        }
+
+                        // ✅ External link
+                        Text(
+                            text = "Visit Flaticon: www.flaticon.com",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                color = Color.Blue,
+                                fontWeight = FontWeight.SemiBold
+                            ),
+                            modifier = Modifier
+                                .clickable {
+                                    val url = "https://www.flaticon.com"
+                                    val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+                                    context.startActivity(intent)
+                                }
+                                .padding(vertical = 4.dp)
+                        )
+
                         Text("• Special thanks to testers and contributors")
                     }
-
-
-
 
                 }
             }
