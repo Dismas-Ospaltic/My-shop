@@ -21,7 +21,7 @@ interface SingleProductSaleDao {
     suspend fun updateSoldProducts(singleProductSaleEntity: SingleProductSaleEntity)
 
 
-    @Query("SELECT * FROM single_product WHERE date = :saleDate")
+    @Query("SELECT * FROM single_product WHERE date = :saleDate ORDER BY timestamp DESC")
     fun getAllSingleSalesByDate(saleDate: String): Flow<List<SingleProductSaleEntity>>
 
 

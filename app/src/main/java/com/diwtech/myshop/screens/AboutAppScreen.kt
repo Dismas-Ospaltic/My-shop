@@ -101,7 +101,7 @@ fun AboutAppScreen(navController: NavController) {
 
                     // App Logo (replace with your drawable)
                     Icon(
-                        painter = painterResource(id = R.drawable.bag),
+                        painter = painterResource(id = R.drawable.store),
                         contentDescription = "App Logo",
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(80.dp)
@@ -109,7 +109,7 @@ fun AboutAppScreen(navController: NavController) {
 
                     // App Name
                     Text(
-                        text = "My Notes App",
+                        text = "My Shop App",
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
 
@@ -121,7 +121,9 @@ fun AboutAppScreen(navController: NavController) {
 
                     // Description
                     Text(
-                        text = "This app helps you manage notes, tasks, and reminders securely and efficiently.",
+                        text = "This app makes it easy to manage products, " +
+                                "track sales, and view clear" +
+                                " sales reports — all in one simple dashboard.",
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center
                     )
@@ -130,11 +132,11 @@ fun AboutAppScreen(navController: NavController) {
 
                     // Developer Info
                     Text(
-                        text = "Developed by Ditech Solutions",
+                        text = "Developed by DiWtech Solutions",
                         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
                     )
                     Text(
-                        text = "Contact: support@ditech.com",
+                        text = "Contact: wanyaladismas5@gmail,com",
                         style = MaterialTheme.typography.bodyMedium
                     )
 
@@ -154,16 +156,16 @@ fun AboutAppScreen(navController: NavController) {
                         Text("Privacy Policy")
                     }
 
-                    OutlinedButton(
-                        onClick = {  },
-                        modifier = Modifier.fillMaxWidth(),
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = MaterialTheme.colorScheme.primary
-                        )
-                    ) {
-                        Text("Terms & Conditions")
-                    }
+//                    OutlinedButton(
+//                        onClick = {  },
+//                        modifier = Modifier.fillMaxWidth(),
+//                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+//                        colors = ButtonDefaults.outlinedButtonColors(
+//                            contentColor = MaterialTheme.colorScheme.primary
+//                        )
+//                    ) {
+//                        Text("Terms & Conditions")
+//                    }
 
                     HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
 

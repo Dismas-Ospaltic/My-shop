@@ -15,10 +15,7 @@ import kotlinx.coroutines.launch
 class ProductViewModel(private val productRepository: ProductRepository) : ViewModel() {
 
 
-    init {
-        getAllActiveProductNumber()
-        getAllActiveProductLowStock()
-    }
+
 
     // Active products
     val activeProducts: StateFlow<List<ProductEntity>> =
@@ -76,6 +73,19 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
     fun deleteProductById(productId: String) {
         viewModelScope.launch {
             productRepository.deleteProductById(productId)
+        }
+    }
+
+
+    fun restoreProductById(productId: String) {
+        viewModelScope.launch {
+            productRepository.restoreProductById(productId)
+        }
+    }
+
+    fun hardDeleteProductById(productId: String) {
+        viewModelScope.launch {
+            productRepository.hardDeleteProductById(productId)
         }
     }
 

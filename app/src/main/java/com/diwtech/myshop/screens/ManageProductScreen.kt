@@ -296,7 +296,7 @@ fun ManageProductScreen(navController: NavController) {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.bag), // Replace with your image in res/drawable
+                                painter = painterResource(id = R.drawable.shopping), // Replace with your image in res/drawable
                                 contentDescription = "No Data",
                                 modifier = Modifier.size(120.dp)
                             )
@@ -320,7 +320,7 @@ fun ManageProductScreen(navController: NavController) {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.bag), // Replace with your image in res/drawable
+                                painter = painterResource(id = R.drawable.shopping), // Replace with your image in res/drawable
                                 contentDescription = "No search Data",
                                 modifier = Modifier.size(120.dp)
                             )

@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.diwtech.myshop.R
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.diwtech.myshop.utils.dateFormated
 import com.diwtech.myshop.viewmodel.GenSaleViewModel
 import com.diwtech.myshop.viewmodel.ProductViewModel
 import compose.icons.FontAwesomeIcons
@@ -47,6 +48,9 @@ fun DashBoardOverviewScreen(navController: NavController) {
     val context = LocalContext.current
         val currentYearMonth = remember{ YearMonth.now().toString()} // "2025-05"
 
+    val currentDate =  System.currentTimeMillis()
+    val todayDate = dateFormated(currentDate)
+
     val productViewModel: ProductViewModel = koinViewModel()
     val genSaleViewModel: GenSaleViewModel = koinViewModel()
     val totalMonthlySales by genSaleViewModel.totalMonthSales.collectAsState()
@@ -56,11 +60,15 @@ fun DashBoardOverviewScreen(navController: NavController) {
     val totalProduct by productViewModel.totalNoActiveProduct.collectAsState()
     val totalLowStockProduct by productViewModel.totalNoActiveLowStockProduct.collectAsState()
 
-//
-//    LaunchedEffect(Unit) {
-//        genSaleViewModel.getMonthlyTotalSales(currentYearMonth)
-//        genSaleViewModel.getNumberOfMonthlySales(currentYearMonth)
-//    }
+
+    LaunchedEffect(Unit) {
+        genSaleViewModel.getMonthlyTotalSales(currentYearMonth)
+        genSaleViewModel.getNumberOfMonthlySales(currentYearMonth)
+        productViewModel.getAllActiveProductNumber()
+        productViewModel.getAllActiveProductLowStock()
+        genSaleViewModel.getTotalSalesToday(todayDate)
+        genSaleViewModel.getNumberOfSalesToday(todayDate)
+    }
 
 
     Scaffold(

@@ -24,9 +24,7 @@ import java.util.Locale
 
 class GenSaleViewModel(private val genSaleRepository: GenSaleRepository)  : ViewModel(){
 
-    val currentYearMonth =YearMonth.now().toString() // "2025-05"
-    val currentDate =  System.currentTimeMillis()
-    val todayDate = dateFormated(currentDate)
+
     private val _genSale = MutableStateFlow<List<GenSaleEntity>>(emptyList())
     val genSale: StateFlow<List<GenSaleEntity>> = _genSale
 
@@ -37,12 +35,7 @@ class GenSaleViewModel(private val genSaleRepository: GenSaleRepository)  : View
 
 
 
-    init{
-        getTotalSalesToday()
-           getMonthlyTotalSales(currentYearMonth)
-            getNumberOfMonthlySales(currentYearMonth)
-        getNumberOfSalesToday()
-    }
+
 
     fun insertGenSale(genSaleEntity: GenSaleEntity) {
         viewModelScope.launch {
@@ -51,7 +44,7 @@ class GenSaleViewModel(private val genSaleRepository: GenSaleRepository)  : View
         }
     }
 
-    fun genSaleEntity(genSaleEntity: GenSaleEntity) {
+    fun updateGenSale(genSaleEntity: GenSaleEntity) {
         viewModelScope.launch {
 //            singleProductRepository.updateSoldProduct(singleProductEntity)
             genSaleRepository.updateGenSale(genSaleEntity)
@@ -129,7 +122,7 @@ class GenSaleViewModel(private val genSaleRepository: GenSaleRepository)  : View
     private val _totalTodaySales = MutableStateFlow(0.0f)
     val totalTodaySales: StateFlow<Float> = _totalTodaySales
 
-    fun getTotalSalesToday() {
+    fun getTotalSalesToday(todayDate: String) {
         viewModelScope.launch {
             genSaleRepository.getTotalSalesToday(todayDate).collectLatest { total ->
                 _totalTodaySales.value = total
@@ -144,7 +137,7 @@ class GenSaleViewModel(private val genSaleRepository: GenSaleRepository)  : View
     private val _totalNoOfSaleToday = MutableStateFlow(0)
     val totalNoOfSaleToday : StateFlow<Int> = _totalNoOfSaleToday
 
-    fun getNumberOfSalesToday() {
+    fun getNumberOfSalesToday(todayDate: String) {
         viewModelScope.launch {
             genSaleRepository.getNumberOfSalesToday(todayDate).collectLatest { total ->
                 _totalNoOfSaleToday.value = total
@@ -164,24 +157,6 @@ class GenSaleViewModel(private val genSaleRepository: GenSaleRepository)  : View
         }
     }
 
-//    suspend fun insertSingleSale(singleSaleEntity: SingleSaleEntity) {
-//        singleSaleDao.insertSingleSale(singleSaleEntity)
-//    }
-//
-//    suspend fun updateSingleSale(singleSaleEntity: SingleSaleEntity) {
-//        singleSaleDao.updateSingleSale(singleSaleEntity)
-//    }
-//
-//
-//    fun getAllSingleSale(): Flow<List<SingleSaleEntity>> = singleSaleDao.getAllSingleSale()
-//
-//
-//    fun getSalesByDate(saleDate: String): Flow<List<SingleSaleEntity>> = singleSaleDao.getSalesByDate(saleDate)
-//
-//
-//    fun getDailySalesReports(): Flow<List<DailySalesReport>> {
-//        return singleSaleDao.getDailySalesReports()
-//    }
 
 
 

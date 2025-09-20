@@ -224,13 +224,13 @@ fun LowStockScreen(navController: NavController) {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.bag), // Replace with your image in res/drawable
+                                painter = painterResource(id = R.drawable.shopping), // Replace with your image in res/drawable
                                 contentDescription = "No search Data",
                                 modifier = Modifier.size(120.dp)
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             Text(
-                                text = "No Products Found",
+                                text = "No Products With low Stock",
                                 color = Color.Gray,
                                 style = MaterialTheme.typography.bodyMedium
                             )

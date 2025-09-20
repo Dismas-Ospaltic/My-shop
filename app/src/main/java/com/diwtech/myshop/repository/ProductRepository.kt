@@ -52,6 +52,18 @@ class ProductRepository(private val productDao: ProductDao) {
         return productDao.deleteProductById(productId)
     }
 
+
+    suspend fun restoreProductById(productId: String): Int? {
+        return productDao.restoreProductById(productId)
+    }
+
+
+    suspend fun hardDeleteProductById(productId: String): Int? {
+        return productDao.hardDeleteProductById(productId)
+    }
+
+
+
     fun getInactiveProducts(): Flow<List<ProductEntity>> {
         return productDao.getInactiveProducts()
     }
@@ -74,6 +86,9 @@ class ProductRepository(private val productDao: ProductDao) {
         return productDao.getAllActiveProductLowStock()
             .map { total -> total ?: 0 }  // Convert NULL to 0
     }
+
+
+
 
 
 

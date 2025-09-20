@@ -41,6 +41,7 @@ import com.diwtech.myshop.viewmodel.ProductViewModel
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Regular
 import compose.icons.fontawesomeicons.Solid
+import compose.icons.fontawesomeicons.regular.ArrowAltCircleLeft
 import compose.icons.fontawesomeicons.regular.TrashAlt
 import compose.icons.fontawesomeicons.solid.ArrowLeft
 import compose.icons.fontawesomeicons.solid.CartArrowDown
@@ -201,13 +202,13 @@ fun InactiveProductScreen(navController: NavController) {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.bag), // Replace with your image in res/drawable
+                                painter = painterResource(id = R.drawable.shopping), // Replace with your image in res/drawable
                                 contentDescription = "No Data",
                                 modifier = Modifier.size(120.dp)
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             Text(
-                                text = "No Products Added",
+                                text = "No Archived Products!",
                                 color = Color.Gray,
                                 style = MaterialTheme.typography.bodyMedium
                             )
@@ -225,7 +226,7 @@ fun InactiveProductScreen(navController: NavController) {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Image(
-                                painter = painterResource(id = R.drawable.bag), // Replace with your image in res/drawable
+                                painter = painterResource(id = R.drawable.shopping), // Replace with your image in res/drawable
                                 contentDescription = "No search Data",
                                 modifier = Modifier.size(120.dp)
                             )
@@ -252,14 +253,6 @@ fun InactiveProductScreen(navController: NavController) {
                                 .clickable {
                                     showSheet = true
                                     selectedProductId = productItem.productId
-                                    selectedProductCode = productItem.productCode
-                                    selectedProductName = productItem.productName
-                                    selectedProductQuantity = productItem.productQuantity
-                                    selectedBuyPrice = productItem.buyPrice
-                                    selectedSellPrice = productItem.sellPrice
-                                    selectedManufactureDate = productItem.manufactureDate
-                                    selectedExpiryDate = productItem.expiryDate
-                                    selectedProductCategory = productItem.productCategory
 
                                 },
                             shape = RoundedCornerShape(20.dp),
@@ -418,73 +411,6 @@ fun InactiveProductScreen(navController: NavController) {
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                showInventoryDialog = true
-                            }
-                            .padding(12.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = FontAwesomeIcons.Solid.CircleNotch,
-                            contentDescription = "update",
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(text = "Add Stock", fontSize = 16.sp)
-                    }
-
-
-                    if (showInventoryDialog && selectedProductId != null) {
-                        UpdateStockPop(
-                            onDismiss = { showInventoryDialog = false;
-                                showSheet = false
-                            },
-                            productId = selectedProductId!!,
-                            productCode = selectedProductCode!!,
-                            productQuantity = selectedProductQuantity!!,
-                            buyPrice = selectedBuyPrice!!
-                        )
-                    }
-
-                    // Edit Button
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                showDialog = true
-                            }
-                            .padding(12.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = FontAwesomeIcons.Solid.Pen,
-                            contentDescription = "Edit",
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(text = "Update product", fontSize = 16.sp)
-                    }
-
-
-                    if (showDialog && selectedProductId != null) {
-                        EditProductPopUp(
-                            onDismiss = { showDialog = false;
-                                showSheet = false },
-                            productId = selectedProductId!!,
-                            productCode = selectedProductCode!!,
-                            productName = selectedProductName!!,
-                            productQuantity = selectedProductQuantity!!,
-                            buyPrice = selectedBuyPrice!!,
-                            sellPrice = selectedSellPrice!!,
-                            manufactureDate = selectedManufactureDate!!,
-                            expiryDate = selectedExpiryDate!!,
-                            productCategory = selectedProductCategory!!
-                        )
-                    }
-
 
                     // Delete Button
                     Row(
@@ -498,11 +424,34 @@ fun InactiveProductScreen(navController: NavController) {
                     ) {
                         Icon(
                             imageVector = FontAwesomeIcons.Regular.TrashAlt,
-                            contentDescription = "Delete",
+                            contentDescription = "Restore",
                             modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(text = "Delete product", fontSize = 16.sp)
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                productViewModel.restoreProductById(productId = selectedProductId!!)
+                                Toast.makeText(
+                                    context,
+                                    "Product Restored",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = FontAwesomeIcons.Regular.ArrowAltCircleLeft,
+                            contentDescription = "Restore",
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(text = "Restore product", fontSize = 16.sp)
                     }
 
 
@@ -552,10 +501,10 @@ fun InactiveProductScreen(navController: NavController) {
             onDismissRequest = { showDeleteDialog = false;
                 showSheet = false },
             title = { Text("Delete Product") },
-            text = { Text("Do you want to delete this product? you can view it as inactive products") },
+            text = { Text("Do you want to delete this product permanently?") },
             confirmButton = {
                 TextButton(onClick = {
-                    productViewModel.deleteProductById(productId = selectedProductId!!)
+                    productViewModel.hardDeleteProductById(productId = selectedProductId!!)
                     Toast.makeText(
                         context,
                         "Product Delete",

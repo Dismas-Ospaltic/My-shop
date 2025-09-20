@@ -31,6 +31,15 @@ interface ProductDao {
    @Query("UPDATE product SET productState = 'Inactive' WHERE productId = :productId")
    suspend fun deleteProductById(productId: String): Int?
 
+
+    @Query("UPDATE product SET productState = 'Active' WHERE productId = :productId")
+    suspend fun restoreProductById(productId: String): Int?
+
+
+    @Query("DELETE FROM product WHERE productId = :productId")
+    suspend fun hardDeleteProductById(productId: String): Int?
+
+
    @Query("SELECT * FROM product WHERE productState = 'Inactive' ORDER BY timestamp DESC")
    fun getInactiveProducts(): Flow<List<ProductEntity>>
 

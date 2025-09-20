@@ -29,7 +29,7 @@ interface GenSaleDao {
     @Query("SELECT * FROM gen_sale ORDER BY timestamp DESC")
     fun getAllGenSale(): Flow<List<GenSaleEntity>>
 
-    @Query("SELECT * FROM gen_sale WHERE date = :saleDate")
+    @Query("SELECT * FROM gen_sale WHERE date = :saleDate ORDER BY timestamp DESC")
     fun getGenSalesByDate(saleDate: String): Flow<List<GenSaleEntity>>
 
 
