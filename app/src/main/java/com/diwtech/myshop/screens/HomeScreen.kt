@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.diwtech.myshop.R
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.diwtech.myshop.BannerAdView
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ChartBar
@@ -36,6 +37,7 @@ fun HomeScreen(navController: NavController) {
 
     Scaffold(
         bottomBar = {
+            BannerAdView()
             // Bottom bar container
             Box(
                 modifier = Modifier
@@ -143,6 +145,16 @@ fun HomeScreen(navController: NavController) {
             ) {
             navController.navigate(Screen.Settings.route)
             /* onClick */ }
+
+
+//            Column {
+//                Text("Welcome to My POS App")
+//                Spacer(Modifier.height(16.dp))
+//                BannerAdView()
+//            }
+
+            BannerAdView()
+
         }
     }
 }

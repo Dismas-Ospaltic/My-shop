@@ -211,7 +211,7 @@ fun ManageProductScreen(navController: NavController) {
                         .fillMaxWidth()
                         .padding(0.dp)
                         .background(
-                            colorResource(id = R.color.dark),
+                            colorResource(id = R.color.non_photo_blue_2),
                             shape = RoundedCornerShape(4.dp)
                         ) // Use your background color
                 ) {

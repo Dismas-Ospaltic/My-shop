@@ -17,7 +17,7 @@ android {
         minSdk = 26
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -132,6 +132,9 @@ dependencies {
 
 //json parsing
     implementation("com.google.code.gson:gson:2.11.0")
+
+    //admob sdk
+    implementation("com.google.android.gms:play-services-ads:24.6.0")
 
 
 

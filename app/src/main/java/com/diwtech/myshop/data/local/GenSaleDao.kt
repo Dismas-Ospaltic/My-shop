@@ -45,7 +45,7 @@ interface GenSaleDao {
         SUM(totalSale) AS total
     FROM gen_sale
     GROUP BY date
-    ORDER BY date ASC
+    ORDER BY date DESC
 """)
     fun getDailySalesReports(): Flow<List<DailySalesReport>>
 
