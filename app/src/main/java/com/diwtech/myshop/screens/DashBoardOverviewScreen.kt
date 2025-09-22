@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.diwtech.myshop.R
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.diwtech.myshop.BannerAd
 import com.diwtech.myshop.utils.dateFormated
 import com.diwtech.myshop.viewmodel.GenSaleViewModel
 import com.diwtech.myshop.viewmodel.ProductViewModel
@@ -72,7 +73,35 @@ fun DashBoardOverviewScreen(navController: NavController) {
 
 
     Scaffold(
+        bottomBar = {
 
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+//                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .windowInsetsPadding(WindowInsets.navigationBars)
+            ) {
+                // ✅ Show banner ad
+                BannerAd(
+                    modifier = Modifier
+                        .fillMaxWidth()
+//                        .padding(horizontal = 16.dp)
+//                        .padding(4.dp) // optional
+                )
+
+
+            }
+//            // ✅ Show banner ad
+//            BannerAd(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(4.dp) // optional
+//            )
+
+
+
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier

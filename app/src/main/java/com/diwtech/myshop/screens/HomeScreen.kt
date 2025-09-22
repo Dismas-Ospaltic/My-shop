@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -19,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.diwtech.myshop.R
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.diwtech.myshop.BannerAdView
+import com.diwtech.myshop.BannerAd
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ChartBar
@@ -36,40 +37,99 @@ fun HomeScreen(navController: NavController) {
     DynamicStatusBar(colorResource(id = R.color.white))
 
     Scaffold(
+//        bottomBar = {
+//            BannerAd(modifier = Modifier.fillMaxWidth())
+//
+//            // Bottom bar container
+//            Box(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(horizontal = 16.dp, vertical = 8.dp)
+//                    .windowInsetsPadding(WindowInsets.navigationBars) // ✅ Push above system nav bar
+//            ) {
+//
+////                BannerAd(modifier = Modifier.fillMaxWidth())
+//
+//
+//                Button(
+//                    onClick = { /* TODO: Handle click */
+//                       navController.navigate(Screen.AddSales.route)
+//                    },
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(56.dp),
+//                    shape = RoundedCornerShape(12.dp),
+//                    colors = ButtonDefaults.buttonColors(containerColor = backgroundColor)
+//                ) {
+//                    Icon(
+//                        imageVector = FontAwesomeIcons.Solid.Plus,
+//                        contentDescription = null,
+//                        tint = Color.White,
+//                        modifier = Modifier.size(20.dp)
+//                    )
+//                    Spacer(modifier = Modifier.width(8.dp))
+//                    Text(
+//                        text = "Add Sales",
+//                        color = Color.White,
+//                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+//                    )
+//                }
+//            }
+//        }
+
         bottomBar = {
-            BannerAdView()
-            // Bottom bar container
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .windowInsetsPadding(WindowInsets.navigationBars) // ✅ Push above system nav bar
-            ) {
-                Button(
-                    onClick = { /* TODO: Handle click */
-                       navController.navigate(Screen.AddSales.route)
-                    },
+            Column {
+//                BannerAd(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(50.dp)
+//                )
+
+
+                    // ✅ Show banner ad
+                    BannerAd(
+                        modifier = Modifier
+                            .fillMaxWidth()
+//                            .padding(horizontal = 16.dp)
+//                        .padding(4.dp) // optional
+                    )
+
+
+
+
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = backgroundColor)
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .windowInsetsPadding(WindowInsets.navigationBars)
                 ) {
-                    Icon(
-                        imageVector = FontAwesomeIcons.Solid.Plus,
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Add Sales",
-                        color = Color.White,
-                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
-                    )
+                    Button(
+                        onClick = { navController.navigate(Screen.AddSales.route) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = backgroundColor)
+                    ) {
+                        Icon(
+                            imageVector = FontAwesomeIcons.Solid.Plus,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Add Sales",
+                            color = Color.White,
+                            style = MaterialTheme.typography.bodyLarge.copy(
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
+                    }
                 }
             }
         }
+
     ) { paddingValues ->
         // Scrollable content
         Column(
@@ -147,13 +207,16 @@ fun HomeScreen(navController: NavController) {
             /* onClick */ }
 
 
+
+
 //            Column {
 //                Text("Welcome to My POS App")
 //                Spacer(Modifier.height(16.dp))
 //                BannerAdView()
 //            }
 
-            BannerAdView()
+//            BannerAdView()
+//            BannerAd(modifier = Modifier.fillMaxWidth())
 
         }
     }

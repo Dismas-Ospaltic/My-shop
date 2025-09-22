@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.diwtech.myshop.R
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.diwtech.myshop.BannerAd
 import com.diwtech.myshop.navigation.Screen
 import com.diwtech.myshop.screens.components.EditProductPopUp
 import com.diwtech.myshop.screens.components.StockHistPopUp
@@ -98,7 +99,35 @@ fun LowStockScreen(navController: NavController) {
 
 
     Scaffold(
+        bottomBar = {
 
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+//                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .windowInsetsPadding(WindowInsets.navigationBars)
+            ) {
+                // ✅ Show banner ad
+                BannerAd(
+                    modifier = Modifier
+                        .fillMaxWidth()
+//                        .padding(horizontal = 16.dp)
+//                        .padding(4.dp) // optional
+                )
+
+
+            }
+//            // ✅ Show banner ad
+//            BannerAd(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(4.dp) // optional
+//            )
+
+
+
+        }
     ) { paddingValues ->
         // Scrollable content
         Column(

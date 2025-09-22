@@ -27,6 +27,7 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ArrowLeft
 import androidx.core.net.toUri
+import com.diwtech.myshop.BannerAd
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,7 +40,35 @@ fun SettingScreen(navController: NavController) {
 
 
     Scaffold(
+        bottomBar = {
 
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+//                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .windowInsetsPadding(WindowInsets.navigationBars)
+            ) {
+                // ✅ Show banner ad
+                BannerAd(
+                    modifier = Modifier
+                        .fillMaxWidth()
+//                        .padding(horizontal = 16.dp)
+//                        .padding(4.dp) // optional
+                )
+
+
+            }
+//            // ✅ Show banner ad
+//            BannerAd(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(4.dp) // optional
+//            )
+
+
+
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier

@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.diwtech.myshop.R
+import com.diwtech.myshop.BannerAd
 import androidx.navigation.NavController
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
@@ -59,6 +60,35 @@ fun AboutAppScreen(navController: NavController) {
 
 
     Scaffold(
+        bottomBar = {
+
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+//                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .windowInsetsPadding(WindowInsets.navigationBars)
+            ) {
+                // ✅ Show banner ad
+                BannerAd(
+                    modifier = Modifier
+                        .fillMaxWidth()
+//                        .padding(horizontal = 16.dp)
+//                        .padding(4.dp) // optional
+                )
+
+
+            }
+//            // ✅ Show banner ad
+//            BannerAd(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(4.dp) // optional
+//            )
+
+
+
+        }
 
     ) { paddingValues ->
         Column(
