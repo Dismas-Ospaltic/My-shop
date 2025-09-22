@@ -51,6 +51,14 @@ class MainActivity : ComponentActivity() {
         }
 
 
+        //to be safe and prevent probable account ban
+        MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder()
+                .setTestDeviceIds(listOf("5EEDD4839E298F38292B35ECD2035259"))
+                .build()
+        )
+
+
         // Ensure full-screen layout
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -120,8 +128,6 @@ fun BannerAd(modifier: Modifier = Modifier) {
         }
     )
 }
-
-
 
 
 

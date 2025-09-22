@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.diwtech.myshop.R
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.diwtech.myshop.BannerAd
 import com.diwtech.myshop.model.ProductEntity
 import com.diwtech.myshop.screens.components.DatePickerField
 import com.diwtech.myshop.utils.DynamicStatusBar
@@ -77,6 +78,14 @@ fun AddProductScreen(navController: NavController) {
 
     Scaffold(
         bottomBar = {
+            Column{
+                // ✅ Show banner ad
+                BannerAd(
+                    modifier = Modifier
+                        .fillMaxWidth()
+//                            .padding(horizontal = 16.dp)
+//                        .padding(4.dp) // optional
+                )
             // Bottom bar container
             Box(
                 modifier = Modifier
@@ -87,31 +96,45 @@ fun AddProductScreen(navController: NavController) {
                 Button(
                     onClick = { /* TODO: Handle click */
 
-                        if(productCode.isEmpty()){
-                            Toast.makeText(context, "Please enter product code", Toast.LENGTH_LONG).show()
+                        if (productCode.isEmpty()) {
+                            Toast.makeText(context, "Please enter product code", Toast.LENGTH_LONG)
+                                .show()
                             return@Button
                         }
 
-                        if(productName.isEmpty()){
-                            Toast.makeText(context, "Please enter product name", Toast.LENGTH_LONG).show()
-                            return@Button
-                        }
-
-
-                        if(productQty.isEmpty()){
-                            Toast.makeText(context, "Please enter product quantity", Toast.LENGTH_LONG).show()
+                        if (productName.isEmpty()) {
+                            Toast.makeText(context, "Please enter product name", Toast.LENGTH_LONG)
+                                .show()
                             return@Button
                         }
 
 
-
-                        if(productBuyPrice.isEmpty()){
-                            Toast.makeText(context, "Please enter product buy price", Toast.LENGTH_LONG).show()
+                        if (productQty.isEmpty()) {
+                            Toast.makeText(
+                                context,
+                                "Please enter product quantity",
+                                Toast.LENGTH_LONG
+                            ).show()
                             return@Button
                         }
 
-                        if(productSellPrice.isEmpty()){
-                            Toast.makeText(context, "Please enter product sell price", Toast.LENGTH_LONG).show()
+
+
+                        if (productBuyPrice.isEmpty()) {
+                            Toast.makeText(
+                                context,
+                                "Please enter product buy price",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            return@Button
+                        }
+
+                        if (productSellPrice.isEmpty()) {
+                            Toast.makeText(
+                                context,
+                                "Please enter product sell price",
+                                Toast.LENGTH_LONG
+                            ).show()
                             return@Button
                         }
 
@@ -120,35 +143,44 @@ fun AddProductScreen(navController: NavController) {
                         val amountBuyValue = cleanBuyPriceInput.toFloatOrNull()
 
                         if (amountBuyValue == null) {
-                            Toast.makeText(context, "Please enter a valid number for product buy price", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                context,
+                                "Please enter a valid number for product buy price",
+                                Toast.LENGTH_LONG
+                            ).show()
                             return@Button
                         }
-
 
 
                         val cleanSellPriceInput = productSellPrice.trim()
                         val amountSellValue = cleanSellPriceInput.toFloatOrNull()
 
                         if (amountSellValue == null) {
-                            Toast.makeText(context, "Please enter a valid number for product sell price", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                context,
+                                "Please enter a valid number for product sell price",
+                                Toast.LENGTH_LONG
+                            ).show()
                             return@Button
                         }
 
 
-                    productViewModel.insertProduct(ProductEntity(
-                        productId = generateSixDigitRandomNumber().toString(),
-                        productCode = productCode,
-                        productName = productName,
-                        productCategory = productCategory,
-                        productQuantity = productQty.toInt(),
-                        buyPrice= productBuyPrice.toFloat(),
-                        sellPrice = productSellPrice.toFloat(),
-                        manufactureDate = productManufactureDate,
-                        expiryDate = productExpiry,
-                        date = todayDate
-                    ))
+                        productViewModel.insertProduct(
+                            ProductEntity(
+                                productId = generateSixDigitRandomNumber().toString(),
+                                productCode = productCode,
+                                productName = productName,
+                                productCategory = productCategory,
+                                productQuantity = productQty.toInt(),
+                                buyPrice = productBuyPrice.toFloat(),
+                                sellPrice = productSellPrice.toFloat(),
+                                manufactureDate = productManufactureDate,
+                                expiryDate = productExpiry,
+                                date = todayDate
+                            )
+                        )
 
-                      navController.popBackStack()
+                        navController.popBackStack()
 
 
                     },
@@ -171,7 +203,7 @@ fun AddProductScreen(navController: NavController) {
                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
                     )
                 }
-            }
+            } }
         }
     ) { paddingValues ->
         // Scrollable content

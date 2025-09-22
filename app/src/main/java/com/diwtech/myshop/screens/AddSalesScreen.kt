@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.diwtech.myshop.R
 import androidx.navigation.NavController
+import com.diwtech.myshop.BannerAd
 import com.diwtech.myshop.model.ProductEntity
 import com.diwtech.myshop.screens.components.AddNewSalePopup
 import com.diwtech.myshop.viewmodel.ProductViewModel
@@ -73,6 +74,14 @@ fun AddSalesScreen(navController: NavController) {
 
     Scaffold(
         bottomBar = {
+            Column{
+                // ✅ Show banner ad
+                BannerAd(
+                    modifier = Modifier
+                        .fillMaxWidth()
+//                            .padding(horizontal = 16.dp)
+//                        .padding(4.dp) // optional
+                )
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -110,6 +119,7 @@ fun AddSalesScreen(navController: NavController) {
                 }
             }
         }
+}
     ) { paddingValues ->
         Column(
             modifier = Modifier
