@@ -136,6 +136,8 @@ dependencies {
     //admob sdk
     implementation("com.google.android.gms:play-services-ads:24.6.0")
 
+    //for consent in the EU
+    implementation("com.google.android.ump:user-messaging-platform:3.1.0")
 
 
 }

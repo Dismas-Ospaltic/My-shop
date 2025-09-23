@@ -2,7 +2,9 @@ package com.diwtech.myshop.screens
 
 
 
+import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -28,6 +30,7 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ArrowLeft
 import androidx.core.net.toUri
 import com.diwtech.myshop.BannerAd
+import com.diwtech.myshop.utils.requestConsent
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -176,6 +179,42 @@ fun SettingScreen(navController: NavController) {
                         }
 
                     }
+
+
+//                    // Add preferenses
+//                    OutlinedButton(
+//                        onClick = {
+////                            if (context is Activity) {
+////                                requestConsent(context) {
+////                                    Log.d("Consent", "User finished managing preferences")
+////                                }
+////                            }
+//
+//                            if (context is Activity) {
+//                                requestConsent(context, force = true) {
+//                                    Log.d("Consent", "User managed ad preferences")
+//                                }
+//                            }
+//
+//                        },
+//                        modifier = Modifier.fillMaxWidth(),
+//                        shape = RoundedCornerShape(12.dp),
+//                        colors = ButtonDefaults.outlinedButtonColors(
+//                            contentColor = customColor
+//                        ),
+//                        border = BorderStroke(3.dp, customColor)
+//                    ) {
+//                        Row(
+//                            modifier = Modifier.fillMaxWidth(),
+//                            horizontalArrangement = Arrangement.Start // push text to start
+//                        ) {
+//                            Text(
+//                                text = "Manage Ad Preferences (Debug)",
+//                                style = MaterialTheme.typography.bodyLarge
+//                            )
+//                        }
+//
+//                    }
 
 
                 }
