@@ -29,8 +29,10 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ArrowLeft
 import androidx.core.net.toUri
+import com.diwtech.myshop.ConsentManager
 import com.diwtech.myshop.BannerAd
 import com.diwtech.myshop.utils.requestConsent
+import com.google.android.ump.UserMessagingPlatform
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,7 +41,13 @@ fun SettingScreen(navController: NavController) {
     val backgroundColor = colorResource(id = R.color.prussian_blue)
     val customColor = colorResource(id = R.color.prussian_blue)
 
+
+
     val context = LocalContext.current
+   val activity = context as Activity
+
+    var isConsentFormShowing by remember { mutableStateOf(false) }
+
 
 
     Scaffold(
@@ -52,24 +60,18 @@ fun SettingScreen(navController: NavController) {
 //                    .padding(horizontal = 16.dp, vertical = 8.dp)
                     .windowInsetsPadding(WindowInsets.navigationBars)
             ) {
-                // ✅ Show banner ad
-                BannerAd(
-                    modifier = Modifier
-                        .fillMaxWidth()
+                // ✅ Show banner only after 1 sec
+
+                    // ✅ Show banner ad
+                    BannerAd(
+                        modifier = Modifier
+                            .fillMaxWidth()
 //                        .padding(horizontal = 16.dp)
 //                        .padding(4.dp) // optional
-                )
+                    )
 
 
             }
-//            // ✅ Show banner ad
-//            BannerAd(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(4.dp) // optional
-//            )
-
-
 
         }
     ) { paddingValues ->
@@ -181,40 +183,36 @@ fun SettingScreen(navController: NavController) {
                     }
 
 
-//                    // Add preferenses
-//                    OutlinedButton(
-//                        onClick = {
-////                            if (context is Activity) {
-////                                requestConsent(context) {
-////                                    Log.d("Consent", "User finished managing preferences")
-////                                }
-////                            }
-//
-//                            if (context is Activity) {
-//                                requestConsent(context, force = true) {
-//                                    Log.d("Consent", "User managed ad preferences")
-//                                }
-//                            }
-//
-//                        },
-//                        modifier = Modifier.fillMaxWidth(),
-//                        shape = RoundedCornerShape(12.dp),
-//                        colors = ButtonDefaults.outlinedButtonColors(
-//                            contentColor = customColor
-//                        ),
-//                        border = BorderStroke(3.dp, customColor)
-//                    ) {
-//                        Row(
-//                            modifier = Modifier.fillMaxWidth(),
-//                            horizontalArrangement = Arrangement.Start // push text to start
-//                        ) {
-//                            Text(
-//                                text = "Manage Ad Preferences (Debug)",
-//                                style = MaterialTheme.typography.bodyLarge
-//                            )
-//                        }
-//
-//                    }
+                    // Add preferenses
+                    OutlinedButton(
+                        onClick = {
+//                            ConsentManager.showPrivacyOptionsForm(activity)
+                            if (!isConsentFormShowing) {
+                                isConsentFormShowing = true
+                                ConsentManager.showPrivacyOptionsForm(
+                                    activity,
+                                    onDismissed = { isConsentFormShowing = false }
+                                )
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = customColor
+                        ),
+                        border = BorderStroke(3.dp, customColor)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Start // push text to start
+                        ) {
+                            Text(
+                                text = "Manage Ad Preferences (Debug)",
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
+
+                    }
 
 
                 }
@@ -224,6 +222,13 @@ fun SettingScreen(navController: NavController) {
 
 
 }
+
+//fun openConsentForm(context: Activity) {
+//    UserMessagingPlatform.loadAndShowConsentFormIfRequired(context) { error ->
+//        error?.let { Log.d("ConsentError", it.message.toString()) }
+//    }
+//}
+
 
 
 

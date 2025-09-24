@@ -49,6 +49,17 @@ fun DashBoardOverviewScreen(navController: NavController) {
     val context = LocalContext.current
         val currentYearMonth = remember{ YearMonth.now().toString()} // "2025-05"
 
+
+    // 👇 State that controls when the ad should be shown
+    var showBanner by remember { mutableStateOf(false) }
+
+    // 👇 Launch once when entering this screen
+    LaunchedEffect(Unit) {
+        kotlinx.coroutines.delay(2000) // 1 second delay
+        showBanner = true
+    }
+
+
     val currentDate =  System.currentTimeMillis()
     val todayDate = dateFormated(currentDate)
 
@@ -82,13 +93,17 @@ fun DashBoardOverviewScreen(navController: NavController) {
 //                    .padding(horizontal = 16.dp, vertical = 8.dp)
                     .windowInsetsPadding(WindowInsets.navigationBars)
             ) {
-                // ✅ Show banner ad
-                BannerAd(
-                    modifier = Modifier
-                        .fillMaxWidth()
-//                        .padding(horizontal = 16.dp)
+//                if (canRequestAds) {
+
+                    // ✅ Show banner ad
+                    BannerAd(
+                        modifier = Modifier
+                            .fillMaxWidth()
+//                            .padding(horizontal = 16.dp)
 //                        .padding(4.dp) // optional
-                )
+                    )
+
+//                }
 
 
             }

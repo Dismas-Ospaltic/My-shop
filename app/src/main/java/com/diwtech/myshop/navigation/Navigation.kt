@@ -51,8 +51,8 @@ sealed class Screen(val route: String) {
 }
 
 @OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun AppNavHost(navController: NavHostController, modifier: Modifier) {
+@Composable    //canRequestAds: Boolean,
+fun AppNavHost(navController: NavHostController,  modifier: Modifier) {
 
 
     AnimatedNavHost(
@@ -62,7 +62,7 @@ fun AppNavHost(navController: NavHostController, modifier: Modifier) {
         exitTransition = { slideOutHorizontally(targetOffsetX = { -1000 }) + fadeOut() },
         popEnterTransition = { slideInHorizontally(initialOffsetX = { -1000 }) + fadeIn() },
         popExitTransition = { slideOutHorizontally(targetOffsetX = { 1000 }) + fadeOut() }
-    ) {
+    ) {                                             //, canRequestAds
         composable(Screen.Home.route) { HomeScreen(navController) }
         composable(Screen.Settings.route) { SettingScreen(navController) }
         composable(Screen.AddProduct.route) { AddProductScreen(navController) }

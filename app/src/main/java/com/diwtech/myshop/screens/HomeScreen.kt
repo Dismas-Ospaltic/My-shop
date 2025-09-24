@@ -31,60 +31,27 @@ import compose.icons.fontawesomeicons.solid.Store
 
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Composable
+@Composable  //, canRequestAds: Boolean
 fun HomeScreen(navController: NavController) {
     val backgroundColor = colorResource(id = R.color.prussian_blue)
     DynamicStatusBar(colorResource(id = R.color.white))
 
-    Scaffold(
-//        bottomBar = {
-//            BannerAd(modifier = Modifier.fillMaxWidth())
-//
-//            // Bottom bar container
-//            Box(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 16.dp, vertical = 8.dp)
-//                    .windowInsetsPadding(WindowInsets.navigationBars) // ✅ Push above system nav bar
-//            ) {
-//
-////                BannerAd(modifier = Modifier.fillMaxWidth())
-//
-//
-//                Button(
-//                    onClick = { /* TODO: Handle click */
-//                       navController.navigate(Screen.AddSales.route)
-//                    },
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(56.dp),
-//                    shape = RoundedCornerShape(12.dp),
-//                    colors = ButtonDefaults.buttonColors(containerColor = backgroundColor)
-//                ) {
-//                    Icon(
-//                        imageVector = FontAwesomeIcons.Solid.Plus,
-//                        contentDescription = null,
-//                        tint = Color.White,
-//                        modifier = Modifier.size(20.dp)
-//                    )
-//                    Spacer(modifier = Modifier.width(8.dp))
-//                    Text(
-//                        text = "Add Sales",
-//                        color = Color.White,
-//                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
-//                    )
-//                }
-//            }
-//        }
 
+
+    // 👇 State that controls when the ad should be shown
+    var showBanner by remember { mutableStateOf(false) }
+
+    // 👇 Launch once when entering this screen
+    LaunchedEffect(Unit) {
+        kotlinx.coroutines.delay(2000) // 1 second delay
+        showBanner = true
+    }
+
+    Scaffold(
         bottomBar = {
             Column {
-//                BannerAd(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(50.dp)
-//                )
 
+                // ✅ Show banner only after 1 sec
 
                     // ✅ Show banner ad
                     BannerAd(
@@ -93,8 +60,6 @@ fun HomeScreen(navController: NavController) {
 //                            .padding(horizontal = 16.dp)
 //                        .padding(4.dp) // optional
                     )
-
-
 
 
                 Box(
@@ -226,7 +191,7 @@ fun HomeScreen(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun HomeScreenPreview() {
+fun HomeScreenPreview() {    //,false
     HomeScreen(navController = rememberNavController())
 }
 
