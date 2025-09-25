@@ -44,6 +44,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource.Companion.SideEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -149,8 +151,11 @@ class MainActivity : ComponentActivity() {
 //            },
 //        )
 
-        // Ensure full-screen layout
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+
+//        // Ensure full-screen layout
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
+
 
         setContent {
             val navController = rememberAnimatedNavController()
@@ -169,8 +174,17 @@ class MainActivity : ComponentActivity() {
                 AppNavHost(navController, Modifier.padding(paddingValues))
             }
 
+
+            // ✅ Safe to call inside Compose lifecycle
+            SideEffect {
+                // Ensure full-screen layout
+                WindowCompat.setDecorFitsSystemWindows(window, false)
+            }
         }
+
+
     }
+
 
 
 }

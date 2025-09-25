@@ -130,7 +130,7 @@ object ConsentManager {
     fun requestConsent(activity: Activity, onSuccess: () -> Unit) {
         val debugSettings = ConsentDebugSettings.Builder(activity)
             .addTestDeviceHashedId("5EEDD4839E298F38292B35ECD2035259") // Debug device
-            .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
+//            .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
             .build()
 
         val params = ConsentRequestParameters.Builder()
@@ -182,6 +182,15 @@ object ConsentManager {
             onDismissed?.invoke()
         }
     }
+
+
+    //to determine whethher to sho ad button or not
+    fun isPrivacyOptionsRequired(): Boolean {
+        return this::consentInformation.isInitialized &&
+                consentInformation.privacyOptionsRequirementStatus ==
+                ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED
+    }
+
 
     fun canRequestAds(): Boolean =
         this::consentInformation.isInitialized && consentInformation.canRequestAds()

@@ -46,6 +46,14 @@ fun SettingScreen(navController: NavController) {
     val context = LocalContext.current
    val activity = context as Activity
 
+
+    // Ask ConsentManager if options are required
+    val isEEAUser by remember {
+        mutableStateOf(
+            ConsentManager.isPrivacyOptionsRequired()
+        )
+    }
+
     var isConsentFormShowing by remember { mutableStateOf(false) }
 
 
@@ -140,7 +148,7 @@ fun SettingScreen(navController: NavController) {
                             context.startActivity(intent)
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = RoundedCornerShape(4.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = customColor
                         ),
@@ -161,10 +169,10 @@ fun SettingScreen(navController: NavController) {
                     // About
                     OutlinedButton(
                         onClick = {
-                      navController.navigate(Screen.AboutApp.route)
+                            navController.navigate(Screen.AboutApp.route)
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = RoundedCornerShape(4.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = customColor
                         ),
@@ -182,7 +190,7 @@ fun SettingScreen(navController: NavController) {
 
                     }
 
-
+                    if (isEEAUser) {   // ✅ Only show for EU users
                     // Add preferenses
                     OutlinedButton(
                         onClick = {
@@ -196,7 +204,7 @@ fun SettingScreen(navController: NavController) {
                             }
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
+                        shape = RoundedCornerShape(4.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = customColor
                         ),
@@ -207,12 +215,13 @@ fun SettingScreen(navController: NavController) {
                             horizontalArrangement = Arrangement.Start // push text to start
                         ) {
                             Text(
-                                text = "Manage Ad Preferences (Debug)",
+                                text = "Manage Ad Preferences",
                                 style = MaterialTheme.typography.bodyLarge
                             )
                         }
 
                     }
+                }
 
 
                 }
