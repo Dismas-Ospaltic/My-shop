@@ -47,7 +47,7 @@ android {
             println(">>> Active NDK Version: ${android.ndkVersion}")
         }
     }
-    ndkVersion = "28.2.13676358"
+    ndkVersion = "29.0.14033849 rc4"
 
 }
 
@@ -72,7 +72,7 @@ dependencies {
 
 
 //  this is for Material2 design
-    implementation("com.google.android.material:material:1.12.0")
+//    implementation("com.google.android.material:material:1.12.0")
 
     // Koin dependencies for dependency injection
     // Koin Core (required)
@@ -125,13 +125,13 @@ dependencies {
 
 
     //lottie file animations
-    implementation("com.github.LottieFiles:dotlottie-android:0.9.3")
+//    implementation("com.github.LottieFiles:dotlottie-android:0.9.3")
 
 //    implementation("com.airbnb.android:lottie-compose:6.1.0")
 
 
 //json parsing
-    implementation("com.google.code.gson:gson:2.11.0")
+//    implementation("com.google.code.gson:gson:2.11.0")
 
     //admob sdk
     implementation("com.google.android.gms:play-services-ads:24.6.0")

@@ -73,8 +73,31 @@ fun AddProductScreen(navController: NavController) {
 
 
     val categoryType = listOf(
-        "other", "soap", "kitchen ware", "electronics"
+        "other",
+        "soap",
+        "kitchen ware",
+        "electronics",
+        "beverages",
+        "snacks",
+        "dairy products",
+        "meat & poultry",
+        "fruits & vegetables",
+        "bakery",
+        "cereals & grains",
+        "frozen foods",
+        "personal care",
+        "cleaning supplies",
+        "stationery",
+        "clothing",
+        "footwear",
+        "toys & games",
+        "home decor",
+        "furniture",
+        "hardware & tools",
+        "automotive",
+        "sports & fitness"
     )
+
 
     Scaffold(
         bottomBar = {

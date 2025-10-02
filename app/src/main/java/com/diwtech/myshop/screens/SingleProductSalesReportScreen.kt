@@ -15,12 +15,14 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.diwtech.myshop.R
@@ -29,6 +31,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.diwtech.myshop.BannerAd
 import com.diwtech.myshop.utils.DynamicStatusBar
+import com.diwtech.myshop.utils.readableDate
 import com.diwtech.myshop.viewmodel.GenSaleViewModel
 import com.diwtech.myshop.viewmodel.ProductViewModel
 import com.diwtech.myshop.viewmodel.SingleProductSaleViewModel
@@ -67,18 +70,7 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
 
     val context = LocalContext.current
 
-//    val sales = listOf(
-//        Sales("674774777883",  "2025-08-01", 590f, 500f, 90f),
-//        Sales("674774777884",  "2025-08-02", 750f, 700f, 50f),
-//        Sales("674774777885",  "2025-08-03", 620f, 620f, 0f),
-//        Sales("674774777886",  "2025-08-04", 820f, 700f, 120f),
-//        Sales("674774777887",  "2025-08-05", 400f, 400f, 0f),
-//        Sales("674774777888",  "2025-08-06", 910f, 850f, 60f),
-//        Sales("674774777889",  "2025-08-07", 660f, 600f, 60f),
-//        Sales("674774777890",  "2025-08-08", 590f, 500f, 90f),
-//        Sales("674774777891",  "2025-08-09", 720f, 650f, 70f),
-//        Sales("674774777892",  "2025-08-10", 810f, 780f, 30f)
-//    )
+
 
     LaunchedEffect(Unit) {
 
@@ -136,6 +128,15 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                 .verticalScroll(rememberScrollState())
                 .background(colorResource(id = R.color.white))
         ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        start = paddingValues.calculateStartPadding(LocalLayoutDirection.current) + 12.dp,
+                        end = paddingValues.calculateEndPadding(LocalLayoutDirection.current) + 12.dp,
+
+                    )
+            ) {
 
             // Fixed-position Back Button
             IconButton(
@@ -179,6 +180,20 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
             )
 
 
+            Text(
+                text = "On " + readableDate(itemId.toString()).toString(),
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp)) // ✅ Clip first
+                    .background(colorResource(id = R.color.prussian_blue))
+                    .padding(vertical = 12.dp, horizontal = 16.dp),
+                textAlign = TextAlign.Center
+            )
+
+
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -194,12 +209,7 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                         .fillMaxWidth()
                         .padding(12.dp)
                 ) {
-//                    for (index in sales.indices) {
-//                        for (index in saleReceipt.value.indices){
-//                    items(sales) { sale ->
-//                    for (index in saleReceipt){
-//                        val sale = saleReceipt[index] // Access each book
-
+//
                     if (saleReceipt.isEmpty()) {
                         Box(
                             modifier = Modifier
@@ -222,86 +232,7 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                                 )
                             }
                         }
-                    }else{
-                        // Iterate over sales when not empty
-//                        for (index in singleSale.value.indices) {
-//                            val sale = singleSale.value[index]
-//
-//                            Column(
-//                                modifier = Modifier
-//                                    .fillMaxWidth()
-//                                    .clip(RoundedCornerShape(12.dp))
-//                                    .background(Color(0xFFF9F9F9)) // soft background
-//                                    .clickable {
-//                                        selectedNotes = if(sale.description.isNullOrEmpty()) "No additional notes" else sale.description
-//                                        singleProductSaleViewModel.loadProductsByReceipt(sale.receipt)
-//                                        showSheet = true
-//                                    }
-//                                    .padding(16.dp)
-//                            ) {
-//                                // Date
-//                                Text(
-//                                    text = sale.receipt,
-//                                    style = MaterialTheme.typography.titleMedium.copy(
-//                                        fontWeight = FontWeight.SemiBold,
-//                                        color = MaterialTheme.colorScheme.primary
-//                                    )
-//                                )
-//
-//                                Spacer(Modifier.height(8.dp))
-//
-//                                // Quantities
-//                                Row(
-//                                    Modifier.fillMaxWidth(),
-//                                    horizontalArrangement = Arrangement.SpaceBetween
-//                                ) {
-//                                    Text(
-//                                        text = sale.receipt,
-//                                        style = MaterialTheme.typography.bodyMedium.copy(
-//                                            fontWeight = FontWeight.Medium
-//                                        )
-//                                    )
-//                                }
-//                                Spacer(Modifier.height(6.dp))
-//                                Text(
-//                                    text = "Sale Type: ${sale.saleType}",
-//                                    style = MaterialTheme.typography.bodyMedium
-//                                )
-//                                Spacer(Modifier.height(4.dp))
-//                                Text(
-//                                    text = "on: ${sale.date}",
-//                                    style = MaterialTheme.typography.bodyMedium
-//                                )
-//                                Spacer(Modifier.height(4.dp))
-//                                Text(
-//                                    "Total Sales: ${sale.totalSale.toString()}",
-//                                    style = MaterialTheme.typography.bodyMedium
-//                                )
-//                                Spacer(Modifier.height(4.dp))
-//                                Text(
-//                                    "Total Paid: ${sale.totalPaid.toString()}",
-//                                    style = MaterialTheme.typography.bodyMedium
-//                                )
-//                                Spacer(Modifier.height(4.dp))
-//                                Text(
-//                                    "Change: ${sale.change.toString()}",
-//                                    style = MaterialTheme.typography.bodyMedium
-//                                )
-//
-//                            }
-//
-//
-//                            // Divider except after last item
-//                            if (index < saleReceipt.lastIndex) {
-//                                HorizontalDivider(
-//                                    modifier = Modifier
-//                                        .fillMaxWidth()
-//                                        .padding(vertical = 8.dp),
-//                                    thickness = 1.dp,
-//                                    color = Color(0xFFE0E0E0)
-//                                )
-//                            }
-//                        }
+                    } else {
 
                         for (index in singleSale.value.indices) {
                             val sale = singleSale.value[index]
@@ -312,7 +243,7 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                                     .padding(vertical = 8.dp) // spacing between cards
                                     .clickable {
                                         selectedNotes = if (sale.description.isNullOrEmpty())
-                                            "No additional notes"
+                                            "No additional sales Notes notes"
                                         else sale.description
                                         singleProductSaleViewModel.loadProductsByReceipt(sale.receipt)
                                         showSheet = true
@@ -340,8 +271,10 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
                                         Text(
-                                            text = "Sale Type: ${sale.saleType}",
-                                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
+                                            text = "payment Method: ${sale.saleType}",
+                                            style = MaterialTheme.typography.bodyMedium.copy(
+                                                fontWeight = FontWeight.Medium
+                                            )
                                         )
                                         Text(
                                             text = sale.date,
@@ -362,7 +295,11 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                                     )
                                     Text(
                                         text = "Change: ${sale.change}",
-                                        style = MaterialTheme.typography.bodyMedium.copy(color = Color(0xFF4CAF50)) // green for positive
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                            color = Color(
+                                                0xFF4CAF50
+                                            )
+                                        ) // green for positive
                                     )
                                 }
                             }
@@ -378,67 +315,111 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                 }
             }
 
-
+        }
         }
     }
 
 
-//    if (showSheet) {
+
+    if (showSheet) {
 //        ModalBottomSheet(
 //            onDismissRequest = { showSheet = false },
-//            sheetState = sheetState
+//            sheetState = sheetState,
+//            containerColor = Color.White, // White background
+//            shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp), // Rounded top
+//            tonalElevation = 6.dp // Subtle shadow for depth
 //        ) {
 //            Column(
 //                modifier = Modifier
 //                    .fillMaxWidth()
-//                    .padding(16.dp),
-//                verticalArrangement = Arrangement.spacedBy(12.dp)
+//                    .padding(horizontal = 20.dp, vertical = 16.dp),
+//                verticalArrangement = Arrangement.spacedBy(16.dp)
 //            ) {
-//                Text("Additional Notes", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-//                Text(selectedNotes)
-//                Spacer(modifier = Modifier.height(16.dp))
-//                Column(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(16.dp),
-//                    verticalArrangement = Arrangement.spacedBy(12.dp)
-//                ) {
+//                // Title
+//                Text(
+//                    text = "Additional Notes",
+//                    fontSize = 20.sp,
+//                    fontWeight = FontWeight.SemiBold,
+//                    color = Color.Black
+//                )
 //
-//                    if (products.value.isNotEmpty()) {
-//                        Text("Items for selected receipt:")
+//                // Selected Note
+//                Text(
+//                    text = selectedNotes,
+//                    fontSize = 16.sp,
+//                    color = Color.Gray
+//                )
+//
+//                HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
+//
+//                // Items section
+//                if (products.value.isNotEmpty()) {
+//                    Text(
+//                        text = "Items for selected receipt:",
+//                        fontWeight = FontWeight.Medium,
+//                        color = Color.Black
+//                    )
+//                    Column(
+//                        verticalArrangement = Arrangement.spacedBy(8.dp)
+//                    ) {
 //                        products.value.forEach {
-//                            Text("${it.productName} - Qty: ${it.quantity} - Total: ${it.total}")
+//                            Card(
+//                                modifier = Modifier.fillMaxWidth(),
+//                                shape = RoundedCornerShape(12.dp),
+//                                colors = CardDefaults.cardColors(containerColor = Color(0xFFF9F9F9)),
+//                                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+//                            ) {
+//                                Row(
+//                                    modifier = Modifier
+//                                        .fillMaxWidth()
+//                                        .padding(12.dp),
+//                                    horizontalArrangement = Arrangement.SpaceBetween
+//                                ) {
+//                                    Text(it.productName, fontWeight = FontWeight.SemiBold)
+//                                    Text("Qty: ${it.quantity}")
+//                                    Text("Total: ${it.total}")
+//                                }
+//                            }
 //                        }
 //                    }
-//
 //                }
+//
+//                Spacer(modifier = Modifier.height(20.dp))
+//
+//                // Close button
 //                Button(
 //                    onClick = { showSheet = false },
-//                    modifier = Modifier.align(Alignment.End)
+//                    modifier = Modifier.align(Alignment.End),
+//                    shape = RoundedCornerShape(12.dp),
+//                    colors = ButtonDefaults.buttonColors(
+//                        containerColor = backgroundColor, // Blue background
+//                        contentColor = Color.White          // White text
+//                    )
 //                ) {
 //                    Text("Close")
 //                }
+//
 //            }
 //        }
-//    }
 
-    if (showSheet) {
         ModalBottomSheet(
             onDismissRequest = { showSheet = false },
             sheetState = sheetState,
-            containerColor = Color.White, // White background
-            shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp), // Rounded top
-            tonalElevation = 6.dp // Subtle shadow for depth
+            containerColor = Color.White,
+            shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+            tonalElevation = 6.dp
         ) {
             Column(
                 modifier = Modifier
+//                    .fillMaxHeight(0.9f) // optional: limit sheet height
                     .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()) // make column scrollable
                     .padding(horizontal = 20.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // Title
                 Text(
-                    text = "Additional Notes",
+                    text = "Additional Sales Notes",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.Black
@@ -460,6 +441,7 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                         fontWeight = FontWeight.Medium,
                         color = Color.Black
                     )
+
                     Column(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
@@ -485,23 +467,23 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                     }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.weight(1f)) // pushes button to bottom
 
                 // Close button
                 Button(
                     onClick = { showSheet = false },
-                    modifier = Modifier.align(Alignment.End),
+                    modifier = Modifier.fillMaxWidth(), // full-width button
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = backgroundColor, // Blue background
-                        contentColor = Color.White          // White text
+                        containerColor = backgroundColor,
+                        contentColor = Color.White
                     )
                 ) {
                     Text("Close")
                 }
-
             }
         }
+
     }
 
 
@@ -513,22 +495,6 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
 
 
 }
-
-
-
-// ✅ Local book model + list
-
-
-//data class Sales(
-//    val receipt: String,
-//    val date: String,
-//    val totalPaid: Float,
-//    val totalSales: Float,
-//    val change: Float,
-//
-//)
-
-
 
 
 

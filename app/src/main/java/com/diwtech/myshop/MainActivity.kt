@@ -61,6 +61,33 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+
+        setContent {
+            val navController = rememberAnimatedNavController()
+
+            Scaffold(
+//                bottomBar = {
+//                    BannerAd() // ✅ always here, not recreated per screen
+//                    Text(
+//                        text = "Settings",
+//                        modifier = Modifier.padding(horizontal = 16.dp),
+//                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+//                        color = colorResource(id = R.color.dark)
+//                    )
+//                }
+            ) { paddingValues ->
+                AppNavHost(navController, Modifier.padding(paddingValues))
+            }
+
+
+            // ✅ Safe to call inside Compose lifecycle
+            SideEffect {
+                // Ensure full-screen layout
+                WindowCompat.setDecorFitsSystemWindows(window, false)
+            }
+        }
+
 //        ConsentManager.requestConsent(this) {
 //            MobileAds.initialize(this) {
 //                Log.d("MobileAds", "SDK initialized.")
@@ -83,7 +110,7 @@ class MainActivity : ComponentActivity() {
 //            )
 //        }
 
-
+        // Then handle consent + ads asynchronously
         // In MainActivity's onCreate
         ConsentManager.requestConsent(this) {
             // This is the onSuccess callback
@@ -157,30 +184,7 @@ class MainActivity : ComponentActivity() {
 //        WindowCompat.setDecorFitsSystemWindows(window, false)
 
 
-        setContent {
-            val navController = rememberAnimatedNavController()
 
-            Scaffold(
-//                bottomBar = {
-//                    BannerAd() // ✅ always here, not recreated per screen
-//                    Text(
-//                        text = "Settings",
-//                        modifier = Modifier.padding(horizontal = 16.dp),
-//                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-//                        color = colorResource(id = R.color.dark)
-//                    )
-//                }
-            ) { paddingValues ->
-                AppNavHost(navController, Modifier.padding(paddingValues))
-            }
-
-
-            // ✅ Safe to call inside Compose lifecycle
-            SideEffect {
-                // Ensure full-screen layout
-                WindowCompat.setDecorFitsSystemWindows(window, false)
-            }
-        }
 
 
     }
@@ -217,7 +221,8 @@ class MainActivity : ComponentActivity() {
 //////////////////////////////////////////////
 @Composable
 fun BannerAd(modifier: Modifier = Modifier) {
-    val adUnitId = "ca-app-pub-3940256099942544/6300978111" // Test Banner
+    //val adUnitId = "ca-app-pub-3940256099942544/6300978111" // Test Banner
+   val adUnitId = "ca-app-pub-7292527308292656/8005980191" //real banner
     val context = LocalContext.current
 
     AndroidView(

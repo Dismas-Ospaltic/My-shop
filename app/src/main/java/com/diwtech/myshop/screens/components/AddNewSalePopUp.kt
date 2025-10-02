@@ -86,7 +86,6 @@ fun AddNewSalePopup(
     }
 
 
-
     val currentDate = remember { System.currentTimeMillis() }
     val todayDate = dateFormated(currentDate)
 
@@ -94,7 +93,7 @@ fun AddNewSalePopup(
     var paymentMethodError by remember { mutableStateOf(false) }
     var amountPaidError by remember { mutableStateOf(false) }
 
-    val paymentMethodType = listOf("Cash", "Bank", "M-pesa", "Paypal")
+    val paymentMethodType = listOf("Other", "Cash", "Bank", "M-pesa", "Paypal")
 
     val idSales = generateTimestampBased10DigitNumberForReceipt()
 

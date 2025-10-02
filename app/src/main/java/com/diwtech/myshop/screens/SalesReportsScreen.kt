@@ -30,6 +30,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.diwtech.myshop.BannerAd
 import com.diwtech.myshop.utils.DynamicStatusBar
+import com.diwtech.myshop.utils.readableDate
 import com.diwtech.myshop.viewmodel.GenSaleViewModel
 import com.diwtech.myshop.viewmodel.ProductViewModel
 import com.diwtech.myshop.viewmodel.SingleProductSaleViewModel
@@ -37,6 +38,7 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.ArrowLeft
 import org.koin.androidx.compose.koinViewModel
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,9 +51,6 @@ fun SalesReportsScreen(navController: NavController) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedNotes by remember { mutableStateOf("") }
 
-//    val singleSaleViewModel: SingleSaleViewModel = koinViewModel()
-//    val dailyReports = singleSaleViewModel.dailySalesReports.collectAsState()
-//
 
     val productViewModel: ProductViewModel = koinViewModel()
     val genSaleViewModel: GenSaleViewModel = koinViewModel()
@@ -62,22 +61,6 @@ fun SalesReportsScreen(navController: NavController) {
 
 
     val context = LocalContext.current
-
-//    val reports = listOf(
-//        Report("2025-08-01", 620, 680, 590, 710, 4800f),
-//        Report("2025-08-02", 650, 710, 605, 720, 4950f),
-//        Report("2025-08-03", 670, 725, 615, 730, 5100f),
-//        Report("2025-08-04", 640, 690, 600, 700, 4700f),
-//        Report("2025-08-05", 680, 740, 620, 740, 5200f),
-//        Report("2025-08-06", 660, 715, 610, 720, 5050f),
-//        Report("2025-08-07", 675, 735, 625, 735, 5150f),
-//        Report("2025-08-08", 662, 700, 600, 700, 5000f),
-//        Report("2025-08-09", 685, 750, 630, 750, 5300f),
-//        Report("2025-08-10", 695, 760, 640, 760, 5400f)
-//    )
-
-
-
 
 
     Scaffold(
@@ -116,9 +99,9 @@ fun SalesReportsScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
+                    start = paddingValues.calculateStartPadding(LocalLayoutDirection.current) + 12.dp,
                     top = paddingValues.calculateTopPadding(),
-                    end = paddingValues.calculateEndPadding(LocalLayoutDirection.current),
+                    end = paddingValues.calculateEndPadding(LocalLayoutDirection.current) +12.dp,
                     bottom = paddingValues.calculateBottomPadding()
                 )
                 .verticalScroll(rememberScrollState())
@@ -182,8 +165,6 @@ fun SalesReportsScreen(navController: NavController) {
                         .fillMaxWidth()
                         .padding(12.dp)
                 ) {
-//                    for (index in reports.indices) {
-//                        val report = reports[index] // Access each book
 
                     if (dailyReports.value.isEmpty()) {
                         Box(
@@ -208,11 +189,8 @@ fun SalesReportsScreen(navController: NavController) {
                             }
                         }
                     }else{
-
                         for (index in dailyReports.value.indices) {
                             val report = dailyReports.value[index] // Access each book
-
-
 
                             Column(
                                 modifier = Modifier
@@ -220,17 +198,16 @@ fun SalesReportsScreen(navController: NavController) {
                                     .clip(RoundedCornerShape(12.dp))
                                     .background(Color(0xFFF9F9F9)) // soft background
                                     .clickable {
-//                                        navController.navigate(Screen.SingleSalesReport.route(report.date))
                                         navController.navigate("singleSalesReport/${report.date}")
                                     }
                                     .padding(16.dp)
                             ) {
                                 // Date
                                 Text(
-                                    text = report.date,
+                                    text = readableDate(report.date).toString(),
                                     style = MaterialTheme.typography.titleMedium.copy(
                                         fontWeight = FontWeight.SemiBold,
-                                        color = MaterialTheme.colorScheme.primary
+                                        color = backgroundColor
                                     )
                                 )
 
@@ -255,24 +232,21 @@ fun SalesReportsScreen(navController: NavController) {
                                 )
                                 Spacer(Modifier.height(4.dp))
                                 Text(
-                                    "Bank Payments: ${report.bank}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Spacer(Modifier.height(4.dp))
-                                Text(
                                     "M-pesa payments: ${report.mpesa}",
                                     style = MaterialTheme.typography.bodyMedium
                                 )
                                 Spacer(Modifier.height(4.dp))
                                 Text(
+                                    "Bank Payments: ${report.bank}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Spacer(Modifier.height(4.dp))
+
+                                Text(
                                     "Other payments: ${report.other}",
                                     style = MaterialTheme.typography.bodyMedium
                                 )
-
                             }
-
-                            // Divider between items (except last one)
-//                            if (inventoryUpdate != allInventoryUpdatesById.last()) {
                             if (index < dailyReports.value.lastIndex) {
                                 HorizontalDivider(
                                     modifier = Modifier
@@ -282,15 +256,6 @@ fun SalesReportsScreen(navController: NavController) {
                                     color = Color(0xFFDDDDDD) // subtle divider color
                                 )
                             }
-                            //////////////////////////////////
-
-
-
-
-
-
-
-
 
                         }
                     }
@@ -306,21 +271,7 @@ fun SalesReportsScreen(navController: NavController) {
         }
     }
 
-
-
 }
-
-
-
-// ✅ Local book model + list
-//data class Report(
-//    val date: String,
-//    val cash: Int,
-//    val bank: Int,
-//    val mpesa: Int,
-//    val other: Int,
-//    val total: Float
-//)
 
 
 @Preview(showBackground = true)
