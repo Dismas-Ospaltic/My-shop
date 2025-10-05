@@ -12,19 +12,12 @@ import com.diwtech.myshop.viewmodel.ProductViewModel
 import com.diwtech.myshop.viewmodel.SingleProductSaleViewModel
 import org.koin.dsl.module
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
+
 
 
 val appModule = module {
 
-//    single{ AppDatabase.getDatabase(get()).singleSaleProductDao() }
-//    single { SingleProductRepository(get()) }
-//    viewModel { SingleProductSaleViewModel(get()) }
-//
-//
-//    single { AppDatabase.getDatabase(get()).singleSaleDao() }
-//    single { SingleSaleRepository(get()) }
-//    viewModel { SingleSaleViewModel(get()) }
 
     single { AppDatabase.getDatabase(androidContext()).genSaleDao() }
     single { GenSaleRepository(get()) }

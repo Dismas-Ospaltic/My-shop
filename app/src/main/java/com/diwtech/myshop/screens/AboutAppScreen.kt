@@ -43,14 +43,6 @@ fun AboutAppScreen(navController: NavController) {
     val context = LocalContext.current
 
 
-//    val creditIcons = listOf(
-//        "App icon was designed by kerismaker from Flaticon",
-//
-//        "App Screen image icons:",
-//        "-No data Placeholder icon image designed by Roundicons Premium from Flaticon",
-//        "-No Search data placeholder icon image designed by Roundicons Premium from Flaticon",
-//    )
-
     val creditIcons = listOf(
         "App icon designed by kerismaker from Flaticon",
         "App screen image icons:",
@@ -164,7 +156,7 @@ fun AboutAppScreen(navController: NavController) {
 
                     // Version
                     Text(
-                        text = "Version 1.0.0",
+                        text = "Version 1.1.0",
                         style = MaterialTheme.typography.bodyMedium.copy(color = Color.Gray)
                     )
 

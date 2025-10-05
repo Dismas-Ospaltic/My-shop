@@ -93,7 +93,18 @@ fun AddNewSalePopup(
     var paymentMethodError by remember { mutableStateOf(false) }
     var amountPaidError by remember { mutableStateOf(false) }
 
-    val paymentMethodType = listOf("Other", "Cash", "Bank", "M-pesa", "Paypal")
+    val paymentMethodType = listOf(
+        "Other",
+        "Cash",
+        "Bank Transfer",
+        "Debit/Credit Card",
+        "Mobile Money / Wallet",
+        "Digital Wallets",
+        "Payment Gateway",
+        "Cryptocurrency",
+        "Cheque",
+        "Cash on Delivery"
+    )
 
     val idSales = generateTimestampBased10DigitNumberForReceipt()
 
@@ -273,46 +284,56 @@ fun AddNewSalePopup(
                         if (valid) {
                           if(hasLowStock){
                               Toast.makeText(context, "some product you selected has Low Stock! sales cannot be completed", Toast.LENGTH_SHORT).show()
-                          }else{
+                          }else {
 
-                            // Proceed with saving
-                            genSaleViewModel.insertGenSale(
-                                GenSaleEntity(
-                                 date = todayDate,
-                                    receipt = idSales.toString(),
-                                    saleType = paymentMethod,
-                                    description = salesDescription,
-                                    totalSale = total.toFloat(),
-                                    totalPaid = amountPaid.toFloat(),
-                                    change = amountRemain.toFloat()
-                                )
-                            )
+                              if (amountRemain.toFloat() >= 0f) {
 
-                            selectedProducts.forEachIndexed { index, item ->
+                                  // Proceed with saving
+                                  genSaleViewModel.insertGenSale(
+                                      GenSaleEntity(
+                                          date = todayDate,
+                                          receipt = idSales.toString(),
+                                          saleType = paymentMethod,
+                                          description = salesDescription,
+                                          totalSale = total.toFloat(),
+                                          totalPaid = amountPaid.toFloat(),
+                                          change = amountRemain.toFloat()
+                                      )
+                                  )
 
-
-                                singleProductSaleViewModel.insertSingleProducts(
-                                    SingleProductSaleEntity(
-                                        date = todayDate,
-                                        receipt = idSales.toString(),
-                                        productName = item.product.productName,
-                                        productId = item.product.productId,
-                                        productCode = item.product.productCode,
-                                        price = item.product.sellPrice,
-                                        quantity = item.quantity.value,
-                                        total = (item.product.sellPrice * item.quantity.value),
-                                    )
-                                )
+                                  selectedProducts.forEachIndexed { index, item ->
 
 
-                                //reduce the stock when sale is added
-                                val newProductStock = item.product.productQuantity - item.quantity.value
+                                      singleProductSaleViewModel.insertSingleProducts(
+                                          SingleProductSaleEntity(
+                                              date = todayDate,
+                                              receipt = idSales.toString(),
+                                              productName = item.product.productName,
+                                              productId = item.product.productId,
+                                              productCode = item.product.productCode,
+                                              price = item.product.sellPrice,
+                                              quantity = item.quantity.value,
+                                              total = (item.product.sellPrice * item.quantity.value),
+                                          )
+                                      )
 
-                                productViewModel.updateProductQuantityById(productId = item.product.productId, newProductStock)
-                                }
-                              onClearProducts() // ✅ clear products
-                              onDismiss()       // ✅ close dialog
-                            }
+
+                                      //reduce the stock when sale is added
+                                      val newProductStock =
+                                          item.product.productQuantity - item.quantity.value
+
+                                      productViewModel.updateProductQuantityById(
+                                          productId = item.product.productId,
+                                          newProductStock
+                                      )
+                                  }
+                                  onClearProducts() // ✅ clear products
+                                  onDismiss()       // ✅ close dialog
+                              }
+                              else{
+                                  Toast.makeText(context, "Sales Cannot be complete, Amount is low", Toast.LENGTH_SHORT).show()
+                              }
+                          }
 
 
                         }

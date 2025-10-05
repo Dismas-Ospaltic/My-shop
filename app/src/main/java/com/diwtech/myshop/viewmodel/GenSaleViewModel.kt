@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.diwtech.myshop.model.DailySalesReport
+import com.diwtech.myshop.model.DailySalesReport1
 import com.diwtech.myshop.model.GenSaleEntity
 import com.diwtech.myshop.repository.GenSaleRepository
 import com.diwtech.myshop.utils.dateFormated
@@ -82,8 +83,8 @@ class GenSaleViewModel(private val genSaleRepository: GenSaleRepository)  : View
 
 
     // StateFlow to expose daily sales reports
-    private val _dailySalesReports = MutableStateFlow<List<DailySalesReport>>(emptyList())
-    val dailySalesReports: StateFlow<List<DailySalesReport>> = _dailySalesReports.asStateFlow()
+    private val _dailySalesReports = MutableStateFlow<List<DailySalesReport1>>(emptyList())
+    val dailySalesReports: StateFlow<List<DailySalesReport1>> = _dailySalesReports.asStateFlow()
 
     init {
         // Start collecting reports immediately when ViewModel is created

@@ -198,9 +198,10 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
             Spacer(modifier = Modifier.height(16.dp))
 
             Card(
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(4.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFF2F4F7) // greyish
+                    containerColor = backgroundColor
+//                    containerColor = Color(0xFFF2F4F7) // greyish
                 ),
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -261,7 +262,7 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                                         text = "Receipt: ${sale.receipt}",
                                         style = MaterialTheme.typography.titleMedium.copy(
                                             fontWeight = FontWeight.SemiBold,
-                                            color = MaterialTheme.colorScheme.primary
+                                            color = colorResource(id = R.color.non_photo_blue_2)
                                         )
                                     )
 
@@ -275,10 +276,6 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                                             style = MaterialTheme.typography.bodyMedium.copy(
                                                 fontWeight = FontWeight.Medium
                                             )
-                                        )
-                                        Text(
-                                            text = sale.date,
-                                            style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
                                         )
                                     }
 

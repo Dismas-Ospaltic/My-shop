@@ -8,3 +8,9 @@ data class DailySalesReport(
     val other: Float,
     val total: Float
 )
+
+data class DailySalesReport1(
+    val date: String,
+    val saleType: String,
+    val total: Double
+)

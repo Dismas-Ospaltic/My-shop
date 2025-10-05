@@ -99,15 +99,24 @@ fun SalesReportsScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    start = paddingValues.calculateStartPadding(LocalLayoutDirection.current) + 12.dp,
+                    start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
                     top = paddingValues.calculateTopPadding(),
-                    end = paddingValues.calculateEndPadding(LocalLayoutDirection.current) +12.dp,
+                    end = paddingValues.calculateEndPadding(LocalLayoutDirection.current),
                     bottom = paddingValues.calculateBottomPadding()
                 )
                 .verticalScroll(rememberScrollState())
                 .background(colorResource(id = R.color.white))
         ) {
 
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        start = paddingValues.calculateStartPadding(LocalLayoutDirection.current) + 12.dp,
+                        end = paddingValues.calculateEndPadding(LocalLayoutDirection.current) + 12.dp,
+
+                        )
+            ) {
             // Fixed-position Back Button
             IconButton(
                 onClick = { navController.popBackStack() },
@@ -154,9 +163,10 @@ fun SalesReportsScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Card(
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(4.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color(0xFFF2F4F7) // greyish
+                    containerColor = backgroundColor
+//                    containerColor = Color(0xFFF2F4F7) // greyish
                 ),
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -188,9 +198,11 @@ fun SalesReportsScreen(navController: NavController) {
                                 )
                             }
                         }
-                    }else{
-                        for (index in dailyReports.value.indices) {
-                            val report = dailyReports.value[index] // Access each book
+                    } else {
+
+                        val groupedReports = dailyReports.value.groupBy { it.date }
+
+                        groupedReports.forEach { (date, reportsForDate) ->
 
                             Column(
                                 modifier = Modifier
@@ -198,13 +210,13 @@ fun SalesReportsScreen(navController: NavController) {
                                     .clip(RoundedCornerShape(12.dp))
                                     .background(Color(0xFFF9F9F9)) // soft background
                                     .clickable {
-                                        navController.navigate("singleSalesReport/${report.date}")
+                                        navController.navigate("singleSalesReport/$date")
                                     }
                                     .padding(16.dp)
                             ) {
                                 // Date
                                 Text(
-                                    text = readableDate(report.date).toString(),
+                                    text = readableDate(date).toString(),
                                     style = MaterialTheme.typography.titleMedium.copy(
                                         fontWeight = FontWeight.SemiBold,
                                         color = backgroundColor
@@ -213,61 +225,48 @@ fun SalesReportsScreen(navController: NavController) {
 
                                 Spacer(Modifier.height(8.dp))
 
-                                // Quantities
+                                // Total Sales
+                                val totalSales = reportsForDate.sumOf { it.total }
                                 Row(
                                     Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Text(
-                                        "Totals Sales: ${report.total.toString()}",
+                                        "Total Sales: $totalSales",
                                         style = MaterialTheme.typography.bodyMedium.copy(
                                             fontWeight = FontWeight.Medium
                                         )
                                     )
                                 }
+
                                 Spacer(Modifier.height(6.dp))
-                                Text(
-                                    "Cash Payments: ${report.cash}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Spacer(Modifier.height(4.dp))
-                                Text(
-                                    "M-pesa payments: ${report.mpesa}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Spacer(Modifier.height(4.dp))
-                                Text(
-                                    "Bank Payments: ${report.bank}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Spacer(Modifier.height(4.dp))
 
-                                Text(
-                                    "Other payments: ${report.other}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-                            if (index < dailyReports.value.lastIndex) {
-                                HorizontalDivider(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = 12.dp),
-                                    thickness = 1.dp,
-                                    color = Color(0xFFDDDDDD) // subtle divider color
-                                )
+                                // List all payment types dynamically
+                                reportsForDate.forEach { report ->
+                                    Text(
+                                        "${report.saleType}: ${report.total}",
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                    Spacer(Modifier.height(4.dp))
+                                }
                             }
 
+                            HorizontalDivider(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 12.dp),
+                                thickness = 1.dp,
+                                color = Color(0xFFDDDDDD) // subtle divider color
+                            )
                         }
+
                     }
-
-
-
 
 
                 }
             }
 
-
+        }
         }
     }
 

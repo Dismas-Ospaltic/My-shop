@@ -4,6 +4,7 @@ package com.diwtech.myshop.repository
 
 import com.diwtech.myshop.data.local.GenSaleDao
 import com.diwtech.myshop.model.DailySalesReport
+import com.diwtech.myshop.model.DailySalesReport1
 import com.diwtech.myshop.model.GenSaleEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -26,7 +27,7 @@ class GenSaleRepository(private val genSaleDao: GenSaleDao) {
     fun getGenSalesByDate(saleDate: String): Flow<List<GenSaleEntity>> = genSaleDao.getGenSalesByDate(saleDate)
 
 
-    fun getDailySalesReports(): Flow<List<DailySalesReport>> {
+    fun getDailySalesReports(): Flow<List<DailySalesReport1>> {
         return genSaleDao.getDailySalesReports()
     }
 

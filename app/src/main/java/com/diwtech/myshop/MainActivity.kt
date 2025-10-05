@@ -49,6 +49,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollSource.Companion.SideE
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.ads.*
 
 class MainActivity : ComponentActivity() {
@@ -64,8 +65,8 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-            val navController = rememberAnimatedNavController()
-
+//            val navController = rememberAnimatedNavController()
+            val navController = rememberNavController()
             Scaffold(
 //                bottomBar = {
 //                    BannerAd() // ✅ always here, not recreated per screen

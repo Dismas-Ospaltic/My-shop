@@ -16,8 +16,8 @@ android {
         applicationId = "com.diwtech.myshop"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 3
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -76,52 +76,48 @@ dependencies {
 
     // Koin dependencies for dependency injection
     // Koin Core (required)
-    implementation("io.insert-koin:koin-android:3.5.0")
+    implementation("io.insert-koin:koin-android:4.1.1")
 
     // Koin for Jetpack Compose
-    implementation("io.insert-koin:koin-androidx-compose:3.5.0")
+    implementation("io.insert-koin:koin-androidx-compose:4.1.1")
 
     // Koin for Navigation in Jetpack Compose
-    implementation("io.insert-koin:koin-androidx-navigation:3.5.0")
+    implementation("io.insert-koin:koin-androidx-navigation:4.1.1")
 
     // Lifecycle (to work with ViewModel)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
 
     // Room dependencies
-    implementation("androidx.room:room-runtime:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-runtime:2.8.1")
+    ksp("androidx.room:room-compiler:2.8.1")
 
     // For coroutine support (if you're using suspend functions in DAO)
-    implementation("androidx.room:room-ktx:2.6.1")
+    implementation("androidx.room:room-ktx:2.8.1")
 
 
     //animation
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.31.2-alpha")
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.36.0")
 
     //pager APi
     implementation("androidx.compose.foundation:foundation:1.7.8") // Use latest version
 
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.2-alpha")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.36.0")
 
     //font Awesome Icons
     implementation("br.com.devsrsouza.compose.icons:font-awesome:1.1.1")
 
     // Accompanist Pager (for horizontal paging) paging
-    implementation("com.google.accompanist:accompanist-pager:0.25.0")
+    implementation("com.google.accompanist:accompanist-pager:0.36.0")
 
     // Accompanist Pager Indicators (for page indicators like dots)
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.25.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.36.0")
 
     // DataStore for storing preferences
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
 
     // Coroutine Support for Retrofit (if using suspend functions)
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
-    // Lifecycle (to work with ViewModel)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
 
     //lottie file animations

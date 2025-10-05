@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.diwtech.myshop.model.DailySalesReport
+import com.diwtech.myshop.model.DailySalesReport1
 import com.diwtech.myshop.model.GenSaleEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -35,20 +36,30 @@ interface GenSaleDao {
 
 
 
+//    @Query("""
+//    SELECT
+//        date,
+//        SUM(CASE WHEN saleType = 'Cash' THEN totalSale ELSE 0 END) AS cash,
+//        SUM(CASE WHEN saleType = 'Bank' THEN totalSale ELSE 0 END) AS bank,
+//        SUM(CASE WHEN saleType = 'M-pesa' THEN totalSale ELSE 0 END) AS mpesa,
+//        SUM(CASE WHEN saleType NOT IN ('Cash','Bank','M-pesa') THEN totalSale ELSE 0 END) AS other,
+//        SUM(totalSale) AS total
+//    FROM gen_sale
+//    GROUP BY date
+//    ORDER BY date DESC
+//""")
+//    fun getDailySalesReports(): Flow<List<DailySalesReport>>
+
     @Query("""
     SELECT 
         date,
-        SUM(CASE WHEN saleType = 'Cash' THEN totalSale ELSE 0 END) AS cash,
-        SUM(CASE WHEN saleType = 'Bank' THEN totalSale ELSE 0 END) AS bank,
-        SUM(CASE WHEN saleType = 'M-pesa' THEN totalSale ELSE 0 END) AS mpesa,
-        SUM(CASE WHEN saleType NOT IN ('Cash','Bank','M-pesa') THEN totalSale ELSE 0 END) AS other,
+        saleType,
         SUM(totalSale) AS total
     FROM gen_sale
-    GROUP BY date
+    GROUP BY date, saleType
     ORDER BY date DESC
 """)
-    fun getDailySalesReports(): Flow<List<DailySalesReport>>
-
+    fun getDailySalesReports(): Flow<List<DailySalesReport1>>
 
 
     @Query("SELECT SUM(totalSale) FROM gen_sale WHERE date = :todayDate")
