@@ -121,7 +121,9 @@ class MainActivity : ComponentActivity() {
 
             MobileAds.setRequestConfiguration(
                 RequestConfiguration.Builder()
-                    .setTestDeviceIds(listOf("5EEDD4839E298F38292B35ECD2035259"))
+                    .setTestDeviceIds(listOf("5EEDD4839E298F38292B35ECD2035259",
+                        "5ED29E53360FA1E3D4AB444DB9B0D7DB"
+                    ))
                     .build()
             )
             // ✅ Update the state to trigger recomposition

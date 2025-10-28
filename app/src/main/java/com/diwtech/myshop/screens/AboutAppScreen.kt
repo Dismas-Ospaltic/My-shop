@@ -156,7 +156,7 @@ fun AboutAppScreen(navController: NavController) {
 
                     // Version
                     Text(
-                        text = "Version 1.1.0",
+                        text = "Version 1.2.0",
                         style = MaterialTheme.typography.bodyMedium.copy(color = Color.Gray)
                     )
 

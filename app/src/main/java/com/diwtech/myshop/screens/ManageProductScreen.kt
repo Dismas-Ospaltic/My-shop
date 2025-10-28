@@ -41,11 +41,13 @@ import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Regular
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.regular.TrashAlt
+import compose.icons.fontawesomeicons.solid.AngleDown
 import compose.icons.fontawesomeicons.solid.ArrowLeft
 import compose.icons.fontawesomeicons.solid.CartArrowDown
 import compose.icons.fontawesomeicons.solid.CircleNotch
 import compose.icons.fontawesomeicons.solid.ClipboardList
 import compose.icons.fontawesomeicons.solid.Pen
+import compose.icons.fontawesomeicons.solid.Plus
 import compose.icons.fontawesomeicons.solid.PlusCircle
 import compose.icons.fontawesomeicons.solid.Search
 import org.koin.androidx.compose.koinViewModel
@@ -63,6 +65,14 @@ fun ManageProductScreen(navController: NavController) {
     val productViewModel: ProductViewModel = koinViewModel()
      val activeProducts by productViewModel.activeProducts.collectAsState()
 
+
+    // 🔹 Sort Options
+    val sortOptions = listOf("Date Added", "Stock", "Alphabetical (A–Z)", "Alphabetical (Z–A)")
+    var selectedSortOption by remember { mutableStateOf(sortOptions[0]) }
+
+
+    // Dropdown menu state
+    var expanded by remember { mutableStateOf(false) }
 
     var selectedProductId by remember { mutableStateOf<String?>(null) }
     var selectedProductCode by remember { mutableStateOf<String?>(null) }
@@ -90,6 +100,17 @@ fun ManageProductScreen(navController: NavController) {
                 || it.productCategory.contains(searchQuery.value, ignoreCase = true)
 
     }
+
+
+    // ✅ Apply sorting based on user selection
+    val sortedProducts = when (selectedSortOption) {
+        "Date Added" -> filteredProducts.sortedByDescending { it.date } // assuming your model has a date field
+        "Stock" -> filteredProducts.sortedByDescending { it.productQuantity }
+        "Alphabetical (A–Z)" -> filteredProducts.sortedBy { it.productName.lowercase() }
+        "Alphabetical (Z–A)" -> filteredProducts.sortedByDescending { it.productName.lowercase() }
+        else -> filteredProducts
+    }
+
 
     val context = LocalContext.current
 
@@ -364,10 +385,53 @@ fun ManageProductScreen(navController: NavController) {
 
                 } else {
 //                    for (index in filteredProducts) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    ) {
+                        OutlinedButton(
+                            onClick = { expanded = true },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(
+                                text = "Sort by: $selectedSortOption",
+                                modifier = Modifier.weight(1f),
+                                color = colorResource(id = R.color.dark)
+                            )
+                            Icon(
+//                                painter = painterResource(id = R.drawable.ic_arrow_down), // optional: add dropdown icon
+//                                contentDescription = "Sort",
+//                                tint = colorResource(id = R.color.dark)
+                                imageVector = FontAwesomeIcons.Solid.AngleDown,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
 
-
-                    for (index in filteredProducts.indices) {
-                        val productItem = filteredProducts[index]
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false },
+                            modifier = Modifier.background(Color.White)
+                        ) {
+                            sortOptions.forEach { option ->
+                                DropdownMenuItem(
+                                    text = { Text(option) },
+                                    onClick = {
+                                        selectedSortOption = option
+                                        expanded = false
+                                    }
+                                )
+                            }
+                        }
+                    }
+//
+//                    for (index in filteredProducts.indices) {
+//                        val productItem = filteredProducts[index]
+                    for (index in sortedProducts.indices) {
+                        val productItem = sortedProducts[index]
 
                     Card(
                         modifier = Modifier
@@ -667,26 +731,7 @@ fun ManageProductScreen(navController: NavController) {
                             productId = selectedProductId!!,
                         )
                     }
-//
-//
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .clickable {
-//
-//
-//                            }
-//                            .padding(12.dp),
-//                        verticalAlignment = Alignment.CenterVertically
-//                    ) {
-//                        Icon(
-//                            imageVector = FontAwesomeIcons.Regular.ThumbsUp,
-//                            contentDescription = "Mark as complete",
-//                            modifier = Modifier.size(20.dp)
-//                        )
-//                        Spacer(modifier = Modifier.width(12.dp))
-//                        Text(text = "Mark as complete", fontSize = 16.sp)
-//                    }
+
                 }
 //                Button(
 //                    onClick = { showSheet = false },
