@@ -16,7 +16,7 @@ android {
         applicationId = "com.diwtech.myshop"
         minSdk = 26
         targetSdk = 36
-        versionCode = 4
+        versionCode = 5
         versionName = "1.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -71,6 +71,9 @@ dependencies {
 
 
 
+    // UI Components & Material Design
+// ==========================
+    implementation("com.google.android.material:material:1.12.0")
 //  this is for Material2 design
 //    implementation("com.google.android.material:material:1.12.0")
 
@@ -84,25 +87,34 @@ dependencies {
     // Koin for Navigation in Jetpack Compose
     implementation("io.insert-koin:koin-androidx-navigation:4.1.1")
 
+
     // Lifecycle (to work with ViewModel)
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
 
     // Room dependencies
-    implementation("androidx.room:room-runtime:2.8.1")
+    implementation("androidx.room:room-runtime:2.8.3")
     ksp("androidx.room:room-compiler:2.8.1")
 
     // For coroutine support (if you're using suspend functions in DAO)
-    implementation("androidx.room:room-ktx:2.8.1")
+    implementation("androidx.room:room-ktx:2.8.3")
 
 
     //animation
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.36.0")
+//    implementation("com.google.accompanist:accompanist-navigation-animation:0.36.0")
 
     //pager APi
-    implementation("androidx.compose.foundation:foundation:1.7.8") // Use latest version
+    implementation("androidx.compose.foundation:foundation:1.9.4") // Use latest version
 
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.36.0")
+//    implementation("com.google.accompanist:accompanist-systemuicontroller:0.36.0")
+
+
+    // Navigation animation for Compose
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.31.2-alpha")
+// Control system UI colors (status/navigation bar)
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.2-alpha")
+
+
 
     //font Awesome Icons
     implementation("br.com.devsrsouza.compose.icons:font-awesome:1.1.1")
@@ -113,21 +125,19 @@ dependencies {
     // Accompanist Pager Indicators (for page indicators like dots)
     implementation("com.google.accompanist:accompanist-pager-indicators:0.36.0")
 
+
+
+    // Horizontal pager support
+//    implementation("com.google.accompanist:accompanist-pager:0.25.0")
+// Pager indicators (e.g., dots below pager)
+//    implementation("com.google.accompanist:accompanist-pager-indicators:0.25.0")
+
     // DataStore for storing preferences
     implementation("androidx.datastore:datastore-preferences:1.1.7")
 
     // Coroutine Support for Retrofit (if using suspend functions)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
-
-    //lottie file animations
-//    implementation("com.github.LottieFiles:dotlottie-android:0.9.3")
-
-//    implementation("com.airbnb.android:lottie-compose:6.1.0")
-
-
-//json parsing
-//    implementation("com.google.code.gson:gson:2.11.0")
 
     //admob sdk
     implementation("com.google.android.gms:play-services-ads:24.6.0")

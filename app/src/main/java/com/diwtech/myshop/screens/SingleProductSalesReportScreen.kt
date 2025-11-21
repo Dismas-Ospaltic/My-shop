@@ -221,7 +221,7 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Image(
-                                    painter = painterResource(id = R.drawable.shopping), // Replace with your image in res/drawable
+                                    painter = painterResource(id = R.drawable.data_notfound), // Replace with your image in res/drawable
                                     contentDescription = "No Data",
                                     modifier = Modifier.size(120.dp)
                                 )
@@ -482,14 +482,6 @@ fun SingleProductSalesReportScreen(navController: NavController, itemId: String?
         }
 
     }
-
-
-
-
-
-
-
-
 
 }
 
