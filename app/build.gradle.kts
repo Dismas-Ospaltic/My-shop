@@ -16,7 +16,7 @@ android {
         applicationId = "com.diwtech.myshop"
         minSdk = 26
         targetSdk = 36
-        versionCode = 5
+        versionCode = 6
         versionName = "1.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -42,12 +42,12 @@ android {
         compose = true
     }
 
-    tasks.register("printNdkVersion") {
-        doLast {
-            println(">>> Active NDK Version: ${android.ndkVersion}")
-        }
-    }
-    ndkVersion = "29.0.14033849 rc4"
+//    tasks.register("printNdkVersion") {
+//        doLast {
+//            println(">>> Active NDK Version: ${android.ndkVersion}")
+//        }
+//    }
+//    ndkVersion = "29.0.14033849 rc4"
 
 }
 
@@ -139,11 +139,18 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
 
-    //admob sdk
-    implementation("com.google.android.gms:play-services-ads:24.6.0")
-
-    //for consent in the EU
+//    //admob sdk
+//    implementation("com.google.android.gms:play-services-ads:24.6.0")
+//
+//    //for consent in the EU
     implementation("com.google.android.ump:user-messaging-platform:3.1.0")
 
+
+    //testing new sdk
+    //admob sdk
+    implementation("com.google.android.gms:play-services-ads:24.8.0")
+
+    //for consent in the EU
+//    implementation("com.google.android.ump:user-messaging-platform:4.0.0")
 
 }

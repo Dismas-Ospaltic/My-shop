@@ -19,7 +19,7 @@ fun requestConsent(
     // ✅ Debug settings
     val debugSettings = ConsentDebugSettings.Builder(context)
         // Replace with your hashed test device ID
-        .addTestDeviceHashedId("5EEDD4839E298F38292B35ECD2035259")
+        .addTestDeviceHashedId("5ED29E53360FA1E3D4AB444DB9B0D7DB")
         // Force geography (EEA / NON_EEA / NOT_EEA)
         .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
         .build()
